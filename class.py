@@ -7,10 +7,14 @@ import urllib
 import mysql.connector
 import sys
 
+# google API key
 apikey = config.apikey
 
+
+# gets restaurants from a given location
 def getPlaces(location):
-    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&type=restaurant&key=%s" % (urllib.quote_plus(location),urllib.quote_plus(apikey))
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&type=restaurant&key=%s" % (
+        urllib.quote_plus(location), urllib.quote_plus(apikey))
     response = StringIO.StringIO()
     c = pycurl.Curl()
     c.setopt(c.URL, url)
@@ -23,10 +27,14 @@ def getPlaces(location):
     response.close()
     return places
 
+
+# sample location, Heights Houston
 # getPlaces('29.799592,-95.420138')
 
+# gets additional info on the given place_id
 def getInfo(place_id):
-    url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (urllib.quote_plus(place_id),urllib.quote_plus(apikey))
+    url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (
+        urllib.quote_plus(place_id), urllib.quote_plus(apikey))
     response = StringIO.StringIO()
     c = pycurl.Curl()
     c.setopt(c.URL, url)
@@ -39,14 +47,17 @@ def getInfo(place_id):
     response.close()
     return info
 
+
+# takes in location and pulls data from getPlaces and getInfo
 location = sys.argv[1]
 places = getPlaces(location)
-print places.get('results')[0].get('place_id')
-tmp=places.get('results')
+tmp = places.get('results')
 for place in tmp:
-    print('************************************')
+    # stores place_id from query
     place_id = [place][0].get('place_id')
-    print('************************************')
+    # runs query to get additional info from the place_id
     info = getInfo(place_id)
+    # store website url
     tmp_web = info.get('result').get('website')
-    print tmp_web
+
+#todo scrape tmp_web sites for keywords

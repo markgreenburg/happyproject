@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Location</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<script>
+{#    sets options for query#}
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+{#    gets geolocation info on the user#}
+    function success(pos) {
+        var crd = pos.coords;
+        var lat = crd.latitude;
+        var lng = crd.longitude;
+        var acc = crd.accuracy;
+        console.log(lat);
+    }
+{#    error handling#}
+    function error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+{#    calls functions#}
+    navigator.geolocation.getCurrentPosition(success, error, options);
+
+
+</script>
+
+</body>
+</html>

@@ -4,20 +4,22 @@ import json
 import pycurl
 import StringIO
 import urllib
+import urllib2
 import mysql.connector
 import sys
 
-# google places API key
-placesAPI = config.placesAPI
+# google API key
+apikey = config.apikey
 
-#google geolocation API key
-geoAPI = config.geoAPI
+
+# google geolocation API key
+# geoAPI = config.geoAPI
 
 
 # gets restaurants from a given location
 def getPlaces(location):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&type=restaurant&key=%s" % (
-        urllib.quote_plus(location), urllib.quote_plus(placesAPI))
+        urllib.quote_plus(location), urllib.quote_plus(apikey))
     response = StringIO.StringIO()
     c = pycurl.Curl()
     c.setopt(c.URL, url)
@@ -28,16 +30,16 @@ def getPlaces(location):
     c.close()
     places = json.loads(response.getvalue())
     response.close()
-    return places
+    print places
 
 
 # sample location, Heights Houston
 # getPlaces('29.799592,-95.420138')
-
+#
 # gets additional info on the given place_id
 def getInfo(place_id):
     url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (
-        urllib.quote_plus(place_id), urllib.quote_plus(placesAPI))
+        urllib.quote_plus(place_id), urllib.quote_plus(apikey))
     response = StringIO.StringIO()
     c = pycurl.Curl()
     c.setopt(c.URL, url)
@@ -51,6 +53,16 @@ def getInfo(place_id):
     return info
 
 
+def getLocation():
+    # Automatically geolocate the connecting IP
+    f = urllib2.urlopen('http://freegeoip.net/json/')
+    json_string = f.read()
+    f.close()
+    location = json.loads(json_string)
+    print(location)
+
+
+getLocation()
 # takes in location and pulls data from getPlaces and getInfo
 location = sys.argv[1]
 places = getPlaces(location)
@@ -63,4 +75,4 @@ for place in tmp:
     # store website url
     tmp_web = info.get('result').get('website')
 
-#todo scrape tmp_web sites for keywords
+    # todo scrape tmp_web sites for keywords

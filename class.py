@@ -7,14 +7,17 @@ import urllib
 import mysql.connector
 import sys
 
-# google API key
-apikey = config.apikey
+# google places API key
+placesAPI = config.placesAPI
+
+#google geolocation API key
+geoAPI = config.geoAPI
 
 
 # gets restaurants from a given location
 def getPlaces(location):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&type=restaurant&key=%s" % (
-        urllib.quote_plus(location), urllib.quote_plus(apikey))
+        urllib.quote_plus(location), urllib.quote_plus(placesAPI))
     response = StringIO.StringIO()
     c = pycurl.Curl()
     c.setopt(c.URL, url)
@@ -34,7 +37,7 @@ def getPlaces(location):
 # gets additional info on the given place_id
 def getInfo(place_id):
     url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (
-        urllib.quote_plus(place_id), urllib.quote_plus(apikey))
+        urllib.quote_plus(place_id), urllib.quote_plus(placesAPI))
     response = StringIO.StringIO()
     c = pycurl.Curl()
     c.setopt(c.URL, url)

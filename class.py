@@ -1,19 +1,12 @@
-import pg
 import config
 import json
 import pycurl
 import StringIO
 import urllib
-import urllib2
-import mysql.connector
 import sys
 
 # google API key
 apikey = config.apikey
-
-
-# google geolocation API key
-# geoAPI = config.geoAPI
 
 
 # gets restaurants from a given location
@@ -30,7 +23,7 @@ def getPlaces(location):
     c.close()
     places = json.loads(response.getvalue())
     response.close()
-    print places
+    return places
 
 
 # sample location, Heights Houston
@@ -53,16 +46,6 @@ def getInfo(place_id):
     return info
 
 
-def getLocation():
-    # Automatically geolocate the connecting IP
-    f = urllib2.urlopen('http://freegeoip.net/json/')
-    json_string = f.read()
-    f.close()
-    location = json.loads(json_string)
-    print(location)
-
-
-getLocation()
 # takes in location and pulls data from getPlaces and getInfo
 location = sys.argv[1]
 places = getPlaces(location)

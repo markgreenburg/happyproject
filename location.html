@@ -6,25 +6,26 @@
 </head>
 <body>
 <script>
-{#    sets options for query#}
+    //sets options to query
     var options = {
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0
     };
-{#    gets geolocation info on the user#}
+    //gets geolocation info on the user
     function success(pos) {
         var crd = pos.coords;
         var lat = crd.latitude;
         var lng = crd.longitude;
+        //accuracy in meters
         var acc = crd.accuracy;
-        console.log(lat);
+        console.log(crd)
     }
-{#    error handling#}
+    //error handling
     function error(err) {
         console.warn(`ERROR(${err.code}): ${err.message}`);
     }
-{#    calls functions#}
+    //calls functions
     navigator.geolocation.getCurrentPosition(success, error, options);
 
 

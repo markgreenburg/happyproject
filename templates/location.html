@@ -73,6 +73,15 @@
                     'Error: The Geolocation service failed.' :
                     'Error: Your browser doesn\'t support geolocation.');
             }
+            window.eqfeed_callback = function (results) {
+                for (var i = 0; i < results.features.length; i++) {
+                    var latLng = new google.maps.LatLng(coords[1], coords[0]);
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map
+                    });
+                {% endfor %}
+            }
         </script>
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key={{ apikey }}&callback=initMap">

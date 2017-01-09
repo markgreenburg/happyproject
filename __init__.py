@@ -27,11 +27,10 @@ def location():
     user = User()
     lat = json.loads(request.args.get('lat'))
     lng = json.loads(request.args.get('lng'))
-
     user.location = str(lat) + ',' + str(lng)
-    user.getPlaces()
+    placeList = user.getPlaces()
 
-    return render_template('location.html', apikey=config.apikey)
+    return render_template('location.html', placeList=placeList, apikey=config.apikey)
 
 
 if __name__ == "__main__":

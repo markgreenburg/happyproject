@@ -36,15 +36,17 @@ class User:
             # placeList.append([place][0].get('place_id'))
             p = Place(placeId)
             placeList.append(p)
-        length = len(placeList)
-        for i in range(length):
-            print "*******************************"
-            print placeList[i].website
-            print placeList[i].price_level
-            print placeList[i].rating
-            print placeList[i].name
-            print placeList[i].formatted_address
-            print placeList[i].formatted_phone_number
+        # length = len(placeList)
+        # for i in range(length):
+        #     print "*******************************"
+        #     print p.website
+        #     print p.price_level
+            # print placeList[i].rating
+            # print placeList[i].name
+            # print placeList[i].formatted_address
+            # print placeList[i].formatted_phone_number
+            # print placeList[i].lat
+            # print placeList[i].lng
         return placeList
 
 
@@ -63,8 +65,8 @@ class Place:
         c.close()
         info = json.loads(response.getvalue())
         response.close()
-        # lat = [place][0].get('geometry').get('location').get('lat')
-        # lng = [place][0].get('geometry').get('location').get('lng')
+        self.lat = str(info.get('result').get('geometry').get('location').get('lat'))
+        self.lng = str(info.get('result').get('geometry').get('location').get('lng'))
         self.website = str(info.get('result').get('website'))
         self.price_level = str(info.get('result').get('price_level'))
         self.rating = str(info.get('result').get('rating'))

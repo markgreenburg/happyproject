@@ -6,8 +6,7 @@
     <meta charset="utf-8">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="{{
-  url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
-    <link rel="stylesheet" href="">
+        url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
     <style>
         /* Always set the map height explicitly to define the size of the div
          * element that contains the map. */
@@ -30,11 +29,6 @@
         <script>
 
             function initMap() {
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 12
-                });
-                //  var infoWindow = new google.maps.InfoWindow({map: map});
-
                 // HTML5 geolocation.
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
@@ -51,11 +45,7 @@
                             $("#result").text(data.result);
                         });
 
-                        var marker = new google.maps.Marker({
-                            position: pos,
-                            map: map
-                        });
-                        map.setCenter(pos);
+
                     });
                     //function () {
                     //  handleLocationError(true, infowindow, map.getCenter());
@@ -73,15 +63,7 @@
                     'Error: The Geolocation service failed.' :
                     'Error: Your browser doesn\'t support geolocation.');
             }
-            window.eqfeed_callback = function (results) {
-                for (var i = 0; i < results.features.length; i++) {
-                    var latLng = new google.maps.LatLng(coords[1], coords[0]);
-                    var marker = new google.maps.Marker({
-                        position: latLng,
-                        map: map
-                    });
-                {% endfor %}
-            }
+
         </script>
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key={{ apikey }}&callback=initMap">

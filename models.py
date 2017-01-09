@@ -104,18 +104,7 @@ class Place(object):
         place_list = []
         for place in tmp:
             place_id = [place][0].get('place_id')
-            # place_list.append([place][0].get('place_id'))
             place_instance = Place(place_id)
             place_list.append(place_instance)
-        # length = len(place_list)
-        # for i in range(length):
-        #     print "*******************************"
-        #     print p.website
-        #     print p.price_level
-            # print place_list[i].rating
-            # print place_list[i].name
-            # print place_list[i].formatted_address
-            # print place_list[i].formatted_phone_number
-            # print place_list[i].lat
-            # print place_list[i].lng
+
         return place_list

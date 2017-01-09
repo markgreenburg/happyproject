@@ -25,11 +25,12 @@ def getMap():
 @app.route('/_location')
 def location():
     user = User()
-    user.lat = json.loads(request.args.get('lat'))
-    user.lng = json.loads(request.args.get('lng'))
+    lat = json.loads(request.args.get('lat'))
+    lng = json.loads(request.args.get('lng'))
+
+    user.location = str(lat) + ',' + str(lng)
     user.getPlaces()
-    # do some stuff
-    # user.location = {'latitude': lat, 'longitude': lng}
+
     return render_template('location.html', apikey=config.apikey)
 
 

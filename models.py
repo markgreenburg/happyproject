@@ -27,6 +27,10 @@ class Place(object):
     """
     def __init__(self, place_id):
         self.place_id = place_id
+
+        #####
+        # Curl to get place details from Google
+        #####
         url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (
             urllib.quote_plus(self.place_id), urllib.quote_plus(apikey))
         response = StringIO.StringIO()
@@ -48,11 +52,37 @@ class Place(object):
         self.formatted_phone_number = str(info.get('result').get('formatted_phone_number'))
         self.formatted_address = str(info.get('result').get('formatted_address'))
 
+        #####
+        # Curl to get Foursquare details
+        #####
+        url = ("https://api.foursquare.com/v2/venues/search?intent=match&ll=%s"
+               "&query=%s&client_id=%s&client_secret=%s" % \
+               (urllib.quote_plus(self.lat + ',' + self.lng), \
+                urllib.quote_plus(self.name), \
+                urllib.quote_plus(fs_client_id), \
+                urllib.quote_plus(fs_secret)
+               )
+              )
+        print 'printing fs query url:'
+        print url
+        response = StringIO.StringIO()
+        c = pycurl.Curl()
+        c.setopt(c.URL, url)
+        c.setopt(c.WRITEFUNCTION, response.write)
+        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
+        c.setopt(c.POSTFIELDS, '@request.json')
+        c.perform()
+        c.close()
+        info = json.loads(response.getvalue())
+        response.close()
+
+
     @staticmethod
     def get_places(coords, radius='1600'):
         """
-        Gets all places within a certain meter radius of a geo passed in as csv string.
-        Default radius is one mile in meters. Returns a list of place objects.
+        Gets all places within a certain meter radius of a geo passed in as csv
+        string. Default radius is one mile in meters. Returns a list of place
+        objects.
         """
         url = ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
                "location=%s&radius=%s&type=restaurant&key=%s" % \

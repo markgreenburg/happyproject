@@ -49,14 +49,15 @@ class Place(object):
         self.formatted_address = str(info.get('result').get('formatted_address'))
 
     @staticmethod
-    def get_places(coords):
+    def get_places(coords, radius='16093'):
         """
         Gets all places within a 10 mile radius of a geo passed in as csv string.
         Returns a list of place objects.
         """
         url = ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
-               "location=%s&radius=16093&type=restaurant&key=%s" % \
-                (urllib.quote_plus(coords), urllib.quote_plus(apikey))
+               "location=%s&radius=%s&type=restaurant&key=%s" % \
+                (urllib.quote_plus(coords), urllib.quote_plus(radius), \
+                 urllib.quote_plus(apikey))
               )
         response = StringIO.StringIO()
         c = pycurl.Curl()

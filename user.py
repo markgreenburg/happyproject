@@ -7,7 +7,9 @@ import sys
 from flask import Flask
 
 # google API key
-apikey = config.apikey
+apikey = config.G_API_KEY
+fs_client_id = config.FS_CLIENT_ID
+fs_secret = config.FS_CLIENT_SECRET
 
 
 # gets restaurants from a given location

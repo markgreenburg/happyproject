@@ -51,8 +51,7 @@ class User:
         response.close()
         return self.info
 
-
-# takes in location and pulls data from getPlaces and getInfo
+    # takes in location and pulls data from getPlaces and getInfo
     def getURL(self, loc):
         self.location = str(loc['latitude']) + ',' + str(loc['longitude'])
         print self.location
@@ -65,6 +64,6 @@ class User:
             info = User.getInfo(self)
             # store website url
             tmp_web = info.get('result').get('website')
-            print tmp_web¯
+            print tmp_web
 
-        # todo scrape tmp_web sites for keywords
+            # todo scrape tmp_web sites for keywords

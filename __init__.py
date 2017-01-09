@@ -9,6 +9,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, M
 import sys
 from user import *
 import json
+import requests
 
 reload(sys)
 sys.setdefaultencoding('utf8')

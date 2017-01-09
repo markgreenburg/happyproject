@@ -49,10 +49,10 @@ class Place(object):
         self.formatted_address = str(info.get('result').get('formatted_address'))
 
     @staticmethod
-    def get_places(coords, radius='16093'):
+    def get_places(coords, radius='1600'):
         """
-        Gets all places within a 10 mile radius of a geo passed in as csv string.
-        Returns a list of place objects.
+        Gets all places within a certain meter radius of a geo passed in as csv string.
+        Default radius is one mile in meters. Returns a list of place objects.
         """
         url = ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
                "location=%s&radius=%s&type=restaurant&key=%s" % \

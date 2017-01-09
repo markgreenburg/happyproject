@@ -41,29 +41,51 @@ class Place(object):
         c.setopt(c.POSTFIELDS, '@request.json')
         c.perform()
         c.close()
-        info = json.loads(response.getvalue())
+        g_place_deets = json.loads(response.getvalue())
         response.close()
-        self.lat = str(info.get('result').get('geometry').get('location').get('lat'))
-        self.lng = str(info.get('result').get('geometry').get('location').get('lng'))
-        self.website = str(info.get('result').get('website'))
-        self.price_level = str(info.get('result').get('price_level'))
-        self.rating = str(info.get('result').get('rating'))
-        self.name = str(info.get('result').get('name'))
-        self.formatted_phone_number = str(info.get('result').get('formatted_phone_number'))
-        self.formatted_address = str(info.get('result').get('formatted_address'))
+        self.lat = str(g_place_deets.get('result').get('geometry').get('location').get('lat'))
+        self.lng = str(g_place_deets.get('result').get('geometry').get('location').get('lng'))
+        self.website = str(g_place_deets.get('result').get('website'))
+        self.price_level = str(g_place_deets.get('result').get('price_level'))
+        self.rating = str(g_place_deets.get('result').get('rating'))
+        self.name = str(g_place_deets.get('result').get('name'))
+        self.formatted_phone_number = str(g_place_deets.get('result').get('formatted_phone_number'))
+        self.formatted_address = str(g_place_deets.get('result').get('formatted_address'))
 
         #####
-        # Curl to get Foursquare details
+        # Curl to get Foursquare venue ID
         #####
         url = ("https://api.foursquare.com/v2/venues/search?intent=match&ll=%s"
-               "&query=%s&client_id=%s&client_secret=%s" % \
+               "&query=%s&client_id=%s&client_secret=%s&v=20170109" % \
                (urllib.quote_plus(self.lat + ',' + self.lng), \
                 urllib.quote_plus(self.name), \
                 urllib.quote_plus(fs_client_id), \
                 urllib.quote_plus(fs_secret)
                )
               )
-        print 'printing fs query url:'
+        response = StringIO.StringIO()
+        c = pycurl.Curl()
+        c.setopt(c.URL, url)
+        c.setopt(c.WRITEFUNCTION, response.write)
+        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
+        c.setopt(c.POSTFIELDS, '@request.json')
+        c.perform()
+        c.close()
+        fs_venue_search = json.loads(response.getvalue())
+        response.close()
+        self.fs_venue_id = str(fs_venue_search.get('response').get('venues')[0]\
+                           .get('id'))
+
+        #####
+        # Curl to get Foursquare happy hour menu description
+        #####
+        url = ("https://api.foursquare.com/v2/venues/%s&client_id=%s&client_"
+               "secret=%s&v=20170109" % \
+               (urllib.quote_plus(self.fs_venue_id), \
+                urllib.quote_plus(fs_client_id), \
+                urllib.quote_plus(fs_secret)
+               )
+              )
         print url
         response = StringIO.StringIO()
         c = pycurl.Curl()
@@ -73,8 +95,10 @@ class Place(object):
         c.setopt(c.POSTFIELDS, '@request.json')
         c.perform()
         c.close()
-        info = json.loads(response.getvalue())
+        fs_venue_deets = json.loads(response.getvalue())
         response.close()
+        # self.fs_venue_id = str(fs_venue_search.get('response').get('venues')[0].get('id'))
+        print fs_venue_deets
 
 
     @staticmethod

@@ -9,6 +9,7 @@ from flask import Flask
 # google API key
 apikey = config.apikey
 
+# testing merge
 
 # gets restaurants from a given location
 class User:
@@ -19,7 +20,7 @@ class User:
         self.urls = []
 
     def getPlaces(self):
-        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&type=restaurant&key=%s" % (
+        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&type=restaurant|bar&key=%s" % (
             urllib.quote_plus(self.location), urllib.quote_plus(apikey))
         response = StringIO.StringIO()
         c = pycurl.Curl()

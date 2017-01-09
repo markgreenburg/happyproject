@@ -9,6 +9,7 @@ from flask import Flask
 # google API key
 apikey = config.apikey
 
+# testing merge
 
 # gets restaurants from a given location
 class User:

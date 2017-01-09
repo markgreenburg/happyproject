@@ -60,6 +60,8 @@ class User:
         for place in tmp:
             # stores place_id from query
             self.place_id = [place][0].get('place_id')
+            self.lat = [place][0].get('geometry').get('location').get('lat')
+            self.lng = [place][0].get('geometry').get('location').get('lng')
             # runs query to get additional info from the place_id
             info = User.getInfo(self)
             # store website url

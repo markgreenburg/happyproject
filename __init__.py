@@ -7,11 +7,17 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 import os
 from flask import Flask, render_template, request, redirect, url_for, session, Markup
 import sys
+from user import *
 
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
+
+@app.route('/')
+def getMap():
+    # user = User()
+    return render_template('location.html', apikey = config.apikey)
 
 if __name__ == "__main__":
     app.run()

@@ -16,6 +16,7 @@ class User:
         self.location = {}
         self.place_id = ''
         self.loc = {}
+        self.urls = []
 
     def getPlaces(self):
         url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&type=restaurant&key=%s" % (
@@ -65,7 +66,9 @@ class User:
             # runs query to get additional info from the place_id
             info = User.getInfo(self)
             # store website url
-            tmp_web = info.get('result').get('website')
-            print tmp_web
+            tmp_web = str(info.get('result').get('website'))
+            # stores urls into a list
+            self.urls.append(tmp_web)
+        print self.urls
 
             # todo scrape tmp_web sites for keywords

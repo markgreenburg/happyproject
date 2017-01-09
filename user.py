@@ -65,6 +65,6 @@ class User:
             info = User.getInfo(self)
             # store website url
             tmp_web = info.get('result').get('website')
-            print tmp_web
+            print tmp_web¯
 
         # todo scrape tmp_web sites for keywords

@@ -32,10 +32,12 @@ class User:
         c.close()
         places = json.loads(response.getvalue())
         response.close()
+        # tmp = places.get('results')
         placeList = []
         for place in places:
             # stores place_id from query
             placeId = [place][0].get('place_id')
+            print placeId
             p = Place(placeId)
             placeList.append(p)
         print placeList

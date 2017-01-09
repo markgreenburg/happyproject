@@ -14,13 +14,12 @@ apikey = config.apikey
 # gets restaurants from a given location
 class User:
     def __init__(self):
-        self.location = {}
-        self.place_id = ''
-        self.loc = {}
-        self.urls = []
+        self.lat=''
+        self.lng=''
+        self.location = str(self.lat) + ',' + str(self.lng)
 
     def getPlaces(self):
-        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&type=restaurant|bar&key=%s" % (
+        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&type=restaurant|type=bar&key=%s" % (
             urllib.quote_plus(self.location), urllib.quote_plus(apikey))
         response = StringIO.StringIO()
         c = pycurl.Curl()
@@ -30,17 +29,17 @@ class User:
         c.setopt(c.POSTFIELDS, '@request.json')
         c.perform()
         c.close()
-        self.places = json.loads(response.getvalue())
+        places = json.loads(response.getvalue())
         response.close()
-        return self.places
+        return places
 
     # sample location, Heights Houston
     # getPlaces('29.799592,-95.420138')
     #
     # gets additional info on the given place_id
-    def getInfo(self):
+    def getInfo(self, loc):
         url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (
-            urllib.quote_plus(self.place_id), urllib.quote_plus(apikey))
+            urllib.quote_plus(loc), urllib.quote_plus(apikey))
         response = StringIO.StringIO()
         c = pycurl.Curl()
         c.setopt(c.URL, url)
@@ -49,27 +48,29 @@ class User:
         c.setopt(c.POSTFIELDS, '@request.json')
         c.perform()
         c.close()
-        self.info = json.loads(response.getvalue())
+        info = json.loads(response.getvalue())
         response.close()
-        return self.info
+        return info
 
     # takes in location and pulls data from getPlaces and getInfo
-    def getURL(self, loc):
-        self.location = str(loc['latitude']) + ',' + str(loc['longitude'])
+    def getURL(self):
+        self.location = str(self.lat) + ',' + str(self.lng)
         print self.location
         places = User.getPlaces(self)
         tmp = places.get('results')
+        urls = []
         for place in tmp:
             # stores place_id from query
-            self.place_id = [place][0].get('place_id')
-            self.lat = [place][0].get('geometry').get('location').get('lat')
-            self.lng = [place][0].get('geometry').get('location').get('lng')
+            placeList = []
+            placeList.append([place][0].get('place_id'))
+            lat = [place][0].get('geometry').get('location').get('lat')
+            lng = [place][0].get('geometry').get('location').get('lng')
             # runs query to get additional info from the place_id
-            info = User.getInfo(self)
+            info = User.getInfo(self, [place][0].get('place_id'))
             # store website url
             tmp_web = str(info.get('result').get('website'))
             # stores urls into a list
-            self.urls.append(tmp_web)
-        print self.urls
+            urls.append(tmp_web)
+        print urls
 
             # todo scrape tmp_web sites for keywords

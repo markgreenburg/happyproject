@@ -29,7 +29,6 @@ def location():
     user.lng = json.loads(request.args.get('lng'))
     # do some stuff
     # user.location = {'latitude': lat, 'longitude': lng}
-    user.getURL()
     return render_template('location.html', apikey=config.apikey)
 
 

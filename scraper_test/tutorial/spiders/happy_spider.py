@@ -1,8 +1,8 @@
 """
 Spider class module for finding Ra Sushi's happy hour times by day of week.
 """
-# to run via Bash: scrapy crawl happy -o happy.json. Make sure to install 
-# scrapy first. saves output as json but make sure to delete old json file 
+# to run via Bash: scrapy crawl happy -o happy.json. Make sure to install
+# scrapy first. saves output as json but make sure to delete old json file
 # first.
 
 # framework for scraping

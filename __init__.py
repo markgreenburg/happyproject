@@ -46,6 +46,14 @@ def display():
     # place_list = Place.get_places(location)
     user = User()
     user.location = str(session.get('lat', 0)) + ',' + str(session.get('lng', 0))
+    # mark's hood:
+    # place_list = Place.get_places('29.832263,-95.441000')
+    # start houston:
+    # place_list = Place.get_places('29.746298,-95.350487')
+    # Ra Sushi:
+    # place_list = Place.get_places('29.742074,-95.443547','32000')
+    # Dynamic
+    place_list = Place.get_places(user.location, '32000')
     return render_template(
         "display.html",apikey=apikey,latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
 

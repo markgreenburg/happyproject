@@ -103,13 +103,16 @@ class Place(object):
         self.happy_string = ''
         if int(fs_venue_deets.get('response').get('menu').get('menus').get('count')) > 0:
             for menu in fs_venue_deets.get('response').get('menu').get('menus').get('items'):
+                print 'menu is:'
+                print menu
                 print 'menu name:'
-                print menu['name'].lower()
-                print 'menu desc:'
-                print menu['description'].lower() in 'happy hour'
-                if menu['name'].lower() in 'happy hour' or menu['description']\
-                .lower() in 'happy hour':
-                    self.happy_string = (menu['description']).lower()
+                print str(menu['name']).lower()
+                if 'description' in menu:
+                    print menu['description'].lower()
+                    if 'happy hour' in str(menu['name']).lower() or \
+                    'happy hour' in str(menu['description']).lower():
+                        if menu['description'].lower():
+                            self.happy_string = (menu['description']).lower()
         print 'happy string for this venue is:'
         print self.happy_string
 

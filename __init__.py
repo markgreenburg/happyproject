@@ -16,7 +16,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
-
+app.secret_key = 'secret'
 apikey = config.G_API_KEY
 fs_client_id = config.FS_CLIENT_ID
 fs_secret = config.FS_CLIENT_SECRET
@@ -34,29 +34,24 @@ def location():
     gets a list of places based on a 10 mile radius from user's location
     """
     user = User()
-    lat = json.loads(request.args.get('lat'))
-    lng = json.loads(request.args.get('lng'))
-    print lat
-    print lng
-    user.location = str(lat) + ',' + str(lng)
+    session['lat'] = json.loads(request.args.get('lat'))
+    session['lng'] = json.loads(request.args.get('lng'))
+    print session.get('lat',0)
+    print session.get('lng', 0)
+    user.location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
 
-    return redirect(url_for('display', latlng=user.location))
+    return redirect(url_for('display'))
 
-@app.route('/location/<latlng>')
-def display(latlng):
+@app.route('/display')
+def display():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-    # lat = request.args.get('lat')
-    # lng = request.args.get('lng')
-
-    print 'display'
-    # location = str(lat) + ',' + str(lng)
+    # location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
     # place_list = Place.get_places(location)
 
     return render_template(
-        "display.html",
-        latlng=latlng, apikey=apikey)
+        "display.html",apikey=apikey,latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
 
 if __name__ == "__main__":
-    app.run()
+    app.run(threaded=True)

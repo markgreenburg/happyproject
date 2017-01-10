@@ -53,8 +53,8 @@ class Place(object):
         fs_venue_search = ApiConnect.get_load(url)
         print 'venue_id is:'
         if len(fs_venue_search.get('response').get('venues')) > 0:
-            self.fs_venue_id = str(fs_venue_search.get('response').get('venues')[0]\
-                               .get('id'))
+            self.fs_venue_id = str(fs_venue_search.get('response').\
+            get('venues')[0].get('id', '0'))
         else:
             self.fs_venue_id = '0'
         print self.fs_venue_id
@@ -80,6 +80,7 @@ class Place(object):
             if 'happy hour' in str(menu.get('name', '')).lower() or \
             'happy hour' in str(menu.get('description', '')).lower():
                 self.happy_string = menu.get('description').lower()
+                break
         print '***********************************************************'
         print 'happy string for this venue is:'
         print self.happy_string

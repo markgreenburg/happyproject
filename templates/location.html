@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js" lang="en">
 <head>
     <title>App</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -27,46 +27,33 @@
 
     <form method="get">
         <script>
+            // HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
 
-            function initMap() {
-                // HTML5 geolocation.
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        var pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-
-                        $.getJSON('/_location', {
-                            lat: JSON.stringify(pos.lat),
-                            lng: JSON.stringify(pos.lng)
-                        }, function (data) {
-                            console.log(data.result);
-                            $("#result").text(data.result);
-                        });
-
-
+                    $.getJSON('/_location', {
+                        lat: JSON.stringify(pos.lat),
+                        lng: JSON.stringify(pos.lng)
+                    }, function (data) {
+                        console.log(data.result);
+                        $("#result").text(data.result);
                     });
-                    //function () {
-                    //  handleLocationError(true, infowindow, map.getCenter());
-                    //  });
-                }
+                    // Sets the location of the current window itself.
+                    //window.location.href = '/lat=' + pos.lat + '?' + 'lng=' + pos.lng;
+
+                });
+                //function () {
+                //  handleLocationError(true, infowindow, map.getCenter());
+                //  });
                 //else {
                 //   // Browser doesn't support Geolocation
                 //   handleLocationError(false, infoWindow, map.getCenter());
                 // }
             }
-
-            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-                infoWindow.setPosition(pos);
-                infoWindow.setContent(browserHasGeolocation ?
-                    'Error: The Geolocation service failed.' :
-                    'Error: Your browser doesn\'t support geolocation.');
-            }
-
-        </script>
-        <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key={{ apikey }}&callback=initMap">
         </script>
     </form>
 {% endblock %}

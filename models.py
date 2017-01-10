@@ -28,20 +28,10 @@ class Place(object):
     def __init__(self, place_id):
         self.place_id = place_id
 
-        #####
         # Curl to get place details from Google
-        #####
         url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (
             urllib.quote_plus(self.place_id), urllib.quote_plus(apikey))
-        response = StringIO.StringIO()
-        c = pycurl.Curl()
-        c.setopt(c.URL, url)
-        c.setopt(c.WRITEFUNCTION, response.write)
-        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
-        c.perform()
-        c.close()
-        g_place_deets = json.loads(response.getvalue())
-        response.close()
+        g_place_deets = ApiConnect.get_load(url)
         self.lat = str(g_place_deets.get('result').get('geometry').get('location').get('lat'))
         self.lng = str(g_place_deets.get('result').get('geometry').get('location').get('lng'))
         self.website = str(g_place_deets.get('result').get('website'))
@@ -51,9 +41,7 @@ class Place(object):
         self.formatted_phone_number = str(g_place_deets.get('result').get('formatted_phone_number'))
         self.formatted_address = str(g_place_deets.get('result').get('formatted_address'))
 
-        #####
         # Curl to get Foursquare venue ID
-        #####
         url = ("https://api.foursquare.com/v2/venues/search?intent=match&ll=%s"
                "&query=%s&client_id=%s&client_secret=%s&v=20170109" % \
                (urllib.quote_plus(self.lat + ',' + self.lng), \
@@ -62,16 +50,7 @@ class Place(object):
                 urllib.quote_plus(fs_secret)
                )
               )
-        response = StringIO.StringIO()
-        c = pycurl.Curl()
-        c.setopt(c.URL, url)
-        c.setopt(c.WRITEFUNCTION, response.write)
-        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
-        c.perform()
-        c.close()
-        fs_venue_search = json.loads(response.getvalue())
-        # {u'meta': {u'code': 200, u'requestId': u'587456b9f594df2a2be482ec'}, u'response': {u'venues': []}}
-        response.close()
+        fs_venue_search = ApiConnect.get_load(url)
         print 'venue_id is:'
         if len(fs_venue_search.get('response').get('venues')) > 0:
             self.fs_venue_id = str(fs_venue_search.get('response').get('venues')[0]\
@@ -79,9 +58,7 @@ class Place(object):
         else:
             self.fs_venue_id = '0'
         print self.fs_venue_id
-        #####
         # Curl to get Foursquare happy hour menu description
-        #####
         url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
                "secret=%s&v=20170109" % \
                (urllib.quote_plus(self.fs_venue_id), \
@@ -89,32 +66,29 @@ class Place(object):
                 urllib.quote_plus(fs_secret)
                )
               )
-        response = StringIO.StringIO()
-        c = pycurl.Curl()
-        c.setopt(c.URL, url)
-        c.setopt(c.WRITEFUNCTION, response.write)
-        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
-        c.perform()
-        c.close()
-        fs_venue_deets = json.loads(response.getvalue())
-        response.close()
+        fs_venue_deets = ApiConnect.get_load(url)
         print 'menu count is:'
         print int(fs_venue_deets.get('response').get('menu').get('menus').get('count'))
         self.happy_string = ''
-        if int(fs_venue_deets.get('response').get('menu').get('menus').get('count')) > 0:
-            for menu in fs_venue_deets.get('response').get('menu').get('menus').get('items'):
-                print 'menu is:'
-                print menu
-                print 'menu name:'
-                print str(menu['name']).lower()
-                if 'description' in menu:
-                    print menu['description'].lower()
-                    if 'happy hour' in str(menu['name']).lower() or \
-                    'happy hour' in str(menu['description']).lower():
-                        if menu['description'].lower():
-                            self.happy_string = (menu['description']).lower()
+        for menu in fs_venue_deets.get('response').get('menu').get('menus')\
+        .get('items', [{'name': '', 'description': ''}]):
+            print '***********************************************************'
+            print 'menu name:'
+            print str(menu.get('name', '')).lower()
+            print 'menu desc:'
+            print str(menu.get('description', '')).lower()
+            if 'happy hour' in str(menu.get('name', '')).lower() or \
+            'happy hour' in str(menu.get('description', '')).lower():
+                self.happy_string = menu.get('description').lower()
+        print '***********************************************************'
         print 'happy string for this venue is:'
         print self.happy_string
+        print '***********************************************************'
+        print '***********************************************************'
+        print ''
+        print ''
+        print '*****************...PRINTING NEXT VENUE...*****************'
+        print '***********************************************************'
 
     @staticmethod
     def get_places(coords, radius='1600'):
@@ -133,7 +107,7 @@ class Place(object):
         c.setopt(c.URL, url)
         c.setopt(c.WRITEFUNCTION, response.write)
         c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
-        c.setopt(c.POSTFIELDS, '@request.json')
+        # c.setopt(c.POSTFIELDS, '@request.json')
         c.perform()
         c.close()
         query = json.loads(response.getvalue())
@@ -146,3 +120,25 @@ class Place(object):
             place_instance = Place(place_id)
             place_list.append(place_instance)
         return place_list
+
+class ApiConnect(object):
+    """
+    Holds Curl procedures to get info from our API partners
+    """
+    @staticmethod
+    def get_load(api_call):
+        """
+        Performs Curl with PyCurl using the GET method. Opens/closes each conn.
+        Args: Full URL for the API call
+        Returns: getvalue of JSON load from API
+        """
+        response = StringIO.StringIO()
+        c = pycurl.Curl()
+        c.setopt(c.URL, api_call)
+        c.setopt(c.WRITEFUNCTION, response.write)
+        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
+        c.perform()
+        c.close()
+        json_values = json.loads(response.getvalue())
+        response.close()
+        return json_values

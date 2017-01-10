@@ -37,7 +37,6 @@ def location():
     lat = json.loads(request.args.get('lat'))
     lng = json.loads(request.args.get('lng'))
     user.location = str(lat) + ',' + str(lng)
-
     return redirect(url_for('display',lat=lat, lng=lng))
 
 @app.route('/show_place_list')
@@ -45,11 +44,10 @@ def display():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-    lat=request.args['lat']
-    lng=request.args['lng']
+    lat = request.args['lat']
+    lng = request.args['lng']
     location = str(lat) + ',' + str(lng)
-    #place_list = Place.get_places(location)
-    place_list = Place.get_places('29.742023,-95.444408')
+    place_list = Place.get_places(location)
     return render_template('display.html')
 
 if __name__ == "__main__":

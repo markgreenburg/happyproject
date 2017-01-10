@@ -55,7 +55,7 @@ def display():
     # Dynamic
     place_list = Place.get_places(user.location, '32000')
     return render_template(
-        "display.html",apikey=apikey,latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
+        "display.html",apikey=apikey,place_list=place_list, latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
 
 if __name__ == "__main__":
     app.run(threaded=True)

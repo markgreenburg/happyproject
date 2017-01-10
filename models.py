@@ -51,13 +51,11 @@ class Place(object):
                )
               )
         fs_venue_search = ApiConnect.get_load(url)
-        print 'venue_id is:'
         if len(fs_venue_search.get('response').get('venues')) > 0:
-            self.fs_venue_id = str(fs_venue_search.get('response').get('venues')[0]\
-                               .get('id'))
+            self.fs_venue_id = str(fs_venue_search.get('response').\
+            get('venues')[0].get('id', '0'))
         else:
             self.fs_venue_id = '0'
-        print self.fs_venue_id
         # Curl to get Foursquare happy hour menu description
         url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
                "secret=%s&v=20170109" % \
@@ -67,28 +65,16 @@ class Place(object):
                )
               )
         fs_venue_deets = ApiConnect.get_load(url)
-        print 'menu count is:'
-        print int(fs_venue_deets.get('response').get('menu').get('menus').get('count'))
         self.happy_string = ''
         for menu in fs_venue_deets.get('response').get('menu').get('menus')\
         .get('items', [{'name': '', 'description': ''}]):
-            # print '***********************************************************'
-            # print 'menu name:'
-            # print str(menu.get('name', '')).lower()
-            # print 'menu desc:'
-            # print str(menu.get('description', '')).lower()
             if 'happy hour' in str(menu.get('name', '')).lower() or \
             'happy hour' in str(menu.get('description', '')).lower():
                 self.happy_string = menu.get('description').lower()
-        # print '***********************************************************'
-        # print 'happy string for this venue is:'
-        # print self.happy_string
-        # print '***********************************************************'
-        # print '***********************************************************'
-        # print ''
-        # print ''
-        # print '*****************...PRINTING NEXT VENUE...*****************'
-        # print '***********************************************************'
+                break
+        print 'name: %s' % self.name
+        print 'happy_string:'
+        print '---> %s' % self.happy_string
 
     @staticmethod
     def get_places(coords, radius='1600'):
@@ -99,9 +85,12 @@ class Place(object):
         """
         url = ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
                "location=%s&radius=%s&type=restaurant&key=%s" % \
-                (urllib.quote_plus(coords), urllib.quote_plus(radius), \
+                # (urllib.quote_plus(coords), urllib.quote_plus(radius), \
+                #  urllib.quote_plus(apikey))
+                (coords, urllib.quote_plus(radius), \
                  urllib.quote_plus(apikey))
               )
+        print url
         response = StringIO.StringIO()
         c = pycurl.Curl()
         c.setopt(c.URL, url)

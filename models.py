@@ -53,8 +53,8 @@ class Place(object):
         fs_venue_search = ApiConnect.get_load(url)
         print 'venue_id is:'
         if len(fs_venue_search.get('response').get('venues')) > 0:
-            self.fs_venue_id = str(fs_venue_search.get('response').\
-            get('venues')[0].get('id', '0'))
+            self.fs_venue_id = str(fs_venue_search.get('response').get('venues')[0]\
+                               .get('id'))
         else:
             self.fs_venue_id = '0'
         print self.fs_venue_id
@@ -72,24 +72,23 @@ class Place(object):
         self.happy_string = ''
         for menu in fs_venue_deets.get('response').get('menu').get('menus')\
         .get('items', [{'name': '', 'description': ''}]):
-            print '***********************************************************'
-            print 'menu name:'
-            print str(menu.get('name', '')).lower()
-            print 'menu desc:'
-            print str(menu.get('description', '')).lower()
+            # print '***********************************************************'
+            # print 'menu name:'
+            # print str(menu.get('name', '')).lower()
+            # print 'menu desc:'
+            # print str(menu.get('description', '')).lower()
             if 'happy hour' in str(menu.get('name', '')).lower() or \
             'happy hour' in str(menu.get('description', '')).lower():
                 self.happy_string = menu.get('description').lower()
-                break
-        print '***********************************************************'
-        print 'happy string for this venue is:'
-        print self.happy_string
-        print '***********************************************************'
-        print '***********************************************************'
-        print ''
-        print ''
-        print '*****************...PRINTING NEXT VENUE...*****************'
-        print '***********************************************************'
+        # print '***********************************************************'
+        # print 'happy string for this venue is:'
+        # print self.happy_string
+        # print '***********************************************************'
+        # print '***********************************************************'
+        # print ''
+        # print ''
+        # print '*****************...PRINTING NEXT VENUE...*****************'
+        # print '***********************************************************'
 
     @staticmethod
     def get_places(coords, radius='1600'):

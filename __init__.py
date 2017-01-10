@@ -42,12 +42,13 @@ def display():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-    # location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
-    # place_list = Place.get_places(location)
     user = User()
     user.location = str(session.get('lat', 0)) + ',' + str(session.get('lng', 0))
+    place_list = Place.get_places(user.location)
+    print type(place_list)
+    print place_list
     return render_template(
-        "display.html",apikey=apikey,latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
+        "display.html",apikey=apikey,place_list=place_list, latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
 
 if __name__ == "__main__":
     app.run(threaded=True)

@@ -26,6 +26,7 @@ def get_map():
     """
     Homepage route - shows Google Map using the user's location
     """
+    print 'rendering map template...'
     return render_template('location.html', apikey=apikey)
 
 @app.route('/_location')
@@ -48,8 +49,8 @@ def display():
     lat=request.args['lat']
     lng=request.args['lng']
     location = str(lat) + ',' + str(lng)
-    place_list = Place.get_places(location)
-
+    #place_list = Place.get_places(location)
+    place_list = Place.get_places('29.746036,-95.350339')
     return render_template('display.html')
 
 if __name__ == "__main__":

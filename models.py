@@ -38,7 +38,6 @@ class Place(object):
         c.setopt(c.URL, url)
         c.setopt(c.WRITEFUNCTION, response.write)
         c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
-        c.setopt(c.POSTFIELDS, '@request.json')
         c.perform()
         c.close()
         g_place_deets = json.loads(response.getvalue())
@@ -68,38 +67,51 @@ class Place(object):
         c.setopt(c.URL, url)
         c.setopt(c.WRITEFUNCTION, response.write)
         c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
-        c.setopt(c.POSTFIELDS, '@request.json')
         c.perform()
         c.close()
         fs_venue_search = json.loads(response.getvalue())
+        # {u'meta': {u'code': 200, u'requestId': u'587456b9f594df2a2be482ec'}, u'response': {u'venues': []}}
         response.close()
-        self.fs_venue_id = str(fs_venue_search.get('response').get('venues')[0]\
-                           .get('id'))
-
+        print 'venue_id is:'
+        if len(fs_venue_search.get('response').get('venues')) > 0:
+            self.fs_venue_id = str(fs_venue_search.get('response').get('venues')[0]\
+                               .get('id'))
+        else:
+            self.fs_venue_id = '0'
+        print self.fs_venue_id
         #####
         # Curl to get Foursquare happy hour menu description
         #####
-        url = ("https://api.foursquare.com/v2/venues/%s&client_id=%s&client_"
+        url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
                "secret=%s&v=20170109" % \
                (urllib.quote_plus(self.fs_venue_id), \
                 urllib.quote_plus(fs_client_id), \
                 urllib.quote_plus(fs_secret)
                )
               )
-        print url
         response = StringIO.StringIO()
         c = pycurl.Curl()
         c.setopt(c.URL, url)
         c.setopt(c.WRITEFUNCTION, response.write)
         c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
-        c.setopt(c.POSTFIELDS, '@request.json')
         c.perform()
         c.close()
         fs_venue_deets = json.loads(response.getvalue())
         response.close()
-        # self.fs_venue_id = str(fs_venue_search.get('response').get('venues')[0].get('id'))
-        print fs_venue_deets
-
+        print 'menu count is:'
+        print int(fs_venue_deets.get('response').get('menu').get('menus').get('count'))
+        self.happy_string = ''
+        if int(fs_venue_deets.get('response').get('menu').get('menus').get('count')) > 0:
+            for menu in fs_venue_deets.get('response').get('menu').get('menus').get('items'):
+                print 'menu name:'
+                print menu['name'].lower()
+                print 'menu desc:'
+                print menu['description'].lower() in 'happy hour'
+                if menu['name'].lower() in 'happy hour' or menu['description']\
+                .lower() in 'happy hour':
+                    self.happy_string = (menu['description']).lower()
+        print 'happy string for this venue is:'
+        print self.happy_string
 
     @staticmethod
     def get_places(coords, radius='1600'):
@@ -130,5 +142,4 @@ class Place(object):
             place_id = [place][0].get('place_id')
             place_instance = Place(place_id)
             place_list.append(place_instance)
-
         return place_list

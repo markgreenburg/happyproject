@@ -8,9 +8,9 @@ import pycurl
 import config
 
 # API Keys
-apikey = config.G_API_KEY
-fs_client_id = config.FS_CLIENT_ID
-fs_secret = config.FS_CLIENT_SECRET
+# apikey = config.G_API_KEY
+client_id = config.FS_CLIENT_ID
+secret = config.FS_CLIENT_SECRET
 
 # gets restaurants from a given location
 class User(object):
@@ -22,93 +22,91 @@ class User(object):
 
 class Place(object):
     """
-    Place superclass. Gets various detail attributes from Google Places and
-    Foursquare APIs using Curl
+    Place superclass. Gets various detail attributes from the Foursquare api
+    using Curl. Requires a Foursquare venue_id to construct.
     """
-    def __init__(self, place_id):
-        self.place_id = place_id
-
-        # Curl to get place details from Google
-        url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (
-            urllib.quote_plus(self.place_id), urllib.quote_plus(apikey))
-        g_place_deets = ApiConnect.get_load(url)
-        self.lat = str(g_place_deets.get('result').get('geometry').get('location').get('lat'))
-        self.lng = str(g_place_deets.get('result').get('geometry').get('location').get('lng'))
-        self.website = str(g_place_deets.get('result').get('website'))
-        self.price_level = str(g_place_deets.get('result').get('price_level'))
-        self.rating = str(g_place_deets.get('result').get('rating'))
-        self.name = str(g_place_deets.get('result').get('name'))
-        self.formatted_phone_number = str(g_place_deets.get('result').get('formatted_phone_number'))
-        self.formatted_address = str(g_place_deets.get('result').get('formatted_address'))
-
-        # Curl to get Foursquare venue ID
-        url = ("https://api.foursquare.com/v2/venues/search?intent=match&ll=%s"
-               "&query=%s&client_id=%s&client_secret=%s&v=20170109" % \
-               (urllib.quote_plus(self.lat + ',' + self.lng), \
-                urllib.quote_plus(self.name), \
-                urllib.quote_plus(fs_client_id), \
-                urllib.quote_plus(fs_secret)
-               )
-              )
-        fs_venue_search = ApiConnect.get_load(url)
-        if len(fs_venue_search.get('response').get('venues')) > 0:
-            self.fs_venue_id = str(fs_venue_search.get('response').\
-            get('venues')[0].get('id', '0'))
-        else:
-            self.fs_venue_id = '0'
-        # Curl to get Foursquare happy hour menu description
+    def __init__(self, venue_id):
+        self.venue_id = '4ad7a9f9f964a520760d21e3'
+        # Curl to get Foursquare Happy String
         url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
                "secret=%s&v=20170109" % \
-               (urllib.quote_plus(self.fs_venue_id), \
-                urllib.quote_plus(fs_client_id), \
-                urllib.quote_plus(fs_secret)
-               )
+               (self.venue_id, client_id, secret)
               )
-        fs_venue_deets = ApiConnect.get_load(url)
+        happy_strings = ApiConnect.get_load(url)
         self.happy_string = ''
-        for menu in fs_venue_deets.get('response').get('menu').get('menus')\
+        self.has_happy_hour = False
+        for menu in happy_strings.get('response').get('menu').get('menus')\
         .get('items', [{'name': '', 'description': ''}]):
             if 'happy hour' in str(menu.get('name', '')).lower() or \
             'happy hour' in str(menu.get('description', '')).lower():
                 self.happy_string = menu.get('description').lower()
+                self.has_happy_hour = True
                 break
-        print 'name: %s' % self.name
+        # Curl to get Foursquare venue details if venue has Happy Hour
+        if self.has_happy_hour:
+            url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
+                   "client_secret=%s&v=20170109" % \
+                   (self.venue_id, client_id, secret)
+                  )
+            venue_details = ApiConnect.get_load(url).get('response').get('venue')
+            self.name = venue_details.get('name', '')
+            self.lat = venue_details.get('location').get('lat', 0)
+            self.lng = venue_details.get('location').get('lng', 0)
+            self.website = venue_details.get('url', '')
+            self.price_level = venue_details.get('price').get('tier', 0)
+            self.rating = venue_details.get('rating', 0.0)
+            self.formatted_phone_number = venue_details.get('contact').get('formattedPhone', '')
+            self.formatted_address = str(venue_details.get('location').get('formattedAddress', ''))
+        else:
+            self.name = ''
+            self.lat = 0
+            self.lng = 0
+            self.website = ''
+            self.price_level = 0
+            self.rating = 0
+            self.formatted_phone_number = ''
+            self.formatted_address = ''
+
+        # Log to console to check returns of API calls
+        print '***************************************************************'
+        print 'venue_id: %s' % self.venue_id
+        print 'Has Happy Hour: %s' % self.has_happy_hour
         print 'happy_string:'
         print '---> %s' % self.happy_string
+        print 'name: %s' % self.name
+        print 'lat: %d' % self.lat
+        print 'lng: %d' % self.lng
+        print 'website: %s' % self.website
+        print 'price level: %d' % self.price_level
+        print 'rating: %d' % self.rating
+        print 'phone: %s' % self.formatted_phone_number
+        print 'address: %s' % self.formatted_address
+
 
     @staticmethod
     def get_places(coords, radius='1600'):
         """
-        Gets all places within a certain meter radius of a geo passed in as csv
-        string. Default radius is one mile in meters. Returns a list of place
-        objects.
+        Gets all places within a certain meter radius of a geo using FourSquare
+        Args: coords - comma-separated string in the format 'lat,long'
+              radius - string of meters, max 50000, def. 1600. Ex: '32000'
+        Returns: list of Place object instances
         """
-        url = ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
-               "location=%s&radius=%s&type=restaurant&key=%s" % \
-                # (urllib.quote_plus(coords), urllib.quote_plus(radius), \
-                #  urllib.quote_plus(apikey))
-                (coords, urllib.quote_plus(radius), \
-                 urllib.quote_plus(apikey))
+        nightlife_cat = '4d4b7105d754a06376d81259'
+        food_cat = '4d4b7105d754a06374d81259'
+
+        url = ("https://api.foursquare.com/v2/venues/search?intent=browse&ll="
+               "%s&radius=%s&categoryId=%s,%s&client_id=%s&client_secret=%s&v="
+               "20170109" % \
+               (coords, radius, nightlife_cat, food_cat, client_id, secret)
               )
         print url
-        response = StringIO.StringIO()
-        c = pycurl.Curl()
-        c.setopt(c.URL, url)
-        c.setopt(c.WRITEFUNCTION, response.write)
-        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
-        # c.setopt(c.POSTFIELDS, '@request.json')
-        c.perform()
-        c.close()
-        query = json.loads(response.getvalue())
-        response.close()
-        places = query
-        tmp = places.get('results')
-        place_list = []
-        for place in tmp:
-            place_id = [place][0].get('place_id')
-            place_instance = Place(place_id)
-            place_list.append(place_instance)
-        return place_list
+        venue_dict_list = ApiConnect.get_load(url).get('response').get('venues')
+        place_object_list = []
+        for venue in venue_dict_list:
+            venue_id = venue.get('id', '0')
+            place_instance = Place(venue_id)
+            place_object_list.append(place_instance)
+        return place_object_list
 
 class ApiConnect(object):
     """

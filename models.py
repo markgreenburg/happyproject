@@ -26,7 +26,7 @@ class Place(object):
     using Curl. Requires a Foursquare venue_id to construct.
     """
     def __init__(self, venue_id):
-        self.venue_id = '4ad7a9f9f964a520760d21e3'
+        self.venue_id = venue_id
         # Curl to get Foursquare Happy String
         url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
                "secret=%s&v=20170109" % \
@@ -56,7 +56,7 @@ class Place(object):
             self.price_level = venue_details.get('price').get('tier', 0)
             self.rating = venue_details.get('rating', 0.0)
             self.formatted_phone_number = venue_details.get('contact').get('formattedPhone', '')
-            self.formatted_address = str(venue_details.get('location').get('formattedAddress', ''))
+            self.formatted_address = venue_details.get('location').get('formattedAddress', '')
         else:
             self.name = ''
             self.lat = 0
@@ -81,7 +81,6 @@ class Place(object):
         print 'rating: %d' % self.rating
         print 'phone: %s' % self.formatted_phone_number
         print 'address: %s' % self.formatted_address
-
 
     @staticmethod
     def get_places(coords, radius='1600'):

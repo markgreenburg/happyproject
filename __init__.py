@@ -33,13 +33,8 @@ def location():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-    user = User()
     session['lat'] = json.loads(request.args.get('lat'))
     session['lng'] = json.loads(request.args.get('lng'))
-    print session.get('lat',0)
-    print session.get('lng', 0)
-    user.location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
-
     return redirect(url_for('display'))
 
 @app.route('/display')
@@ -49,7 +44,8 @@ def display():
     """
     # location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
     # place_list = Place.get_places(location)
-
+    user = User()
+    user.location = str(session.get('lat', 0)) + ',' + str(session.get('lng', 0))
     return render_template(
         "display.html",apikey=apikey,latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
 

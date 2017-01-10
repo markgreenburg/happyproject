@@ -34,12 +34,6 @@ def location():
     gets a list of places based on a 10 mile radius from user's location
     """
     user = User()
-<<<<<<< HEAD
-    lat = json.loads(request.args.get('lat'))
-    lng = json.loads(request.args.get('lng'))
-    user.location = str(lat) + ',' + str(lng)
-    return redirect(url_for('display',lat=lat, lng=lng))
-=======
     session['lat'] = json.loads(request.args.get('lat'))
     session['lng'] = json.loads(request.args.get('lng'))
     print session.get('lat',0)
@@ -47,26 +41,17 @@ def location():
     user.location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
 
     return redirect(url_for('display'))
->>>>>>> 091079949bcf5d4e838a408220683c71f5cf261f
 
 @app.route('/display')
 def display():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-<<<<<<< HEAD
-    lat = request.args['lat']
-    lng = request.args['lng']
-    location = str(lat) + ',' + str(lng)
-    place_list = Place.get_places(location)
-    return render_template('display.html')
-=======
     # location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
     # place_list = Place.get_places(location)
 
     return render_template(
         "display.html",apikey=apikey,latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
->>>>>>> 091079949bcf5d4e838a408220683c71f5cf261f
 
 if __name__ == "__main__":
     app.run(threaded=True)

@@ -16,7 +16,8 @@ secret = config.FS_CLIENT_SECRET
 # gets restaurants from a given location
 class User(object):
     """
-    User superclass. Stores basic lat / lon data for each user as a comma-separated string value
+    User superclass. Stores basic lat / lon data for each user as a
+    comma-separated string value
     """
     def __init__(self, lat='', lng=''):
         self.lat = lat
@@ -27,7 +28,7 @@ class Place(object):
     Place superclass. Gets various detail attributes from the Foursquare api
     using Curl. Requires a Foursquare venue_id to construct.
     """
-    def __init__(self, venue_id):
+    def __init__(self, location_id):
         self.venue_id = venue_id
         # Curl to get Foursquare Happy String
         url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
@@ -86,6 +87,13 @@ class Place(object):
         print 'phone: %s' % self.formatted_phone_number
         print 'address: %s' % self.formatted_address
         print '***************************************************************'
+
+    def save(self):
+        """
+        Saves to database, using either insert() or update() methods depending
+        on whether or not result already exists in our database
+        """
+
 
     @staticmethod
     def get_places(lat, lng, radius='1'):

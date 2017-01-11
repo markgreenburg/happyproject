@@ -15,7 +15,7 @@ import config
 reload(sys)
 sys.setdefaultencoding('utf8')
 app = Flask(__name__)
-app.config.from_object('config.py')
+app.config.from_object('config')
 g_api_key = config.G_API_KEY
 fs_client_id = config.FS_CLIENT_ID
 fs_secret = config.FS_CLIENT_SECRET

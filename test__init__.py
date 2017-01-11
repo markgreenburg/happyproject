@@ -1,3 +1,8 @@
+###GET DATA
+
+
+
+
 """
 Flask Documentation:     http://flask.pocoo.org/docs/
 Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
@@ -53,12 +58,12 @@ def display():
     # Ra Sushi:
     # place_list = Place.get_places('29.742074,-95.443547','32000')
     # Dynamic
-    place_list = Place.get_places(user.location, '50000')
-    print place_list
+    place_list = Place.get_places(user.location, '5000')
+    # print place_list
     latlng_list = []
     for place in place_list:
-        latlng_list.append([place.lat, place.lng])
-    print latlng_list
+        latlng_list.append([float(place.lat), float(place.lng)])
+    # print latlng_list
     return render_template(
         "display.html",apikey=apikey,latlng_list=latlng_list)
 

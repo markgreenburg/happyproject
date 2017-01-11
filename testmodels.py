@@ -1,3 +1,5 @@
+###GET DATA
+
 """
 Module holds the object models for the Happy Hour app
 """
@@ -6,6 +8,7 @@ import StringIO
 import urllib
 import pycurl
 import config
+import pg
 
 # API Keys
 APIKEY = config.G_API_KEY
@@ -67,15 +70,29 @@ class Place(object):
                )
         fs_venue_deets = ApiConnect.get_load(url)
         self.happy_string = ''
+        self.has_happy_hour = False
         for menu in fs_venue_deets.get('response').get('menu').get('menus') \
                 .get('items', [{'name': '', 'description': ''}]):
             if 'happy hour' in str(menu.get('name', '')).lower() or \
                             'happy hour' in str(menu.get('description', '')).lower():
                 self.happy_string = menu.get('description').lower()
-                print 'name: %s' % self.name
-                print 'happy_string:'
-                print '---> %s' % self.happy_string
+                self.has_happy_hour = True
                 break
+        # Curl to get Foursquare venue details if venue has Happy Hour
+        # if self.has_happy_hour:
+        #     url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
+        #            "client_secret=%s&v=20170109" % \
+        #            (self.fs_venue_id, FS_CLIENT_ID, FS_SECRET)
+        #            )
+            # venue_details = ApiConnect.get_load(url).get('response').get('venue')
+            # self.name = venue_details.get('name', '')
+            # self.lat = venue_details.get('location').get('lat', 0)
+            # self.lng = venue_details.get('location').get('lng', 0)
+            # self.website = venue_details.get('url', '')
+            # self.price_level = venue_details.get('price').get('tier', 0)
+            # self.rating = venue_details.get('rating', 0.0)
+            # self.formatted_phone_number = venue_details.get('contact').get('formattedPhone', '')
+            # self.formatted_address = venue_details.get('location').get('formattedAddress', '')
 
     @staticmethod
     def get_places(coords, radius='30000'):
@@ -93,8 +110,73 @@ class Place(object):
         for place in places_list:
             place_id = [place][0].get('place_id')
             place_instance = Place(place_id)
-            place_objects_list.append(place_instance)
-        return place_objects_list
+            if place_instance.has_happy_hour:
+                query = 'SELECT venue_id FROM happyhour.public.happy_strings WHERE venue_id = $1'
+                venue_exists = DbConnect.get_named_results(query, place_instance.fs_venue_id)
+                if venue_exists == place_instance.fs_venue_id:
+                    place_instance.insert()
+
+    def insert(self):
+        sql = 'INSERT INTO happyhour.public.happy_strings(happy_text, venue_id) VALUES ($1, $2)'
+
+        DbConnect.doQuery(sql, self.happy_string, self.fs_venue_id)
+
+
+class DbConnect(object):
+    """
+    Collection of static methods that set up our DB connection and create
+    generalized methods for running queries / establish and release
+    connections in pSQL
+    """
+
+    @staticmethod
+    def get_connection():
+        """
+        Sets up the postgreSQL connection by loading in params from config
+        """
+        return pg.DB(
+            host=config.DBHOST,
+            user=config.DBUSER,
+            passwd=config.DBPASS,
+            dbname=config.DBNAME
+        )
+
+    @staticmethod
+    def escape(value):
+        """
+        Escapes apostrophes in SQL
+        """
+        return value.replace("'", "''")
+
+    @staticmethod
+    def get_named_results(sql, *args):
+        """
+        Opens a connection to the db, executes a query, gets results using
+        pSQL's named_results, and then closes the connection.
+        Args: query - pSQL query as string
+              *args - pass in as many parameters for the query as needed
+        Returns: the fetchOne or fetchAll of the query
+        """
+        conx = DbConnect.get_connection()
+        query = conx.query(sql, *args)
+        print query
+        result_list = query.namedresult()
+        conx.close()
+        return result_list
+
+    @staticmethod
+    def doQuery(query, *args):
+        """
+        Opens a connection to the db, executes a query, gets results using
+        pSQL's named_results, and then closes the connection.
+        Args: query - pSQL query as string
+              *args - pass in as many parameters for the query as needed
+        Returns: the fetchOne or fetchAll of the query
+        """
+        conx = DbConnect.get_connection()
+        query = conx.query(query, *args)
+        print query
+        conx.close()
 
 
 class ApiConnect(object):

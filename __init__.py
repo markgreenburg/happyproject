@@ -15,10 +15,13 @@ import config
 reload(sys)
 sys.setdefaultencoding('utf8')
 app = Flask(__name__)
-app.config.from_object('config')
 g_api_key = config.G_API_KEY
 fs_client_id = config.FS_CLIENT_ID
 fs_secret = config.FS_CLIENT_SECRET
+
+app.config['SECRET_KEY'] = config.SECRET_KEY
+app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
+app.config['DEBUG'] = config.DEBUG
 
 @app.route('/')
 def get_map():
@@ -52,11 +55,13 @@ def display():
     # Ra Sushi:
     # place_list = Place.get_places('29.742074,-95.443547','32000')
     # Dynamic
-    place_list = Place.get_places(session.get('lat',0),session.get('lng', 0), '2')
+    place_list = Place.get_places(session.get('lat',0),session.get('lng', 0), '10')
     print place_list
     latlng_list = []
     for place in place_list:
-        latlng_list.append([place.lat, place.lng])
+        print place.lat, place.lng
+        if place.has_happy_hour:
+            latlng_list.append([place.lat, place.lng])
     print latlng_list
     print type(latlng_list[0][0])
     return render_template(

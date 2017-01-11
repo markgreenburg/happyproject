@@ -18,6 +18,10 @@ app = Flask(__name__)
 g_api_key = config.G_API_KEY
 fs_client_id = config.FS_CLIENT_ID
 fs_secret = config.FS_CLIENT_SECRET
+app.config['SECRET_KEY'] = config.SECRET_KEY
+app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
+app.config['DEBUG'] = config.DEBUG
+
 
 app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT

@@ -9,7 +9,7 @@ import sys
 import json
 from flask import Flask, render_template, request, redirect, url_for, session, Markup
 import requests
-from models import *
+from testmodels import *
 import config
 
 reload(sys)
@@ -59,9 +59,8 @@ def display():
     for place in place_list:
         latlng_list.append([place.lat, place.lng])
     print latlng_list
-    print type(latlng_list[0][0])
     return render_template(
-        "display.html",apikey=apikey,latlng_list=latlng_list, latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
+        "display.html",apikey=apikey,latlng_list=latlng_list)
 
 if __name__ == "__main__":
     app.run(threaded=True)

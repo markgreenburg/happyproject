@@ -53,7 +53,7 @@ def display():
     # Ra Sushi:
     # place_list = Place.get_places('29.742074,-95.443547','32000')
     # Dynamic
-    place_list = Place.get_places(user.location, '32000')
+    place_list = Place.get_places(user.location)
     return render_template(
         "display.html",apikey=apikey,place_list=place_list, latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
 

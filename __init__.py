@@ -14,10 +14,9 @@ import config
 
 reload(sys)
 sys.setdefaultencoding('utf8')
-
 app = Flask(__name__)
-app.secret_key = 'secret'
-apikey = config.G_API_KEY
+app.config.from_object('config.py')
+g_api_key = config.G_API_KEY
 fs_client_id = config.FS_CLIENT_ID
 fs_secret = config.FS_CLIENT_SECRET
 
@@ -26,9 +25,9 @@ def get_map():
     """
     Homepage route - shows Google Map using the user's location
     """
-    return render_template('location.html', apikey=apikey)
+    return render_template('location.html', apikey=g_api_key)
 
-@app.route('/_location',methods=['GET'])
+@app.route('/_location', methods=['GET'])
 def location():
     """
     gets a list of places based on a 10 mile radius from user's location
@@ -61,7 +60,9 @@ def display():
     print latlng_list
     print type(latlng_list[0][0])
     return render_template(
-        "display.html",apikey=apikey,latlng_list=latlng_list, latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
+        "display.html", apikey=g_api_key, latlng_list=latlng_list, latitude=\
+        str(session.get('lat', 0)), longitude=str(session.get('lng', 0))
+    )
 
 if __name__ == "__main__":
     app.run(threaded=True)

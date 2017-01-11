@@ -6,6 +6,7 @@ import StringIO
 import urllib
 import pycurl
 import config
+import pg
 
 # API Keys
 # apikey = config.G_API_KEY
@@ -26,12 +27,13 @@ class Place(object):
     using Curl. Requires a Foursquare venue_id to construct.
     """
     def __init__(self, venue_id):
-        self.venue_id = '42a0ef00f964a520cc241fe3'
+        self.venue_id = venue_id
         # Curl to get Foursquare Happy String
         url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
                "secret=%s&v=20170109" % \
                (self.venue_id, client_id, secret)
               )
+        print url
         happy_strings = ApiConnect.get_load(url)
         self.happy_string = ''
         self.has_happy_hour = False
@@ -85,36 +87,35 @@ class Place(object):
         print '***************************************************************'
 
     @staticmethod
-    def get_places(coords, radius='1600'):
+    def get_places(lat, lng, radius='1'):
         """
-        Gets all places within a certain meter radius of a geo using FourSquare
-        Args: coords - comma-separated string in the format 'lat,long'
-              radius - string of meters, max 50000, def. 1600. Ex: '32000'
+        Gets all places within a certain mile radius of a geo from DB
+        Args: lat - comma-separated string of a float lat, e.g. '-29.67'
+              lng - comma-separated string of a float lng, e.g. '95.43'
+              radius(opt) - string of miles, min '1', default '1'
         Returns: list of Place object instances
         """
-        nightlife_cat = '4d4b7105d754a06376d81259'
-        food_cat = '4d4b7105d754a06374d81259'
-
-        url = ("https://api.foursquare.com/v2/venues/search?intent=browse&ll="
-               "%s&radius=%s&limit=50&categoryId=%s,%s&client_id=%s&client_secret=%s&v="
-               "20170109" % \
-               (coords, radius, nightlife_cat, food_cat, client_id, secret)
-              )
-        print url
-        venue_dict_list = ApiConnect.get_load(url).get('response').get('venues')
+        # For more info on the below query, see:
+        # http://www.movable-type.co.uk/scripts/latlong.html
+        query = ("SELECT venue_id FROM happyhour.public.id_venue_id venues INNER JOIN"
+                 " happyhour.public.coordinates coords ON venues.id ="
+                 " coords.location_id WHERE (acos(sin(coords.lat * 0.0175) *"
+                 " sin($1 * 0.0175) + cos(coords.lat * 0.0175) * cos($2 *"
+                 " 0.0175) * cos(($3 * 0.0175) - (coords.lng * 0.0175))) *"
+                 " 3959 <= $4);"
+                )
+        venue_id_objects = DbConnect.get_named_results(query, lat, lat, lng, radius)
         place_object_list = []
         counter = 1
-        for venue in venue_dict_list:
-            print counter
+        for venue_row in venue_id_objects:
             counter += 1
-            venue_id = venue.get('id', '0')
-            place_instance = Place(venue_id)
+            place_instance = Place(venue_row[0])
             place_object_list.append(place_instance)
         return place_object_list
 
 class ApiConnect(object):
     """
-    Holds Curl procedures to get info from our API partners
+    Holds Curl code to get info from our API partners
     """
     @staticmethod
     def get_load(api_call):
@@ -133,3 +134,44 @@ class ApiConnect(object):
         json_values = json.loads(response.getvalue())
         response.close()
         return json_values
+
+class DbConnect(object):
+    """
+    Collection of static methods that set up our DB connection and create
+    generalized methods for running queries / establish and release
+    connections in pSQL
+    """
+    @staticmethod
+    def get_connection():
+        """
+        Sets up the postgreSQL connection by loading in params from config
+        """
+        return pg.DB(
+            host=config.DBHOST,
+            user=config.DBUSER,
+            passwd=config.DBPASS,
+            dbname=config.DBNAME
+            )
+
+    @staticmethod
+    def escape(value):
+        """
+        Escapes apostrophes in SQL
+        """
+        return value.replace("'", "''")
+
+    @staticmethod
+    def get_named_results(query, *args):
+        """
+        Opens a connection to the db, executes a query, gets results using
+        pSQL's named_results, and then closes the connection.
+        Args: query - pSQL query as string
+              *args - pass in as many parameters for the query as needed
+        Returns: the fetchOne or fetchAll of the query
+        """
+        conx = DbConnect.get_connection()
+        query = conx.query(query, *args)
+        print query
+        result_list = query.namedresult()
+        conx.close()
+        return result_list

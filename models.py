@@ -26,12 +26,13 @@ class User(object):
 class Place(object):
     """
     Place superclass. Gets various detail attributes from the Foursquare api
-    using Curl. Requires a Foursquare venue_id to construct.
+    using Curl. Generates based on internal ID for each venue.
     """
     def __init__(self, location_id):
-        self.id = location_id
-        self.venue_id = get_venue_id()
-        # self.venue_id = venue_id
+        self.location_id = location_id
+        # Get FS venue_id from database
+        sql = "SELECT venue_id FROM happyhour.public.id_venue_id WHERE id = $1 LIMIT 1"
+        self.venue_id = DbConnect.get_named_results(sql, True, self.location_id).venue_id
         # Curl to get Foursquare Happy String
         url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
                "secret=%s&v=20170109" % \
@@ -96,7 +97,6 @@ class Place(object):
         on whether or not result already exists in our database
         """
 
-
     @staticmethod
     def get_places(lat, lng, radius='1'):
         """
@@ -108,14 +108,20 @@ class Place(object):
         """
         # For more info on the below query, see:
         # http://www.movable-type.co.uk/scripts/latlong.html
-        query = ("SELECT venue_id FROM happyhour.public.id_venue_id venues INNER JOIN"
-                 " happyhour.public.coordinates coords ON venues.id ="
-                 " coords.location_id WHERE (acos(sin(coords.lat * 0.0175) *"
-                 " sin($1 * 0.0175) + cos(coords.lat * 0.0175) * cos($2 *"
-                 " 0.0175) * cos(($3 * 0.0175) - (coords.lng * 0.0175))) *"
-                 " 3959 <= $4);"
-                )
-        venue_id_objects = DbConnect.get_named_results(query, lat, lat, lng, radius)
+        # sql = ("SELECT id FROM happyhour.public.id_venue_id venues INNER JOIN"
+        #        " happyhour.public.coordinates coords ON venues.id ="
+        #        " coords.location_id WHERE (acos(sin(coords.lat * 0.0175) *"
+        #        " sin($1 * 0.0175) + cos(coords.lat * 0.0175) * cos($2 *"
+        #        " 0.0175) * cos(($3 * 0.0175) - (coords.lng * 0.0175))) *"
+        #        " 3959 <= $4);"
+        #       )
+        # venue_id_objects = DbConnect.get_named_results(sql, lat, lat, lng, radius)
+        sql = ("SELECT location_id FROM happyhour.public.coordinates WHERE"
+               " (acos(sin(lat * 0.0175) * sin($1 * 0.0175) + cos(lat *"
+               " 0.0175) * cos($2 * 0.0175) * cos(($3 * 0.0175) - (lng *"
+               " 0.0175))) * 3959 <= $4);"
+              )
+        venue_id_objects = DbConnect.get_named_results(sql, False, lat, lat, lng, radius)
         place_object_list = []
         for venue_row in venue_id_objects:
             place_instance = Place(venue_row[0])
@@ -170,17 +176,22 @@ class DbConnect(object):
         return value.replace("'", "''")
 
     @staticmethod
-    def get_named_results(query, *args):
+    def get_named_results(sql, get_one, *args):
         """
         Opens a connection to the db, executes a query, gets results using
         pSQL's named_results, and then closes the connection.
-        Args: query - pSQL query as string
-              *args - pass in as many parameters for the query as needed
+        Args: query   - pSQL query as string
+              get_one - Bool that determines whether list or first
+                        result of list are returned (default = False)
+              *args   - pass in as many parameters for the query as needed
         Returns: the fetchOne or fetchAll of the query
         """
         conx = DbConnect.get_connection()
-        query = conx.query(query, *args)
-        print query
-        result_list = query.namedresult()
+        query = conx.query(sql, *args)
+        results = query.namedresult()
+        if len(results) == 0:
+            results[0] = {}
+        if get_one:
+            results = results[0]
         conx.close()
-        return result_list
+        return results

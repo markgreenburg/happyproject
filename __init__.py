@@ -2,8 +2,8 @@
 Flask Documentation:     http://flask.pocoo.org/docs/
 Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
-
 """
+
 import os
 import sys
 import json
@@ -55,7 +55,7 @@ def display():
     # Ra Sushi:
     # place_list = Place.get_places('29.742074,-95.443547','32000')
     # Dynamic
-    place_list = Place.get_places(session.get('lat',0),session.get('lng', 0), '2')
+    place_list = Place.get_places(session.get('lat',0), session.get('lng', 0), '6')
     print place_list
     latlng_list = []
     for place in place_list:

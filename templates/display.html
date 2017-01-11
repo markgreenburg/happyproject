@@ -13,36 +13,46 @@
     <body>
     <div id="map"></div>
     <script>
-        function initMap() {
-            var long = {{ longitude }};
-            var lati = {{ latitude }};
-            var userLoc = {lat: lati, lng: long};
-            var place_loc_list = [];
-            {% for place in place_list %}
-                place_loc_list.append({lat: place.lat, lng: place.lng});
-                {% print(place_loc_list[0]) %}
-            {% endfor %}
+        var long = {{ longitude }};
+        var lati = {{ latitude }};
+        var userLoc = {lat: lati, lng: long};
 
+
+        function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 13,
                 center: userLoc
             });
-            var image = {
-                url: '/static/dot_orange.png',
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(15, 15)
-            };
-            var userMarker = new google.maps.Marker({
-                position: userLoc,
-                map: map,
-                animation: google.maps.Animation.DROP,
-                icon: image
-            });
+            setMarkers(map);
+        }
+
+        latlng_list = {{ latlng_list }};
+
+        function setMarkers(map) {
+            for (var i = 0; i < 1; i++) {
+                var image = {
+                    url: '/static/dot_orange.png',
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(15, 15)
+                };
+                var userMarker = new google.maps.Marker({
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    icon: image,
+                    position: userLoc
+                });
+                for (var n = 0; n < latlng_list.length; n++) {
+                    var loc = latlng_list[n];
+                    var marker = new google.maps.Marker({
+                        position: {lat: loc[0], lng: loc[1]},
+                        map: map,
+                    });
+                }
+            }
 
         }
-        userMarker.setAnimation(google.maps.Animation.BOUNCE);
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key={{ apikey }}&callback=initMap">

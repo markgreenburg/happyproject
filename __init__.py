@@ -35,7 +35,7 @@ def location():
     """
     session['lat'] = json.loads(request.args.get('lat'))
     session['lng'] = json.loads(request.args.get('lng'))
-    return redirect(url_for('display'))
+    return redirect(None)
 
 @app.route('/display')
 def display():
@@ -53,9 +53,15 @@ def display():
     # Ra Sushi:
     # place_list = Place.get_places('29.742074,-95.443547','32000')
     # Dynamic
-    place_list = Place.get_places(user.location)
+    place_list = Place.get_places(user.location, '50000')
+    print place_list
+    latlng_list = []
+    for place in place_list:
+        latlng_list.append([place.lat, place.lng])
+    print latlng_list
+    print type(latlng_list[0][0])
     return render_template(
-        "display.html",apikey=apikey,place_list=place_list, latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
+        "display.html",apikey=apikey,latlng_list=latlng_list, latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
 
 if __name__ == "__main__":
     app.run(threaded=True)

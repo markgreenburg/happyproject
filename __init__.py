@@ -42,18 +42,10 @@ def display():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-    # location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
-    # place_list = Place.get_places(location)
-    user = User()
-    user.location = str(session.get('lat', 0)) + ',' + str(session.get('lng', 0))
-    # mark's hood:
-    # place_list = Place.get_places('29.832263,-95.441000')
-    # start houston:
-    # place_list = Place.get_places('29.746298,-95.350487')
-    # Ra Sushi:
-    # place_list = Place.get_places('29.742074,-95.443547','32000')
-    # Dynamic
-    place_list = Place.get_places(user.location, '50000')
+    user = User(str(session.get('lat', 0)), str(session.get('lng', 0)))
+    # user.radius = str(session.get('radius'))
+    radius = '5' # string, in miles. optional arg, defaults to '1'
+    place_list = Place.get_places(user.lat, user.lng, radius)
     print place_list
     latlng_list = []
     for place in place_list:
@@ -61,7 +53,8 @@ def display():
     print latlng_list
     print type(latlng_list[0][0])
     return render_template(
-        "display.html",apikey=apikey,latlng_list=latlng_list, latitude=str(session.get('lat',0)),longitude=str(session.get('lng', 0)))
+        "display.html", apikey=apikey, latlng_list=latlng_list, latitude=\
+        user.lat, longitude=user.lng)
 
 if __name__ == "__main__":
     app.run(threaded=True)

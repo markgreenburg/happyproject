@@ -18,8 +18,9 @@ class User(object):
     """
     User superclass. Stores basic lat / lon data for each user as a comma-separated string value
     """
-    def __init__(self):
-        self.location = ''
+    def __init__(self, lat='', lng=''):
+        self.lat = lat
+        self.lng = lng
 
 class Place(object):
     """
@@ -70,6 +71,7 @@ class Place(object):
             self.formatted_address = ''
 
         # Log to console to check returns of API calls
+        print ''
         print '***************************************************************'
         print 'venue_id: %s' % self.venue_id
         print 'Has Happy Hour: %s' % self.has_happy_hour
@@ -83,6 +85,7 @@ class Place(object):
         print 'rating: %d' % self.rating
         print 'phone: %s' % self.formatted_phone_number
         print 'address: %s' % self.formatted_address
+        print '***************************************************************'
 
     @staticmethod
     def get_places(lat, lng, radius='1'):
@@ -93,7 +96,6 @@ class Place(object):
               radius(opt) - string of miles, min '1', default '1'
         Returns: list of Place object instances
         """
-<<<<<<< HEAD
         # For more info on the below query, see:
         # http://www.movable-type.co.uk/scripts/latlong.html
         query = ("SELECT venue_id FROM happyhour.public.id_venue_id venues INNER JOIN"
@@ -105,26 +107,8 @@ class Place(object):
                 )
         venue_id_objects = DbConnect.get_named_results(query, lat, lat, lng, radius)
         place_object_list = []
-        counter = 1
         for venue_row in venue_id_objects:
-            counter += 1
             place_instance = Place(venue_row[0])
-=======
-        nightlife_cat = '4d4b7105d754a06376d81259'
-        food_cat = '4d4b7105d754a06374d81259'
-
-        url = ("https://api.foursquare.com/v2/venues/search?intent=browse&ll="
-               "%s&radius=%s&categoryId=%s,%s&client_id=%s&client_secret=%s&v="
-               "20170109" % \
-               (coords, radius, nightlife_cat, food_cat, client_id, secret)
-              )
-        print url
-        venue_dict_list = ApiConnect.get_load(url).get('response').get('venues')
-        place_object_list = []
-        for venue in venue_dict_list:
-            venue_id = venue.get('id', '0')
-            place_instance = Place(venue_id)
->>>>>>> 82a5732aa90dcc6c27d51e5ad70328dbaacd8f31
             place_object_list.append(place_instance)
         return place_object_list
 

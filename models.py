@@ -29,7 +29,9 @@ class Place(object):
     using Curl. Requires a Foursquare venue_id to construct.
     """
     def __init__(self, location_id):
-        self.venue_id = venue_id
+        self.id = location_id
+        self.venue_id = get_venue_id()
+        # self.venue_id = venue_id
         # Curl to get Foursquare Happy String
         url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
                "secret=%s&v=20170109" % \

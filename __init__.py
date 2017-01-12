@@ -22,6 +22,8 @@ app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
 app.config['DEBUG'] = config.DEBUG
 
+global lat
+global lng
 @app.route('/')
 def get_map():
     """
@@ -34,8 +36,10 @@ def location():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-    session['lat'] = json.loads(request.args.get('lat'))
-    session['lng'] = json.loads(request.args.get('lng'))
+    global lat
+    global lng
+    lat = json.loads(request.args.get('lat'))
+    lng = json.loads(request.args.get('lng'))
     return redirect(None)
 
 @app.route('/display')
@@ -46,15 +50,20 @@ def display():
     # location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
     # place_list = Place.get_places(location)
     # user = User()
+    global lat
+    global lng
+
+    print lat
+    print lng
     place_list = Place.get_places(session.get('lat', 0), session.get('lng', 0)\
                  , '100')
+
     latlng_list = []
     for place in place_list:
         latlng_list.append([place.lat, place.lng])
     return render_template(
         "display.html", apikey=g_api_key, latlng_list=latlng_list, latitude=\
-        str(session.get('lat', 0)), longitude=str(session.get('lng', 0))
-    )
+        lat, longitude=lng)
 
 if __name__ == "__main__":
     app.run(threaded=True)

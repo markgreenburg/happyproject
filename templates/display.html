@@ -4,9 +4,13 @@
     <body onload="locate()">
     <div class="container-fluid">
         <div class="clearfix row">
-            <div class="col-md-9" id="map_canvas"></div>
-            <div class="col-md-3" id="infowindow">
-
+            <div class="col-xs-9" id="map_canvas"></div>
+            <div class="col-xs-3" id="infowindow">
+                    <div>
+                        {% for place in place_list %}
+                            <div class="place_details"><h4 id="place_descriptions">{{ place.name }}</h4></div>
+                        {% endfor %}
+                    </div>
             </div>
         </div>
     </div>

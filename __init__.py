@@ -50,15 +50,18 @@ def display():
     # location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
     # place_list = Place.get_places(location)
     # user = User()
+
     global lat
     global lng
     place_list = Place.get_places(lat, lng\
                  , '100')
     latlng_list = []
+    place_list = place_list
+    place_list_length = len(place_list)
     for place in place_list:
         latlng_list.append([float(place.lat), float(place.lng)])
     return render_template(
-        "display.html", apikey=g_api_key, latlng_list=latlng_list, latitude=\
+        "display.html", place_list=place_list, place_list_length=place_list_length, apikey=g_api_key, latlng_list=latlng_list, latitude=\
         lat, longitude=lng)
 
 if __name__ == "__main__":

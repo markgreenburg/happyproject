@@ -137,12 +137,15 @@ class Place(object):
                 )
                )
         fs_venue_search = ApiConnect.get_load(url)
-        if len(fs_venue_search.get('response').get('venues')) > 0:
-            self.fs_venue_id = str(fs_venue_search.get('response'). \
-                                   get('venues')[0].get('id', '0'))
-            address = (fs_venue_search.get('response'). \
-                       get('venues')[0].get('location').get('formattedAddress', ''))
-            self.address = str(address[0])
+        if fs_venue_search.get('response').get('venues') is not None or len(fs_venue_search.get('response').get('venues')) != 0:
+            if len(fs_venue_search.get('response').get('venues')) > 0:
+                self.fs_venue_id = str(fs_venue_search.get('response'). \
+                                       get('venues')[0].get('id', '0'))
+                address = (fs_venue_search.get('response'). \
+                           get('venues')[0].get('location').get('formattedAddress', ''))
+                self.address = str(address[0])
+            else:
+                self.fs_venue_id = '0'
         else:
             self.fs_venue_id = '0'
         # Curl to get Foursquare happy hour menu description
@@ -212,6 +215,23 @@ def scrape():
         current_lat += 0.014466
     print "*****FINISHED*****"
 
+    # innercity houston
+    # # start at bottom right location
+    # current_lat = 29.671349
+    # current_lng = -95.465698
+    # # end at top right location
+    # lat = 29.809668
+    # lng = -95.261078
+    # while current_lat < lat:
+    #     while current_lng < lng:
+    #         loc = LatLong()
+    #         loc.location = str(current_lat) + ',' + str(current_lng)
+    #         print loc.location
+    #         Place.get_places(loc.location, '1610')
+    #         current_lng += 0.016635
+    #     current_lng = -95.465698
+    #     current_lat += 0.014466
+    # print "*****FINISHED*****"
 
 # calls scraper function
 scrape()

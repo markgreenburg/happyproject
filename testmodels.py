@@ -38,9 +38,9 @@ class Place(object):
         url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (
             urllib.quote_plus(self.place_id), urllib.quote_plus(APIKEY))
         g_place_deets = ApiConnect.get_load(url)
-        self.lat = str(g_place_deets.get('result').get('geometry').get('location').get('lat'))
-        self.lng = str(g_place_deets.get('result').get('geometry').get('location').get('lng'))
-        self.name = str(g_place_deets.get('result').get('name'))
+        self.lat = str(g_place_deets.get('result', {}).get('geometry', {}).get('location', {}).get('lat', {}))
+        self.lng = str(g_place_deets.get('result', {}).get('geometry', {}).get('location', {}).get('lng', {}))
+        self.name = str(g_place_deets.get('result', {}).get('name', {}))
 
         # Curl to get Foursquare venue ID
         url = ("https://api.foursquare.com/v2/venues/search?intent=match&ll=%s"
@@ -52,11 +52,11 @@ class Place(object):
                 )
                )
         fs_venue_search = ApiConnect.get_load(url)
-        if len(fs_venue_search.get('response').get('venues')) > 0:
-            self.fs_venue_id = str(fs_venue_search.get('response'). \
-                                   get('venues')[0].get('id', '0'))
+        if len(fs_venue_search.get('response', {}).get('venues', {})) > 0:
+            self.fs_venue_id = str(fs_venue_search.get('response', {}). \
+                                   get('venues', {})[0].get('id', '0'))
             address = (fs_venue_search.get('response'). \
-                                   get('venues')[0].get('location').get('formattedAddress', ''))
+                                   get('venues', {})[0].get('location', {}).get('formattedAddress', ''))
             self.address = str(address[0])
             print'************'
             print'************'
@@ -78,11 +78,11 @@ class Place(object):
 
         self.happy_string = ''
         self.has_happy_hour = False
-        for menu in fs_venue_deets.get('response').get('menu').get('menus') \
+        for menu in fs_venue_deets.get('response', {}).get('menu', {}).get('menus', {}) \
                 .get('items', [{'name': '', 'description': ''}]):
             if 'happy hour' in str(menu.get('name', '')).lower() or \
                             'happy hour' in str(menu.get('description', '')).lower():
-                self.happy_string = menu.get('description').lower()
+                self.happy_string = menu.get('description', {}).lower()
                 self.has_happy_hour = True
                 break
         # Curl to get Foursquare venue details if venue has Happy Hour
@@ -112,10 +112,10 @@ class Place(object):
         url = (
             "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=%s&radius=%s&types=restaurant&key=%s" %
             (coords, urllib.quote_plus(radius), urllib.quote_plus(APIKEY)))
-        places_list = ApiConnect.get_load(url).get('results')
+        places_list = ApiConnect.get_load(url).get('results', {})
         place_objects_list = []
         for place in places_list:
-            place_id = [place][0].get('place_id')
+            place_id = [place][0].get('place_id', {})
             place_instance = Place(place_id)
             print place_instance.address
             if place_instance.has_happy_hour:

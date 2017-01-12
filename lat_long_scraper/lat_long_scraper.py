@@ -16,6 +16,8 @@ FS_CLIENT_ID = config.FS_CLIENT_ID
 FS_SECRET = config.FS_CLIENT_SECRET
 
 print"Started"
+
+
 # gets restaurants from a given location
 class LatLong(object):
     """
@@ -56,7 +58,7 @@ class Place(object):
             self.fs_venue_id = str(fs_venue_search.get('response'). \
                                    get('venues')[0].get('id', '0'))
             address = (fs_venue_search.get('response'). \
-                                   get('venues')[0].get('location').get('formattedAddress', ''))
+                       get('venues')[0].get('location').get('formattedAddress', ''))
             self.address = str(address[0])
         else:
             self.fs_venue_id = '0'
@@ -104,7 +106,7 @@ class Place(object):
                 venue_add_exists = DbConnect.get_named_results(ven_add, place_instance.fs_venue_id)
                 if venue_id_exists != place_instance.fs_venue_id and venue_add_exists != place_instance.address:
                     place_instance.insert()
-                    count+=1
+                    count += 1
                     print count
 
     def insert(self):
@@ -112,23 +114,6 @@ class Place(object):
 
         DbConnect.doQuery(sql, self.happy_string, self.fs_venue_id, self.address)
 
-#start at bottom right location
-current_lat = 29.563902
-current_lng = -95.883179
-#end at top right location
-lat = 29.945415
-lng = -95.158081
-
-while current_lat <= lat:
-    while current_lng <= lng:
-        lat_long = LatLong()
-        lat_long.location = str(lat) + ',' + str(lng)
-        place_list = Place.get_places(lat_long.location, '1610')
-        current_lng+=0.016635
-    current_lng = 29.563902
-    current_lat += 0.014466
-
-print "*****FINISHED*****"
 
 class DbConnect(object):
     """
@@ -207,3 +192,22 @@ class ApiConnect(object):
         json_values = json.loads(response.getvalue())
         response.close()
         return json_values
+
+
+# start at bottom right location
+current_lat = 29.563902
+current_lng = -95.883179
+# end at top right location
+lat = 29.945415
+lng = -95.158081
+
+while current_lat <= lat:
+    while current_lng <= lng:
+        lat_long = LatLong()
+        lat_long.location = str(lat) + ',' + str(lng)
+        place_list = Place.get_places(lat_long.location, '1610')
+        current_lng += 0.016635
+    current_lng = 29.563902
+    current_lat += 0.014466
+
+print "*****FINISHED*****"

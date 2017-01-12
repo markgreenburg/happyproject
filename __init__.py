@@ -22,8 +22,8 @@ app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
 app.config['DEBUG'] = config.DEBUG
 
-global lat
-global lng
+lat = 0
+lng = 0
 @app.route('/')
 def get_map():
     """
@@ -53,14 +53,14 @@ def display():
     global lat
     global lng
 
-    print lat
+    print type(lat)
     print lng
-    place_list = Place.get_places(session.get('lat', 0), session.get('lng', 0)\
+    place_list = Place.get_places(lat, lng\
                  , '100')
 
     latlng_list = []
     for place in place_list:
-        latlng_list.append([place.lat, place.lng])
+        latlng_list.append([float(place.lat), float(place.lng)])
     return render_template(
         "display.html", apikey=g_api_key, latlng_list=latlng_list, latitude=\
         lat, longitude=lng)

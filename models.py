@@ -1,5 +1,6 @@
 """
-Module holds the object models for the Happy Hour app
+Module holds the object models, API calls, and db connections for the Happy
+Hour app
 """
 import json
 import StringIO
@@ -13,7 +14,6 @@ import pg
 client_id = config.FS_CLIENT_ID
 secret = config.FS_CLIENT_SECRET
 
-# gets restaurants from a given location
 class User(object):
     """
     User superclass. Stores basic lat / lon data for each user as a
@@ -28,59 +28,50 @@ class Place(object):
     Place superclass. Gets various detail attributes from the Foursquare api
     using Curl. Generates based on internal ID for each venue.
     """
-    def __init__(self, location_id):
+    location_id = 0
+    venue_id = ''
+    name = ''
+    lat = 0
+    lng = 0
+    website = ''
+    price_level = 0
+    rating = 0.0
+    formatted_phone_number = ''
+    formatted_address = []
+    def __init__(self, location_id=0):
         self.location_id = location_id
-        # Get FS venue_id from database
+        # Get local info from our db
         sql = "SELECT venue_id FROM happyhour.public.id_venue_id WHERE id = $1 LIMIT 1"
         self.venue_id = DbConnect.get_named_results(sql, True, self.location_id).venue_id
-        # Curl to get Foursquare Happy String
-        url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_"
-               "secret=%s&v=20170109" % \
-               (self.venue_id, client_id, secret)
+        sql = ("SELECT day_of_week, start_time, end_time FROM"
+               " happyhour.public.id_times WHERE location_id = $1")
+        self.happy_hour = DbConnect.get_named_results(sql, False, \
+        self.location_id)
+        
+        # Curl to get Foursquare venue details
+        url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
+               "client_secret=%s&v=20170109" % \
+               (self.venue_id, \
+                client_id, \
+                secret)
               )
-        print url
-        happy_strings = ApiConnect.get_load(url)
-        self.happy_string = ''
-        self.has_happy_hour = False
-        for menu in happy_strings.get('response').get('menu').get('menus')\
-        .get('items', [{'name': '', 'description': ''}]):
-            if 'happy hour' in str(menu.get('name', '')).lower() or \
-            'happy hour' in str(menu.get('description', '')).lower():
-                self.happy_string = menu.get('description').lower()
-                self.has_happy_hour = True
-                break
-        # Curl to get Foursquare venue details if venue has Happy Hour
-        if self.has_happy_hour:
-            url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
-                   "client_secret=%s&v=20170109" % \
-                   (self.venue_id, client_id, secret)
-                  )
-            venue_details = ApiConnect.get_load(url).get('response').get('venue')
-            self.name = venue_details.get('name', '')
-            self.lat = venue_details.get('location').get('lat', 0)
-            self.lng = venue_details.get('location').get('lng', 0)
-            self.website = venue_details.get('url', '')
-            self.price_level = venue_details.get('price').get('tier', 0)
-            self.rating = venue_details.get('rating', 0.0)
-            self.formatted_phone_number = venue_details.get('contact').get('formattedPhone', '')
-            self.formatted_address = venue_details.get('location').get('formattedAddress', '')
-        else:
-            self.name = ''
-            self.lat = 0
-            self.lng = 0
-            self.website = ''
-            self.price_level = 0
-            self.rating = 0
-            self.formatted_phone_number = ''
-            self.formatted_address = ''
-
+        venue_details = ApiConnect.get_load(url).get('response', {}).get\
+                        ('venue')
+        self.name = venue_details.get('name', '')
+        self.lat = venue_details.get('location', {}).get('lat', 0)
+        self.lng = venue_details.get('location', {}).get('lng', 0)
+        self.website = venue_details.get('url', '')
+        self.price_level = venue_details.get('price', {}).get('tier', 0)
+        self.rating = venue_details.get('rating', 0.0)
+        self.formatted_phone_number = venue_details.get('contact', {}).get\
+        ('formattedPhone', '')
+        self.formatted_address = venue_details.get('location', {}).get\
+        ('formattedAddress', [])
         # Log to console to check returns of API calls
         print ''
         print '***************************************************************'
+        print 'Happy Hour Times: %s' % self.happy_hour
         print 'venue_id: %s' % self.venue_id
-        print 'Has Happy Hour: %s' % self.has_happy_hour
-        print 'happy_string:'
-        print '---> %s' % self.happy_string
         print 'name: %s' % self.name
         print 'lat: %d' % self.lat
         print 'lng: %d' % self.lng
@@ -108,14 +99,6 @@ class Place(object):
         """
         # For more info on the below query, see:
         # http://www.movable-type.co.uk/scripts/latlong.html
-        # sql = ("SELECT id FROM happyhour.public.id_venue_id venues INNER JOIN"
-        #        " happyhour.public.coordinates coords ON venues.id ="
-        #        " coords.location_id WHERE (acos(sin(coords.lat * 0.0175) *"
-        #        " sin($1 * 0.0175) + cos(coords.lat * 0.0175) * cos($2 *"
-        #        " 0.0175) * cos(($3 * 0.0175) - (coords.lng * 0.0175))) *"
-        #        " 3959 <= $4);"
-        #       )
-        # venue_id_objects = DbConnect.get_named_results(sql, lat, lat, lng, radius)
         sql = ("SELECT location_id FROM happyhour.public.coordinates WHERE"
                " (acos(sin(lat * 0.0175) * sin($1 * 0.0175) + cos(lat *"
                " 0.0175) * cos($2 * 0.0175) * cos(($3 * 0.0175) - (lng *"
@@ -143,7 +126,8 @@ class ApiConnect(object):
         c = pycurl.Curl()
         c.setopt(c.URL, api_call)
         c.setopt(c.WRITEFUNCTION, response.write)
-        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
+        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', \
+        'Accept-Charset: UTF-8'])
         c.perform()
         c.close()
         json_values = json.loads(response.getvalue())
@@ -189,9 +173,27 @@ class DbConnect(object):
         conx = DbConnect.get_connection()
         query = conx.query(sql, *args)
         results = query.namedresult()
-        if len(results) == 0:
-            results[0] = {}
         if get_one:
             results = results[0]
         conx.close()
         return results
+
+"""
+*****
+* Code We Still Need For Other Stuff
+*****
+# Curl to get Foursquare Happy String
+        url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_secret=%s&v=20170109 % (self.venue_id, client_id, secret)
+        happy_strings = ApiConnect.get_load(url)
+        self.happy_string = ''
+        self.has_happy_hour = False
+        for menu in happy_strings.get('response').get('menu').get('menus')\
+        .get('items', [{'name': '', 'description': ''}]):
+            if 'happy hour' in str(menu.get('name', '')).lower() or \
+            'happy hour' in str(menu.get('description', '')).lower():
+                self.happy_string = menu.get('description').lower()
+                self.has_happy_hour = True
+                break
+# Curl to get Foursquare venue details if venue has Happy Hour
+*****
+"""

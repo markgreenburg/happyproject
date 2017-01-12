@@ -50,25 +50,12 @@ def display():
     """
     # location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
     # place_list = Place.get_places(location)
-    user = User()
-    user.location = str(session.get('lat', 0)) + ',' + str(session.get('lng', 0))
-    # mark's hood:
-    # place_list = Place.get_places('29.832263,-95.441000')
-    # start houston:
-    # place_list = Place.get_places('29.746298,-95.350487')
-    # Ra Sushi:
-    # place_list = Place.get_places('29.742074,-95.443547','32000')
-    # Dynamic
+    # user = User()
     place_list = Place.get_places(session.get('lat', 0), session.get('lng', 0)\
-                 , '10')
-    print place_list
+                 , '6')
     latlng_list = []
     for place in place_list:
-        print place.lat, place.lng
-        if place.has_happy_hour:
-            latlng_list.append([place.lat, place.lng])
-    print latlng_list
-    print type(latlng_list[0][0])
+        latlng_list.append([place.lat, place.lng])
     return render_template(
         "display.html", apikey=g_api_key, latlng_list=latlng_list, latitude=\
         str(session.get('lat', 0)), longitude=str(session.get('lng', 0))

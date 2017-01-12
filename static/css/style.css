@@ -17,10 +17,14 @@ html, body {
 #map_canvas {
     height: 100%;
 }
-.container-fluid{
+.container-fluid {
     height: 100%
 }
 
-.loading{
+.loading {
     height: 70%
+}
+
+nav.navbar {
+    margin-bottom: 0;
 }

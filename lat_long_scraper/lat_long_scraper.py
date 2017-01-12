@@ -231,8 +231,30 @@ def scrape():
 ###################################################################################
     # innercity houston
     # start at bottom right location
-    current_lat = 29.671349
-    current_lng = -95.465698
+    # current_lat = 29.671349
+    # current_lng = -95.465698
+    # # end at top right location
+    # lat = 29.809668
+    # lng = -95.261078
+    # global querycount
+    # while current_lat < lat:
+    #     while current_lng < lng:
+    #         if querycount >= 4200: #number of queries to 4square
+    #             print 'pausing'
+    #             querycount = 0
+    #             time.sleep(3650) #delay for one hour once 5000 queries has been hit
+    #         loc = LatLong()
+    #         loc.location = str(current_lat) + ',' + str(current_lng)
+    #         print loc.location
+    #         Place.get_places(loc.location, '1610')
+    #         current_lng += 0.016635
+    #     current_lng = -95.465698
+    #     current_lat += 0.014466
+    # print "*****FINISHED*****"
+
+    ####PICKUP WHERE LEFT OFF
+    current_lat = 29.718602
+    current_lng = -95.415146
     # end at top right location
     lat = 29.809668
     lng = -95.261078

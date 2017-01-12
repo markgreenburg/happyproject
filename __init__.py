@@ -22,11 +22,6 @@ app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
 app.config['DEBUG'] = config.DEBUG
 
-
-app.config['SECRET_KEY'] = config.SECRET_KEY
-app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
-app.config['DEBUG'] = config.DEBUG
-
 @app.route('/')
 def get_map():
     """

@@ -18,6 +18,85 @@ FS_SECRET = config.FS_CLIENT_SECRET
 print"Started"
 
 
+class DbConnect(object):
+    """
+    Collection of static methods that set up our DB connection and create
+    generalized methods for running queries / establish and release
+    connections in pSQL
+    """
+
+    @staticmethod
+    def get_connection():
+        """
+        Sets up the postgreSQL connection by loading in params from config
+        """
+        return pg.DB(
+            host=config.DBHOST,
+            user=config.DBUSER,
+            passwd=config.DBPASS,
+            dbname=config.DBNAME
+        )
+
+    @staticmethod
+    def escape(value):
+        """
+        Escapes apostrophes in SQL
+        """
+        return value.replace("'", "''")
+
+    @staticmethod
+    def get_named_results(sql, *args):
+        """
+        Opens a connection to the db, executes a query, gets results using
+        pSQL's named_results, and then closes the connection.
+        Args: query - pSQL query as string
+              *args - pass in as many parameters for the query as needed
+        Returns: the fetchOne or fetchAll of the query
+        """
+        conx = DbConnect.get_connection()
+        query = conx.query(sql, *args)
+        result_list = query.namedresult()
+        conx.close()
+        return result_list
+
+    @staticmethod
+    def doQuery(query, *args):
+        """
+        Opens a connection to the db, executes a query, gets results using
+        pSQL's named_results, and then closes the connection.
+        Args: query - pSQL query as string
+              *args - pass in as many parameters for the query as needed
+        Returns: the fetchOne or fetchAll of the query
+        """
+        conx = DbConnect.get_connection()
+        query = conx.query(query, *args)
+        conx.close()
+
+
+class ApiConnect(object):
+    """
+    Holds Curl procedures to get info from our API partners
+    """
+
+    @staticmethod
+    def get_load(api_call):
+        """
+        Performs Curl with PyCurl using the GET method. Opens/closes each conn.
+        Args: Full URL for the API call
+        Returns: getvalue of JSON load from API
+        """
+        response = StringIO.StringIO()
+        c = pycurl.Curl()
+        c.setopt(c.URL, api_call)
+        c.setopt(c.WRITEFUNCTION, response.write)
+        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
+        c.perform()
+        c.close()
+        json_values = json.loads(response.getvalue())
+        response.close()
+        return json_values
+
+
 # gets restaurants from a given location
 class LatLong(object):
     """
@@ -113,85 +192,6 @@ class Place(object):
         sql = 'INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address) VALUES ($1, $2, $3)'
 
         DbConnect.doQuery(sql, self.happy_string, self.fs_venue_id, self.address)
-
-
-class DbConnect(object):
-    """
-    Collection of static methods that set up our DB connection and create
-    generalized methods for running queries / establish and release
-    connections in pSQL
-    """
-
-    @staticmethod
-    def get_connection():
-        """
-        Sets up the postgreSQL connection by loading in params from config
-        """
-        return pg.DB(
-            host=config.DBHOST,
-            user=config.DBUSER,
-            passwd=config.DBPASS,
-            dbname=config.DBNAME
-        )
-
-    @staticmethod
-    def escape(value):
-        """
-        Escapes apostrophes in SQL
-        """
-        return value.replace("'", "''")
-
-    @staticmethod
-    def get_named_results(sql, *args):
-        """
-        Opens a connection to the db, executes a query, gets results using
-        pSQL's named_results, and then closes the connection.
-        Args: query - pSQL query as string
-              *args - pass in as many parameters for the query as needed
-        Returns: the fetchOne or fetchAll of the query
-        """
-        conx = DbConnect.get_connection()
-        query = conx.query(sql, *args)
-        result_list = query.namedresult()
-        conx.close()
-        return result_list
-
-    @staticmethod
-    def doQuery(query, *args):
-        """
-        Opens a connection to the db, executes a query, gets results using
-        pSQL's named_results, and then closes the connection.
-        Args: query - pSQL query as string
-              *args - pass in as many parameters for the query as needed
-        Returns: the fetchOne or fetchAll of the query
-        """
-        conx = DbConnect.get_connection()
-        query = conx.query(query, *args)
-        conx.close()
-
-
-class ApiConnect(object):
-    """
-    Holds Curl procedures to get info from our API partners
-    """
-
-    @staticmethod
-    def get_load(api_call):
-        """
-        Performs Curl with PyCurl using the GET method. Opens/closes each conn.
-        Args: Full URL for the API call
-        Returns: getvalue of JSON load from API
-        """
-        response = StringIO.StringIO()
-        c = pycurl.Curl()
-        c.setopt(c.URL, api_call)
-        c.setopt(c.WRITEFUNCTION, response.write)
-        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', 'Accept-Charset: UTF-8'])
-        c.perform()
-        c.close()
-        json_values = json.loads(response.getvalue())
-        response.close()
-        return json_values
 
 
 # start at bottom right location

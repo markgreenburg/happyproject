@@ -206,7 +206,7 @@ def scrape():
             loc = LatLong()
             loc.location = str(current_lat) + ',' + str(current_lng)
             print loc.location
-            apicount = Place.get_places(loc.location, '1610')
+            Place.get_places(loc.location, '1610')
             current_lng += 0.016635
         current_lng = -95.883179
         current_lat += 0.014466

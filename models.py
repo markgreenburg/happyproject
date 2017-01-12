@@ -178,9 +178,9 @@ class Day(object):
             day_info = DbConnect.get_named_results(sql, True, day_of_week, \
                        loc_id)
         if day_info:
-            self.day_of_week = day_info.day_of_week
-            self.location_id = day_info.loc_id
             self.day_time_id = day_info.id
+            self.location_id = day_info.location_id
+            self.day_of_week = day_info.day_of_week
             self.start_time = day_info.start_time
             self.end_time = day_info.end_time
         else:

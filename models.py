@@ -69,6 +69,7 @@ class Place(object):
         print ''
         print '***************************************************************'
         print 'name: %s' % self.name
+        print 'location_id: %d' % self.location_id
         print 'venue_id: %s' % self.venue_id
         print 'lat: %d' % self.lat
         print 'lng: %d' % self.lng
@@ -167,15 +168,16 @@ class Day(object):
     """
     def __init__(self, day_time_id=0, day_of_week=0, loc_id=0):
         if day_time_id > 0:
-            sql = ("SELECT location_id, day_of_week, start_time, end_time FROM"
-                   " happyhour.public.id_times WHERE id = $1")
+            sql = ("SELECT id, location_id, day_of_week, start_time, end_time"
+                   " FROM happyhour.public.id_times WHERE id = $1")
             day_info = DbConnect.get_named_results(sql, True, day_time_id)
         elif day_of_week > 0 and loc_id > 0:
-            sql = ("SELECT location_id, day_of_week, start_time, end_time FROM"
-                   " happyhour.pulic.id_times WHERE day_of_week = $1 AND"
+            sql = ("SELECT id, location_id, day_of_week, start_time, end_time"
+                   " FROM happyhour.pulic.id_times WHERE day_of_week = $1 AND"
                    " location_id = $2")
             day_info = DbConnect.get_named_results(sql, True, day_of_week, \
                        loc_id)
+        print day_info
         self.day_of_week = day_of_week
         self.location_id = loc_id
         if day_info:
@@ -186,6 +188,16 @@ class Day(object):
             self.day_time_id = day_time_id
             self.start_time = '00:00:00'
             self.end_time = '00:00:00'
+        # Log to console to check returns of API calls
+        print ''
+        print '***************************************************************'
+        print 'day of week: %s' % self.day_of_week
+        print 'location_id: %s' % self.location_id
+        print 'day_time_id: %s' % self.day_time_id
+        print 'start_time: %s' % self.start_time
+        print 'end_time: %s' % self.end_time
+        print '***************************************************************'
+        print ''
 
     def insert(self):
         """
@@ -245,6 +257,7 @@ class Day(object):
         Gets a list of day objects based for each location_id
         """
         sql = "SELECT id FROM happyhour.public.id_times WHERE location_id = $1"
+        print location_id
         day_id_list = DbConnect.get_named_results(sql, False, location_id)
         day_objects_list = []
         for day in day_id_list:

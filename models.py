@@ -178,13 +178,15 @@ class Day(object):
             day_info = DbConnect.get_named_results(sql, True, day_of_week, \
                        loc_id)
         print day_info
-        self.day_of_week = day_of_week
-        self.location_id = loc_id
         if day_info:
+            self.day_of_week = day_info.day_of_week
+            self.location_id = day_info.loc_id
             self.day_time_id = day_info.id
             self.start_time = day_info.start_time
             self.end_time = day_info.end_time
         else:
+            self.day_of_week = 0
+            self.location_id = 0
             self.day_time_id = day_time_id
             self.start_time = '00:00:00'
             self.end_time = '00:00:00'

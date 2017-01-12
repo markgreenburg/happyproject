@@ -52,9 +52,6 @@ def display():
     # user = User()
     global lat
     global lng
-
-    print type(lat)
-    print lng
     place_list = Place.get_places(lat, lng\
                  , '100')
 

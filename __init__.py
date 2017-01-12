@@ -52,13 +52,8 @@ def display():
     # user = User()
     global lat
     global lng
-<<<<<<< HEAD
-=======
-
->>>>>>> a114eaf1784c441069d6b06713dc39e741ac6aa9
     place_list = Place.get_places(lat, lng\
                  , '100')
-
     latlng_list = []
     for place in place_list:
         latlng_list.append([float(place.lat), float(place.lng)])

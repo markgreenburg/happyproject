@@ -163,7 +163,7 @@ class Day(object):
     Defines an individual day on which a Place has a Happy Hour
     """
     def __init__(self, day_time_id=0):
-        self.day_time_id = id
+        self.day_time_id = day_time_id
         sql = ("SELECT location_id, day_of_week, start_time, end_time FROM"
                " happyhour.public.id_times WHERE id = $1")
         day_info = DbConnect.get_named_results(sql, True, self.day_time_id)

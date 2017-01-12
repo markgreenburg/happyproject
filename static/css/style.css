@@ -17,6 +17,10 @@ html, body {
 #map_canvas {
     height: 100%;
 }
+#infowindow{
+    height: 100%;
+    border: 1px solid black
+}
 .container-fluid{
     height: 100%
 }

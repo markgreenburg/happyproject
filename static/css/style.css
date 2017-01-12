@@ -17,27 +17,14 @@ html, body {
 #map_canvas {
     height: 100%;
 }
-#infowindow{
-    height: 100%;
-    padding: 0; !important;
-    border: 2px solid black
-}
-.container-fluid{
+.container-fluid {
     height: 100%
 }
 
-.loading{
+.loading {
     height: 70%
 }
 
-.place_details{
-    height:100px;
-    width: 100%;
-    padding: 0;
-    border-top: 1px solid grey;
-    border-bottom: 1px solid grey
-}
-#place_descriptions{
-    font-weight: 500;
-    font-size: 100%;
+nav.navbar {
+    margin-bottom: 0;
 }

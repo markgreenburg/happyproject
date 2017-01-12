@@ -190,10 +190,12 @@ class Day(object):
             self.day_time_id = day_info.id
             self.location_id = day_info.location_id
             self.day_of_week = day_info.day_of_week
+            self.day_string = self.get_day_string()
             self.start_time = day_info.start_time
             self.end_time = day_info.end_time
         else:
             self.day_of_week = 0
+            self.day_string = ''
             self.location_id = 0
             self.day_time_id = day_time_id
             self.start_time = '00:00:00'
@@ -202,11 +204,35 @@ class Day(object):
         print ''
         print '***************************************************************'
         print 'day of week: %s' % self.day_of_week
+        print 'day_string is: %s' % self.day_string
         print 'location_id: %s' % self.location_id
         print 'day_time_id: %s' % self.day_time_id
         print 'start_time: %s' % self.start_time
         print 'end_time: %s' % self.end_time
         print '***************************************************************'
+
+    def get_day_string(self):
+        """
+        Gives us a human-readable version of the day
+        """
+        if self.day_of_week == 1:
+            day_string = 'Monday'
+        elif self.day_of_week == 2:
+            day_string = 'Tuesday'
+        elif self.day_of_week == 3:
+            day_string = 'Wednesday'
+        elif self.day_of_week == 4:
+            day_string = 'Thursday'
+        elif self.day_of_week == 5:
+            day_string = 'Friday'
+        elif self.day_of_week == 6:
+            day_string = 'Saturday'
+        elif self.day_of_week == 7:
+            day_string = 'Sunday'
+        # make sure we set day_string to something if no matchces
+        else:
+            day_string = ''
+        return day_string
 
     def insert(self):
         """

@@ -70,9 +70,8 @@ class Place(object):
         # Log to console to check returns of API calls
         print ''
         print '***************************************************************'
-        print 'Happy Hour Times: %s' % self.happy_hour
-        print 'venue_id: %s' % self.venue_id
         print 'name: %s' % self.name
+        print 'venue_id: %s' % self.venue_id
         print 'lat: %d' % self.lat
         print 'lng: %d' % self.lng
         print 'website: %s' % self.website
@@ -80,6 +79,7 @@ class Place(object):
         print 'rating: %d' % self.rating
         print 'phone: %s' % self.formatted_phone_number
         print 'address: %s' % self.formatted_address
+        print 'Happy Hour Times: %s' % self.happy_hour
         print '***************************************************************'
 
     def save(self):

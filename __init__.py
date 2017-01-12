@@ -64,5 +64,13 @@ def display():
         "display.html", place_list=place_list, place_list_length=place_list_length, apikey=g_api_key, latlng_list=latlng_list, latitude=\
         lat, longitude=lng)
 
+@app.route('/details/<int:location_id>')
+def show_location(location_id):
+    """
+    Shows the Foursquare and happyhour details for a given id from id_venue_id
+    """
+    venue = Place(location_id)
+    return render_template("details.html", location_object=venue)
+
 if __name__ == "__main__":
     app.run(threaded=True)

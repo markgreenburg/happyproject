@@ -1,61 +1,53 @@
 {% extends "layout.html" %}
-{% block head %}
-    <head>
-        <style>
-            #map {
-                height: 400px;
-                width: 100%;
-            }
-        </style>
-    </head>
-{% endblock %}
 {% block body %}
-    <body>
-    <div id="map"></div>
+    <body onload="locate()">
+    <div class="container-fluid">
+        <div class="clearfix row">
+            <div class="col-md-9" id="map_canvas"></div>
+            <div class="col-md-3" id="infowindow"></div>
+        </div>
+    </div>
+    </body>
     <script>
-        var long = {{ longitude }};
-        var lati = {{ latitude }};
-        var userLoc = {lat: lati, lng: long};
+        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+        function locate() {
+            navigator.geolocation.getCurrentPosition(initialize, fail);
+        }
 
+        function initialize(position) {
+            var myLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var mapOptions = {
+                zoom: 12,
+                center: myLatLng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
 
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 13,
-                center: userLoc
+            var map = new google.maps.Map(document.getElementById('map_canvas'),
+                mapOptions);
+            var userMarker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                icon: im
             });
-            setMarkers(map);
+            setMarkers(map)
         }
 
         latlng_list = {{ latlng_list }};
 
         function setMarkers(map) {
-            for (var i = 0; i < 1; i++) {
-                var image = {
-                    url: '/static/dot_orange.png',
-                    size: new google.maps.Size(71, 71),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(17, 34),
-                    scaledSize: new google.maps.Size(15, 15)
-                };
-                var userMarker = new google.maps.Marker({
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    icon: image,
-                    position: userLoc
+            for (var n = 0; n < latlng_list.length; n++) {
+                var loc = latlng_list[n];
+                var marker = new google.maps.Marker({
+                    position: {lat: loc[0], lng: loc[1]},
+                    map: map
                 });
-                for (var n = 0; n < latlng_list.length; n++) {
-                    var loc = latlng_list[n];
-                    var marker = new google.maps.Marker({
-                        position: {lat: loc[0], lng: loc[1]},
-                        map: map
-                    });
-                }
             }
 
+
+        }
+
+        function fail() {
+            alert('navigator.geolocation failed, may not be supported');
         }
     </script>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key={{ apikey }}&callback=initMap">
-    </script>
-    </body>
 {% endblock %}

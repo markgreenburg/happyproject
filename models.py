@@ -177,7 +177,6 @@ class Day(object):
                    " location_id = $2")
             day_info = DbConnect.get_named_results(sql, True, day_of_week, \
                        loc_id)
-        print day_info
         if day_info:
             self.day_of_week = day_info.day_of_week
             self.location_id = day_info.loc_id
@@ -199,7 +198,6 @@ class Day(object):
         print 'start_time: %s' % self.start_time
         print 'end_time: %s' % self.end_time
         print '***************************************************************'
-        print ''
 
     def insert(self):
         """
@@ -259,7 +257,6 @@ class Day(object):
         Gets a list of day objects based for each location_id
         """
         sql = "SELECT id FROM happyhour.public.id_times WHERE location_id = $1"
-        print location_id
         day_id_list = DbConnect.get_named_results(sql, False, location_id)
         day_objects_list = []
         for day in day_id_list:

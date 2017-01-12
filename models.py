@@ -30,6 +30,7 @@ class Place(object):
     """
     location_id = 0
     venue_id = ''
+    happy_hour = []
     name = ''
     lat = 0
     lng = 0
@@ -47,7 +48,7 @@ class Place(object):
                " happyhour.public.id_times WHERE location_id = $1")
         self.happy_hour = DbConnect.get_named_results(sql, False, \
         self.location_id)
-        
+
         # Curl to get Foursquare venue details
         url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
                "client_secret=%s&v=20170109" % \
@@ -82,11 +83,57 @@ class Place(object):
         print 'Happy Hour Times: %s' % self.happy_hour
         print '***************************************************************'
 
+    def insert(self):
+        """
+        Inserts new venue records into our database.
+        Is called by the save() method
+        """
+        # Insert into venues & coords tables
+        sql = ("WITH venues AS (INSERT INTO happyhour.public.id_venue_id"
+               " (venue_id) VALUES ($1) RETURNING id) INSERT INTO"
+               " happyhour.pulic.coordinates (location_id, lat, lng) SELECT id,"
+               " $2, $3 FROM venues RETURNING id"
+              )
+        query_result = DbConnect.get_named_results(sql, True, self.venue_id, \
+                       self.lat, self.lng)
+        self.location_id = query_result.id
+        # Insert into happy hours time table
+        # for day in self.happy_hour:
+        #     day_num = day.day_of_week
+        #     start = day.start_time
+        #     end = day.end_time
+        #     sql = ("INSERT INTO happyhour.public.id_times (location_id,"
+        #            " day_of_week, start_time, end_time) VALUES"
+        #            " ($1, $2, $3, $4)")
+        #     query_result = DbConnect.get_named_results(sql, True, \
+        #                    self.location_id, day_num, start, end)
+        return self.location_id
+
+    def update(self):
+        """
+        Updates an existing Place record. Is called by the save() method.
+        """
+        pass
+
     def save(self):
         """
         Saves to database, using either insert() or update() methods depending
         on whether or not result already exists in our database
+        Args: self - uses self.location_id to determine whether to call insert()
+                     or update()
+        Returns: self.location_id
         """
+        if self.location_id > 0:
+            self.update()
+        else:
+            self.insert()
+        return self.location_id
+
+    def delete(self):
+        """
+        Sets deleted property in id_venue_id table to 1
+        """
+        pass
 
     @staticmethod
     def get_places(lat, lng, radius='1'):
@@ -110,6 +157,48 @@ class Place(object):
             place_instance = Place(venue_row[0])
             place_object_list.append(place_instance)
         return place_object_list
+
+class Day(object):
+    """
+    Defines an individual day on which a Place has a Happy Hour
+    """
+    def __init__(self, day_time_id=0):
+        self.day_time_id = day_time_id
+        sql = ("SELECT location_id, day_of_week, start_time, end_time FROM"
+               " happyhour.public.id_times WHERE id = $1")
+        day_info = DbConnect.get_named_results(sql, True, self.day_time_id)
+        if day_info:
+            self.location_id = day_info.location_id
+            self.day_of_week = day_info.day_of_week
+            self.start_time = day_info.start_time
+            self.end_time = day_info.end_time
+        else:
+            self.location_id = day_info.location_id
+            self.day_of_week = day_info.day_of_week
+            self.start_time = '00:00:00'
+            self.end_time = 'OO:00:00'
+
+    def insert(self):
+        pass
+
+    def update(self):
+        pass
+
+    def save(self):
+        pass
+
+    @staticmethod
+    def get_days(location_id):
+        """
+        Gets a list of day objects based for each location_id
+        """
+        sql = "SELECT id FROM happyhour.public.id_times WHERE location_id = $1"
+        day_id_list = DbConnect.get_named_results(sql, False, location_id)
+        day_objects_list = []
+        for day in day_id_list:
+            day_object = Day(day[0])
+            day_objects_list.append(day_object)
+        return day_objects_list
 
 class ApiConnect(object):
     """

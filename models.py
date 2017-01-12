@@ -16,8 +16,9 @@ secret = config.FS_CLIENT_SECRET
 
 class User(object):
     """
-    User superclass. Stores basic lat / lon data for each user as a
-    comma-separated string value
+    User class. Stores basic lat / lon data for each user as a
+    comma-separated string value. Will add auth, add / edit
+    functionality as fast-follow.
     """
     def __init__(self, lat='', lng=''):
         self.lat = lat
@@ -44,11 +45,7 @@ class Place(object):
         # Get local info from our db
         sql = "SELECT venue_id FROM happyhour.public.id_venue_id WHERE id = $1 LIMIT 1"
         self.venue_id = DbConnect.get_named_results(sql, True, self.location_id).venue_id
-        sql = ("SELECT day_of_week, start_time, end_time FROM"
-               " happyhour.public.id_times WHERE location_id = $1")
-        self.happy_hour = DbConnect.get_named_results(sql, False, \
-        self.location_id)
-
+        self.happy_hour = Day.get_days(self.location_id)
         # Curl to get Foursquare venue details
         url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
                "client_secret=%s&v=20170109" % \
@@ -94,26 +91,24 @@ class Place(object):
                " happyhour.pulic.coordinates (location_id, lat, lng) SELECT id,"
                " $2, $3 FROM venues RETURNING id"
               )
-        query_result = DbConnect.get_named_results(sql, True, self.venue_id, \
-                       self.lat, self.lng)
-        self.location_id = query_result.id
-        # Insert into happy hours time table
-        # for day in self.happy_hour:
-        #     day_num = day.day_of_week
-        #     start = day.start_time
-        #     end = day.end_time
-        #     sql = ("INSERT INTO happyhour.public.id_times (location_id,"
-        #            " day_of_week, start_time, end_time) VALUES"
-        #            " ($1, $2, $3, $4)")
-        #     query_result = DbConnect.get_named_results(sql, True, \
-        #                    self.location_id, day_num, start, end)
+        result_obj = DbConnect.get_named_results(sql, True, self.venue_id, \
+                     self.lat, self.lng)
+        self.location_id = result_obj.id
         return self.location_id
 
     def update(self):
         """
         Updates an existing Place record. Is called by the save() method.
         """
-        pass
+        sql = ("WITH updated_venue AS (UPDATE happyhour.pulic.id_venue_id SET"
+               " venue_id = $1 WHERE id = $2 RETURNING id) UPDATE"
+               " happyhour.public.coordinates SET lat = $3, lng = $4 WHERE"
+               " location_id IN (SELECT id from updated_venue) RETURNING"
+               " location_id;"
+              )
+        result_obj = DbConnect.get_named_results(sql, True, self.venue_id,\
+                     self.location_id, self.lat, self.lng)
+        return result_obj.location_id
 
     def save(self):
         """
@@ -129,11 +124,17 @@ class Place(object):
             self.insert()
         return self.location_id
 
-    def delete(self):
+    def set_delete(self, deleted=True):
         """
-        Sets deleted property in id_venue_id table to 1
+        Sets deleted property in id_venue_id table.
+        Args: deleted - Optional Bool type, defaults to True
+        Returns: id from the updated row in id_venue_id
         """
-        pass
+        sql = ("UPDATE happyhour.public.id_venue_id SET deleted = $1 WHERE"
+               " id = $2")
+        result_obj = DbConnect.get_named_results(sql, True, deleted, \
+                     self.location_id)
+        return result_obj.location_id
 
     @staticmethod
     def get_places(lat, lng, radius='1'):
@@ -160,32 +161,83 @@ class Place(object):
 
 class Day(object):
     """
-    Defines an individual day on which a Place has a Happy Hour
+    Defines an individual day on which a Place has a Happy Hour. Optional params
+    are day_time_id (internal id_times pk) or BOTH day_of_week & loc_id (which
+    is the internal id of each venue from the id_venue_id table)
     """
-    def __init__(self, day_time_id=0):
-        self.day_time_id = day_time_id
-        sql = ("SELECT location_id, day_of_week, start_time, end_time FROM"
-               " happyhour.public.id_times WHERE id = $1")
-        day_info = DbConnect.get_named_results(sql, True, self.day_time_id)
+    def __init__(self, day_time_id=0, day_of_week=0, loc_id=0):
+        if day_time_id > 0:
+            sql = ("SELECT location_id, day_of_week, start_time, end_time FROM"
+                   " happyhour.public.id_times WHERE id = $1")
+            day_info = DbConnect.get_named_results(sql, True, day_time_id)
+        elif day_of_week > 0 and loc_id > 0:
+            sql = ("SELECT location_id, day_of_week, start_time, end_time FROM"
+                   " happyhour.pulic.id_times WHERE day_of_week = $1 AND"
+                   " location_id = $2")
+            day_info = DbConnect.get_named_results(sql, True, day_of_week, \
+                       loc_id)
+        self.day_of_week = day_of_week
+        self.location_id = loc_id
         if day_info:
-            self.location_id = day_info.location_id
-            self.day_of_week = day_info.day_of_week
+            self.day_time_id = day_info.id
             self.start_time = day_info.start_time
             self.end_time = day_info.end_time
         else:
-            self.location_id = day_info.location_id
-            self.day_of_week = day_info.day_of_week
+            self.day_time_id = day_time_id
             self.start_time = '00:00:00'
-            self.end_time = 'OO:00:00'
+            self.end_time = '00:00:00'
 
     def insert(self):
-        pass
+        """
+        Inserts a new day-of-week record into the id_times table. Returns
+        the id of the new insert.
+        """
+        sql = ("INSERT INTO happyhour.public.id_times (location_id,"
+               " day_of_week, start_time, end_time) VALUES ($1, $2, $3, $4)"
+               " RETURNING id"
+              )
+        result_obj = DbConnect.get_named_results(sql, True, self.location_id, \
+                     self.day_of_week, self.start_time, self.end_time)
+        self.day_time_id = result_obj.id
+        return self.day_time_id
 
     def update(self):
-        pass
+        """
+        Updates existing day record in id_times table.
+        Returns: record's id.
+        """
+        sql = ("UPDATE happyhour.pulic.id_times SET location_id = $1,"
+               " day_of_week = $2, start_time = $3, end_time = $4 WHERE"
+               " id = $5 RETURNING id"
+              )
+        result_obj = DbConnect.get_named_results(sql, True, self.location_id, \
+                     self.day_of_week, self.start_time, self.end_time, \
+                     self.day_time_id)
+        return result_obj.id
 
     def save(self):
-        pass
+        """
+        Saves day record into db using either update() or insert() depending on
+        instance properties location_id and day_of_week
+        Returns: the internal id of the record in the id_times table
+        """
+        if self.location_id > 0 and self.day_of_week > 0:
+            self.update()
+        else:
+            self.insert()
+        return self.day_time_id
+
+    def set_delete(self, deleted=True):
+        """
+        Sets deleted property for each record in the id_times table.
+        Args: deleted - optional Bool, defaults to True.
+        Returns: the internal id of the updated object.
+        """
+        sql = ("UPDATE happyhour.public.id_times SET deleted = $1 WHERE"
+               " id = $2")
+        result_obj = DbConnect.get_named_results(sql, True, deleted, \
+                     self.day_time_id)
+        return result_obj.id
 
     @staticmethod
     def get_days(location_id):
@@ -212,13 +264,13 @@ class ApiConnect(object):
         Returns: getvalue of JSON load from API
         """
         response = StringIO.StringIO()
-        c = pycurl.Curl()
-        c.setopt(c.URL, api_call)
-        c.setopt(c.WRITEFUNCTION, response.write)
-        c.setopt(c.HTTPHEADER, ['Content-Type: application/json', \
+        curl_object = pycurl.Curl()
+        curl_object.setopt(curl_object.URL, api_call)
+        curl_object.setopt(curl_object.WRITEFUNCTION, response.write)
+        curl_object.setopt(curl_object.HTTPHEADER, ['Content-Type: application/json', \
         'Accept-Charset: UTF-8'])
-        c.perform()
-        c.close()
+        curl_object.perform()
+        curl_object.close()
         json_values = json.loads(response.getvalue())
         response.close()
         return json_values
@@ -232,7 +284,7 @@ class DbConnect(object):
     @staticmethod
     def get_connection():
         """
-        Sets up the postgreSQL connection by loading in params from config
+        Sets up the postgreSQL connection by loading in db settings from config
         """
         return pg.DB(
             host=config.DBHOST,
@@ -266,23 +318,3 @@ class DbConnect(object):
             results = results[0]
         conx.close()
         return results
-
-"""
-*****
-* Code We Still Need For Other Stuff
-*****
-# Curl to get Foursquare Happy String
-        url = ("https://api.foursquare.com/v2/venues/%s/menu?client_id=%s&client_secret=%s&v=20170109 % (self.venue_id, client_id, secret)
-        happy_strings = ApiConnect.get_load(url)
-        self.happy_string = ''
-        self.has_happy_hour = False
-        for menu in happy_strings.get('response').get('menu').get('menus')\
-        .get('items', [{'name': '', 'description': ''}]):
-            if 'happy hour' in str(menu.get('name', '')).lower() or \
-            'happy hour' in str(menu.get('description', '')).lower():
-                self.happy_string = menu.get('description').lower()
-                self.has_happy_hour = True
-                break
-# Curl to get Foursquare venue details if venue has Happy Hour
-*****
-"""

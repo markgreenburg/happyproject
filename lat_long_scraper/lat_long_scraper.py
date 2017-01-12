@@ -247,9 +247,9 @@ def scrape():
             loc.location = str(current_lat) + ',' + str(current_lng)
             print loc.location
             Place.get_places(loc.location, '1610')
-            current_lng += 0.03327
+            current_lng += 0.016635
         current_lng = -95.465698
-        current_lat += 0.028932
+        current_lat += 0.014466
     print "*****FINISHED*****"
 
 # calls scraper function

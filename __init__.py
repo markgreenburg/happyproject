@@ -40,8 +40,7 @@ def location():
     global lng
     lat = json.loads(request.args.get('lat'))
     lng = json.loads(request.args.get('lng'))
-    return 'ok'
-    # return redirect(None)
+    return redirect(None)
 
 @app.route('/display')
 def display():

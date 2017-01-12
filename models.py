@@ -29,50 +29,59 @@ class Place(object):
     Place superclass. Gets various detail attributes from the Foursquare api
     using Curl. Generates based on internal ID for each venue.
     """
-    location_id = 0
-    venue_id = ''
-    happy_hour = []
-    name = ''
-    lat = 0
-    lng = 0
-    website = ''
-    price_level = 0
-    rating = 0.0
-    formatted_phone_number = ''
-    formatted_address = []
     def __init__(self, location_id=0):
         self.location_id = location_id
         # Get local info from our db
-        sql = "SELECT venue_id FROM happyhour.public.id_venue_id WHERE id = $1 LIMIT 1"
-        self.venue_id = DbConnect.get_named_results(sql, True, self.location_id).venue_id
-        self.happy_hour = Day.get_days(self.location_id)
-        # Curl to get Foursquare venue details
-        url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
-               "client_secret=%s&v=20170109" % \
-               (self.venue_id, \
-                client_id, \
-                secret)
+        sql = ("SELECT venues.id, venue_id, lat, lng FROM"
+               " happyhour.public.id_venue_id venues INNER JOIN"
+               " happyhour.public.coordinates coords ON venues.id ="
+               " coords.location_id WHERE venues.id = $1 LIMIT 1"
               )
-        venue_details = ApiConnect.get_load(url).get('response', {}).get\
-                        ('venue')
-        self.name = venue_details.get('name', '')
-        self.lat = venue_details.get('location', {}).get('lat', 0)
-        self.lng = venue_details.get('location', {}).get('lng', 0)
-        self.website = venue_details.get('url', '')
-        self.price_level = venue_details.get('price', {}).get('tier', 0)
-        self.rating = venue_details.get('rating', 0.0)
-        self.formatted_phone_number = venue_details.get('contact', {}).get\
-        ('formattedPhone', '')
-        self.formatted_address = venue_details.get('location', {}).get\
-        ('formattedAddress', [])
+        venue_db_object = DbConnect.get_named_results(sql, True, \
+                          self.location_id)
+        if venue_db_object:
+            self.location_id = venue_db_object.id
+            self.venue_id = venue_db_object.venue_id
+            self.lat = venue_db_object.lat
+            self.lng = venue_db_object.lng
+            self.happy_hour = Day.get_days(self.location_id)
+            # Curl to get Foursquare venue details
+            url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
+                   "client_secret=%s&v=20170109" % \
+                   (self.venue_id, \
+                    client_id, \
+                    secret)
+                  )
+            venue_details = ApiConnect.get_load(url).get('response', {}).get\
+                            ('venue', {})
+            self.name = venue_details.get('name', '')
+            self.website = venue_details.get('url', '')
+            self.price_level = venue_details.get('price', {}).get('tier', 0)
+            self.rating = venue_details.get('rating', 0.0)
+            self.formatted_phone_number = venue_details.get('contact', {}).get\
+            ('formattedPhone', '')
+            self.formatted_address = venue_details.get('location', {}).get\
+            ('formattedAddress', [])
+        else:
+            self.location_id = 0
+            self.venue_id = ''
+            self.happy_hour = []
+            self.name = ''
+            self.lat = 0
+            self.lng = 0
+            self.website = ''
+            self.price_level = 0
+            self.rating = 0.0
+            self.formatted_phone_number = ''
+            self.formatted_address = []
         # Log to console to check returns of API calls
         print ''
         print '***************************************************************'
         print 'name: %s' % self.name
         print 'location_id: %d' % self.location_id
         print 'venue_id: %s' % self.venue_id
-        print 'lat: %d' % self.lat
-        print 'lng: %d' % self.lng
+        print 'lat: %f' % self.lat
+        print 'lng: %f' % self.lng
         print 'website: %s' % self.website
         print 'price level: %d' % self.price_level
         print 'rating: %d' % self.rating

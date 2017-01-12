@@ -16,6 +16,7 @@ sys.setdefaultencoding('utf8')
 
 # API Keys
 APIKEY = config.G_API_KEY
+CODYAPIKEY = config.CODY_G_API_KEY
 FS_CLIENT_ID = config.FS_CLIENT_ID
 FS_SECRET = config.FS_CLIENT_SECRET
 
@@ -116,12 +117,11 @@ class Place(object):
     Place superclass. Gets various detail attributes from the Foursquare api
     using Curl. Requires a Foursquare venue_id to construct.
     """
-
     def __init__(self, place_id):
         self.place_id = place_id
         # Curl to get place details from Google
         url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s" % (
-            urllib.quote_plus(self.place_id), urllib.quote_plus(APIKEY))
+            urllib.quote_plus(self.place_id), urllib.quote_plus(CODYAPIKEY))
         g_place_deets = ApiConnect.get_load(url)
         self.lat = str(g_place_deets.get('result').get('geometry').get('location').get('lat'))
         self.lng = str(g_place_deets.get('result').get('geometry').get('location').get('lng'))
@@ -164,7 +164,6 @@ class Place(object):
                 self.happy_string = menu.get('description').lower()
                 self.has_happy_hour = True
                 break
-
     @staticmethod
     def get_places(coords, radius='1609'):
         """
@@ -202,17 +201,15 @@ def scrape():
     # end at top right location
     lat = 29.945415
     lng = -95.158081
-
     while current_lat < lat:
         while current_lng < lng:
             loc = LatLong()
             loc.location = str(current_lat) + ',' + str(current_lng)
             print loc.location
-            place_inst = Place.get_places(loc.location, '1610')
+            apicount = Place.get_places(loc.location, '1610')
             current_lng += 0.016635
         current_lng = -95.883179
         current_lat += 0.014466
-
     print "*****FINISHED*****"
 
 

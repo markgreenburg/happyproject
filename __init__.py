@@ -47,7 +47,7 @@ def display():
     # place_list = Place.get_places(location)
     # user = User()
     place_list = Place.get_places(session.get('lat', 0), session.get('lng', 0)\
-                 , '6')
+                 , '100')
     latlng_list = []
     for place in place_list:
         latlng_list.append([place.lat, place.lng])

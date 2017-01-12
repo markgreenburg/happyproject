@@ -15,6 +15,7 @@ APIKEY = config.G_API_KEY
 FS_CLIENT_ID = config.FS_CLIENT_ID
 FS_SECRET = config.FS_CLIENT_SECRET
 
+print"Started"
 # gets restaurants from a given location
 class LatLong(object):
     """
@@ -57,12 +58,6 @@ class Place(object):
             address = (fs_venue_search.get('response'). \
                                    get('venues')[0].get('location').get('formattedAddress', ''))
             self.address = str(address[0])
-            print'************'
-            print'************'
-            print self.address
-            print self.fs_venue_id
-            print'************'
-            print'************'
         else:
             self.fs_venue_id = '0'
         # Curl to get Foursquare happy hour menu description
@@ -93,6 +88,7 @@ class Place(object):
               radius - string of meters, max 50000, def. 1600. Ex: '32000'
         Returns: list of Place object instances
         """
+        count = 0
         url = (
             "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=%s&radius=%s&types=restaurant&key=%s" %
             (coords, urllib.quote_plus(radius), urllib.quote_plus(APIKEY)))
@@ -108,6 +104,8 @@ class Place(object):
                 venue_add_exists = DbConnect.get_named_results(ven_add, place_instance.fs_venue_id)
                 if venue_id_exists != place_instance.fs_venue_id and venue_add_exists != place_instance.address:
                     place_instance.insert()
+                    count+=1
+                    print count
 
     def insert(self):
         sql = 'INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address) VALUES ($1, $2, $3)'
@@ -121,16 +119,16 @@ current_lng = -95.883179
 lat = 29.945415
 lng = -95.158081
 
-while current_lat < lat:
-    while current_lng < lng:
+while current_lat <= lat:
+    while current_lng <= lng:
         lat_long = LatLong()
         lat_long.location = str(lat) + ',' + str(lng)
         place_list = Place.get_places(lat_long.location, '1610')
-        current_lng+=0.018586
+        current_lng+=0.016635
     current_lng = 29.563902
     current_lat += 0.014466
 
-print "*****DONE*****"
+print "*****FINISHED*****"
 
 class DbConnect(object):
     """
@@ -169,7 +167,6 @@ class DbConnect(object):
         """
         conx = DbConnect.get_connection()
         query = conx.query(sql, *args)
-        print query
         result_list = query.namedresult()
         conx.close()
         return result_list
@@ -185,7 +182,6 @@ class DbConnect(object):
         """
         conx = DbConnect.get_connection()
         query = conx.query(query, *args)
-        print query
         conx.close()
 
 

@@ -193,21 +193,24 @@ class Place(object):
 
         DbConnect.doQuery(sql, self.happy_string, self.fs_venue_id, self.address)
 
+def scrape():
+    # start at bottom right location
+    current_lat = 29.563902
+    current_lng = -95.883179
+    # end at top right location
+    lat = 29.945415
+    lng = -95.158081
 
-# start at bottom right location
-current_lat = 29.563902
-current_lng = -95.883179
-# end at top right location
-lat = 29.945415
-lng = -95.158081
+    while current_lat < lat:
+        while current_lng < lng:
+            lat_long = LatLong()
+            lat_long.location = str(lat) + ',' + str(lng)
+            Place.get_places(lat_long.location, '1610')
+            current_lng += 0.016635
+        current_lng = -95.883179
+        current_lat += 0.014466
 
-while current_lat <= lat:
-    while current_lng <= lng:
-        lat_long = LatLong()
-        lat_long.location = str(lat) + ',' + str(lng)
-        place_list = Place.get_places(lat_long.location, '1610')
-        current_lng += 0.016635
-    current_lng = 29.563902
-    current_lat += 0.014466
 
-print "*****FINISHED*****"
+    print "*****FINISHED*****"
+
+scrape()

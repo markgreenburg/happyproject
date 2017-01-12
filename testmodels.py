@@ -51,13 +51,19 @@ class Place(object):
                 urllib.quote_plus(FS_SECRET)
                 )
                )
-        print url
         fs_venue_search = ApiConnect.get_load(url)
-        print fs_venue_search
         if len(fs_venue_search.get('response').get('venues')) > 0:
             self.fs_venue_id = str(fs_venue_search.get('response'). \
                                    get('venues')[0].get('id', '0'))
+            address = (fs_venue_search.get('response'). \
+                                   get('venues')[0].get('location').get('formattedAddress', ''))
+            self.address = str(address[0])
+            print'************'
+            print'************'
+            print self.address
             print self.fs_venue_id
+            print'************'
+            print'************'
         else:
             self.fs_venue_id = '0'
         # Curl to get Foursquare happy hour menu description
@@ -69,6 +75,7 @@ class Place(object):
                 )
                )
         fs_venue_deets = ApiConnect.get_load(url)
+
         self.happy_string = ''
         self.has_happy_hour = False
         for menu in fs_venue_deets.get('response').get('menu').get('menus') \
@@ -80,10 +87,10 @@ class Place(object):
                 break
         # Curl to get Foursquare venue details if venue has Happy Hour
         # if self.has_happy_hour:
-        #     url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
-        #            "client_secret=%s&v=20170109" % \
-        #            (self.fs_venue_id, FS_CLIENT_ID, FS_SECRET)
-        #            )
+            # url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
+            #        "client_secret=%s&v=20170109" % \
+            #        (self.fs_venue_id, FS_CLIENT_ID, FS_SECRET)
+            #        )
             # venue_details = ApiConnect.get_load(url).get('response').get('venue')
             # self.name = venue_details.get('name', '')
             # self.lat = venue_details.get('location').get('lat', 0)
@@ -95,7 +102,7 @@ class Place(object):
             # self.formatted_address = venue_details.get('location').get('formattedAddress', '')
 
     @staticmethod
-    def get_places(coords, radius='30000'):
+    def get_places(coords, radius='1609'):
         """
         Gets all places within a certain meter radius of a geo using FourSquare
         Args: coords - comma-separated string in the format 'lat,long'
@@ -110,16 +117,19 @@ class Place(object):
         for place in places_list:
             place_id = [place][0].get('place_id')
             place_instance = Place(place_id)
+            print place_instance.address
             if place_instance.has_happy_hour:
-                query = 'SELECT venue_id FROM happyhour.public.happy_strings WHERE venue_id = $1'
-                venue_exists = DbConnect.get_named_results(query, place_instance.fs_venue_id)
-                if venue_exists == place_instance.fs_venue_id:
+                ven_id = 'SELECT venue_id FROM happyhour.public.happy_strings WHERE venue_id = $1'
+                venue_id_exists = DbConnect.get_named_results(ven_id, place_instance.fs_venue_id)
+                ven_add = 'SELECT address FROM happyhour.public.happy_strings WHERE venue_id = $1'
+                venue_add_exists = DbConnect.get_named_results(ven_add, place_instance.fs_venue_id)
+                if venue_id_exists != place_instance.fs_venue_id and venue_add_exists != place_instance.address:
                     place_instance.insert()
 
     def insert(self):
-        sql = 'INSERT INTO happyhour.public.happy_strings(happy_text, venue_id) VALUES ($1, $2)'
+        sql = 'INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address) VALUES ($1, $2, $3)'
 
-        DbConnect.doQuery(sql, self.happy_string, self.fs_venue_id)
+        DbConnect.doQuery(sql, self.happy_string, self.fs_venue_id, self.address)
 
 
 class DbConnect(object):

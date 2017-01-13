@@ -9,19 +9,35 @@
                 <div>
                     {% for place in place_list %}
                         <div class="place_details">
-                            <table class="place_descriptions">
+                            <table class="place_descriptions" style="border: 1px solid dimgray; width: 100%">
                                 <tr>
-                                    <th colspan="2"><h4 class="place_descriptions">{{ place.name }}</h4></th>
+                                    <th colspan="2" style="text-align: center; border-bottom: 3px solid dimgray"><h4 class="place_descriptions">{{ place.name }}</h4></th>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <table>
+                                    <td style="width: 100%">
+                                        <table style="width: 100%">
+                                            <tr style="display: none">
+                                                <th style="display: none"></th>
+                                            </tr>
                                             <tr>
-                                                <td>
-                                                    Days
-                                                </td>
-                                                <td>
-                                                    hours
+                                                <td style="width: 100%">
+                                                    {% for day in place.happy_hour %}
+                                                        <table style="width: 100%">
+                                                            <tr style="display: none">
+                                                                <th style="display: none"></th>
+                                                                <th style="display: none"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: center; width: 50%; font-weight: bold">
+                                                                    {{ day.day_string }}
+                                                                </td>
+                                                                <td style="text-align: center; width: 50%; font-size: 10px">
+                                                                    {{ day.start_time.strftime("%I:%M %p") }}
+                                                                    - {{ day.end_time.strftime("%I:%M %p") }}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    {% endfor %}
                                                 </td>
                                             </tr>
                                         </table>

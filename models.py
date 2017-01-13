@@ -56,6 +56,7 @@ class Place(object):
                             ('venue', {})
             self.name = venue_details.get('name', '')
             self.website = venue_details.get('url', '')
+            self.best_image = ''
             self.price_level = venue_details.get('price', {}).get('tier', 0)
             self.rating = venue_details.get('rating', 0.0)
             self.formatted_phone_number = venue_details.get('contact', {}).get\
@@ -70,6 +71,7 @@ class Place(object):
             self.lat = 0
             self.lng = 0
             self.website = ''
+            self.best_image = ''
             self.price_level = 0
             self.rating = 0.0
             self.formatted_phone_number = ''

@@ -76,8 +76,8 @@ def show_location(location_id):
     """
     Shows the Foursquare and happyhour details for a given id from id_venue_id
     """
-    venue = Place(location_id)
-    return render_template("details.html", location_object=venue)
+    location_object = Place(location_id)
+    return render_template("details.html", venue=location_object)
 
 if __name__ == "__main__":
     app.run(threaded=True)

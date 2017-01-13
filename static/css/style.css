@@ -53,20 +53,58 @@ footer.navbar-fixed-bottom div {
   padding: 5px;
 }
 
-div.details-happy-hour div.details-bus-hours {
+/**********************/
+/*Details Page Styling*/
+/**********************/
+
+/*Header Image*/
+div.details-top-row div.details-header-image {
     border: 1px solid black;
 }
 
-div.details-happy-hour div.details-bus-links {
+/*Container to the right of the header image*/
+div.details-top-row div.details-bus-info-container {
     border: 1px solid black;
 }
 
-div.row div.details-bottom-thirds {
+/*Main business name row container*/
+div.details-bus-info-container div.details-location-name-row {
     border: 1px solid black;
 }
 
-div.row div.details-venue-header {
-    text-align: center;
-    font-weight: bold;
-    font-size: 2rem;
+/*Business contact address and map info row container*/
+div.details-bus-info-container div.details-bus-info-row {
+    border: 1px solid black;
 }
+
+/*Left half of business contact info row - contains address and number*/
+div.details-bus-info-row div.details-bus-info {
+    border: 1px solid black;
+}
+
+/*Address and phone number row - contains divs for each address string & 
+/*number*/
+div.details-bus-info div.details-bus-contact {
+    border: 1px solid black;
+}
+
+/*Contains a component of the address (e.g., stree, city/state/zip, country)*/
+div.details-bus-contact div.details-bus-address {
+    border: 1px solid black;
+}
+
+/*Contains business phone number*/
+div.details-bus-contact div.details-bus-phone {
+    border: 1px solid black;
+}
+
+/*Right half of business contact info row - contains minimap*/
+div.details-bus-info-row div.details-bus-minimap {
+    border: 1px solid black;
+    height: 100%;
+}
+
+/*
+div.details-bus-info-container div.details-bus-info-row {
+    border: 1px solid black;
+}*/

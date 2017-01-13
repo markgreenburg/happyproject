@@ -65,6 +65,7 @@ class Place(object):
             self.category = venue_details.get('categories', [{}])[0].get \
                               ('name', '')
             self.specials = venue_details.get('specials', {}).get('items', [{}])
+            self.menu_url = venue_details.get('menu',{}).get('url','')
             self.hours_today = venue_details.get('hours', {}).get('status', '')
             self.is_open = venue_details.get('hours', {}).get('isOpen', False)
             self.price_level = venue_details.get('price', {}).get('tier', 0)
@@ -85,6 +86,7 @@ class Place(object):
             self.img_suffix = ''
             self.category = ''
             self.specials = [{}]
+            self.menu_url = ''
             self.hours_today = ''
             self.is_open = False
             self.price_level = 0
@@ -100,10 +102,17 @@ class Place(object):
         print 'lat: %f' % self.lat
         print 'lng: %f' % self.lng
         print 'website: %s' % self.website
+        print 'full image link: %s' % self.img_prefix + '500x500' + \
+              self.img_suffix
+        print 'main category: %s' % self.category
+        print 'menu url: %s' % self.menu_url
+        print 'hours_today: %s' % self.hours_today
+        print 'is_open: %s' % self.is_open
         print 'price level: %d' % self.price_level
         print 'rating: %d' % self.rating
         print 'phone: %s' % self.formatted_phone_number
         print 'address: %s' % self.formatted_address
+        print 'specials: %s' % self.specials
         print 'Happy Hour Times: %s' % self.happy_hour
         print '***************************************************************'
 

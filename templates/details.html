@@ -1,13 +1,20 @@
 {% extends "layout.html" %}
 {% block body %}
     <div class="container-fluid">
-        <div class="row clearfix">
+        <div class="row details-top-row clearfix">
             <div class="col-sm-4 col-xs-12 details-header-image">
                 <!-- Image resizes dynamically, do not specify size in tag -->
                 <img src="{{venue.img_prefix + '500x500' + venue.img_suffix}}" class="img-responsive" alt="{{venue.name}}" />
             </div>
-            <div class="col-sm-8 col-xs-12 details-happy-hour" style"border: 1px solid black;">
-                <div class="row details-top-right">
+            <div class="col-sm-8 col-xs-12 details-bus-info-container">
+                <div class="row details-location-name-row">
+                    <div class="col-xs-12 details-location-name">
+                        <h3>
+                            {{venue.name}}
+                        </h3>
+                    </div>
+                </div>
+                <div class="row details-bus-info-row">
                     <div class="col-xs-6 details-bus-info">
                         <div class="row details-bus-contact">
                             {% for address in venue.formatted_address %}
@@ -24,6 +31,7 @@
                         Map goes here:<br>
                         Lat: {{venue.lat}}<br>
                         Lng: {{venue.lng}}
+                        Height set to 100% of parent div column
                     </div>
                 </div>
                 <div class="row details-middle-right">
@@ -36,7 +44,7 @@
         <div class="row clearfix details-bottom-bar">
             <div class="col-sm-4 col-xs-12 details-bottom-thirds">
                 <div class="row">
-                    <div class="col-xs-12 details-venue-header">
+                    <div class="col-xs-12 details-venue-specials">
                         {{ venue.specials|length }}{{' Specials found for %s' % venue.name }}
                     </div>
                 </div>

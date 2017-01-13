@@ -96,14 +96,14 @@
                         </div>
                     </div>
                     <div class="col-sm-4 col-xs-12 details-location-specials-container">
-                        <div class="row details-location-specials-row">
+                        <div class="row details-location-specials-title-row">
                             <div class="col-xs-12 details-specials-title">
                                 {{ venue.specials|length }}{{' Specials found for %s' % venue.name }}
                             </div>
                         </div>
-                        <div class="row details-location-specials-scroll-row">
+                        <div class="row details-location-specials-content-row">
                         {% for special in venue.specials %}
-                            <div class="col-xs-12 details-venue-special">"
+                            <div class="col-xs-12 details-location-specials-content">"
                                 {{special.message}}
                             </div>
                         {% endfor %}

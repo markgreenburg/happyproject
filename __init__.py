@@ -55,20 +55,15 @@ def display():
     global lng
     place_list = Place.get_places(lat, lng\
                  , '100')
-    latlng_list = []
-    place_list = place_list
-    place_list_length = len(place_list)
-    for place in place_list:
-        latlng_list.append([float(place.lat), float(place.lng)])
-    for place in place_list:
-        for day in place.happy_hour:
-            print'###################'
-            print day.day_of_week
-            print day.start_time
-            print day.end_time
-            print'###################'
+    # latlng_list = []
+    # place_list = place_list
+    # place_list_length = len(place_list)
+    # for place in place_list:
+    #     # place_form_add = str(place.formatted_address[0])
+    #     place_name = str(place.name)
+    #     latlng_list.append([float(place.lat), float(place.lng), place_name])
     return render_template(
-        "display.html", place_list=place_list, place_list_length=place_list_length, apikey=g_api_key, latlng_list=latlng_list, latitude=\
+        "display.html", place_list=place_list, apikey=g_api_key, latitude=\
         lat, longitude=lng)
 
 @app.route('/details/<int:location_id>')

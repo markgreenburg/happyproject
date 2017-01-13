@@ -11,9 +11,6 @@ html, body {
     padding: 0;
 }
 
-/*.row{
-    height: 100%;
-}*/
 #map_canvas {
     height: 100%;
     padding-bottom: 80px;
@@ -25,10 +22,6 @@ html, body {
 .loading {
     height: 70%;
 }
-
-/*nav.navbar {
-    margin-bottom: 0;
-}*/
 
 #infowindow{
     padding: 0;

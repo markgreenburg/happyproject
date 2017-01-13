@@ -28,3 +28,6 @@ html, body {
 nav.navbar {
     margin-bottom: 0;
 }
+#infowindow{
+    padding: 0;
+}

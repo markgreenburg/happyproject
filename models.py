@@ -289,9 +289,11 @@ class Day(object):
     @staticmethod
     def get_days(location_id):
         """
-        Gets a list of day objects based for each location_id
+        Gets a list of day objects based for each location_id in asc order
         """
-        sql = "SELECT id FROM happyhour.public.id_times WHERE location_id = $1"
+        sql = ("SELECT id FROM happyhour.public.id_times WHERE location_id"
+               " = $1 ORDER BY day_of_week ASC"
+              )
         day_id_list = DbConnect.get_named_results(sql, False, location_id)
         day_objects_list = []
         for day in day_id_list:

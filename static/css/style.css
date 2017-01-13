@@ -17,21 +17,21 @@ html, body {
 .navbar-brand{
     font-family: 'Ubuntu', sans-serif;
 }
-
-/*.row{
+.navbar{
+    margin-bottom: 0;
+}
+.div-row{
     height: 100%;
-}*/
+}
 
-#map_canvas {
+#map-canvas {
     height: 100%;
     padding-bottom: 80px;
 }
-/*#map {*/
+
+/*.container-fluid {*/
     /*height: 100%;*/
 /*}*/
-.container-fluid {
-    height: 100%;
-}
 
 .loading {
     height: 70%;
@@ -40,8 +40,9 @@ html, body {
 #infowindow{
     padding: 0;
 }
-.container-fluid{
+.bigcontainer{
     height: 90%;
+    margin-bottom: 15px;
 }
 
 footer.navbar-fixed-bottom div {
@@ -100,7 +101,7 @@ div.details-location-cat-rating-container div.details-location-category-row {
 /*Column with actual venue category content*/
 div.details-location-category-row div.details-location-category {
     border: 1px solid black;
-} 
+}
 
 /*Row for div that contains venue category info*/
 div.details-location-cat-rating-container div.details-location-hrs-today-row {
@@ -110,7 +111,7 @@ div.details-location-cat-rating-container div.details-location-hrs-today-row {
 /*Column with actual venue category content*/
 div.details-location-hrs-today-row div.details-location-hrs-today {
     border: 1px solid black;
-} 
+}
 
 
 /*Business contact address and map info row container*/
@@ -123,7 +124,7 @@ div.details-bus-info-row div.details-bus-info {
     border: 1px solid black;
 }
 
-/*Address and phone number row - contains divs for each address string & 
+/*Address and phone number row - contains divs for each address string &
 /*number*/
 div.details-bus-info div.details-bus-contact {
     border: 1px solid black;
@@ -168,7 +169,7 @@ div.details-bus-links span.details-website-span {
 div.details-bus-links span.span-first::after {
     content: " | "
 }
-    
+
 /*Middle span(s) - using ::after*/
 div.details-bus-links span.span-between::after {
     content: " | "

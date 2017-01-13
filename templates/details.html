@@ -3,12 +3,27 @@
     <div class="container-fluid">
         <div class="row clearfix">
             <div class="col-sm-4 col-xs-12 details-header-image">
+                <!-- Image resizes dynamically, do not specify size in tag -->
                 <img src="{{venue.img_prefix + '500x500' + venue.img_suffix}}" class="img-responsive" alt="{{venue.name}}" />
             </div>
             <div class="col-sm-8 col-xs-12 details-happy-hour" style"border: 1px solid black;">
                 <div class="row details-top-right">
-                    <div class="col-xs-12 details-bus-hours">
-                        Here are the hours...
+                    <div class="col-xs-6 details-bus-info">
+                        <div class="row details-bus-contact">
+                            {% for address in venue.formatted_address %}
+                            <div class="col-xs-12 details-bus-address">
+                                {{address}}    
+                            </div>
+                            {% endfor %}
+                            <div class="col-xs-12 details-bus-phone">
+                                <a href="tel:{{venue.formatted_phone_number}}">{{venue.formatted_phone_number}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 details-bus-minimap">
+                        Map goes here:<br>
+                        Lat: {{venue.lat}}<br>
+                        Lng: {{venue.lng}}
                     </div>
                 </div>
                 <div class="row details-middle-right">
@@ -37,7 +52,7 @@
                 col 2
             </div>
             <div class="col-sm-4 col-xs-12 details-bottom-thirds">
-                col 3
+                Results powered By Foursquare, yada yada attribution
             </div>
         </div>
     </div>

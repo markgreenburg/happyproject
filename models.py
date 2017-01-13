@@ -53,18 +53,21 @@ class Place(object):
             venue_details = ApiConnect.get_load(url).get('response', {}).get\
                             ('venue', {})
             self.name = venue_details.get('name', '')
+            self.description = venue_details.get('page', {}).get('pageInfo', \
+                               {}).get('description', '')
             self.website = venue_details.get('url', '')
             self.img_prefix = venue_details.get('bestPhoto', {}).get('prefix'\
                               , '')
             self.img_suffix = venue_details.get('bestPhoto', {}).get('suffix'\
                               , '')
-            self.image_width = venue_details.get('bestPhoto', {}).get\
+            self.img_width = venue_details.get('bestPhoto', {}).get\
                                ('width', 0)
-            self.image_height = venue_details.get('bestPhoto', {}).get('height'\
+            self.img_height = venue_details.get('bestPhoto', {}).get('height'\
                                , 0)
             self.category = venue_details.get('categories', [{}])[0].get \
                               ('name', '')
             self.specials = venue_details.get('specials', {}).get('items', [{}])
+            self.tips = self.get_tips(venue_details)
             self.menu_url = venue_details.get('menu', {}).get('url', '')
             self.hours_today = venue_details.get('hours', {}).get('status', '')
             self.is_open = venue_details.get('hours', {}).get('isOpen', False)
@@ -81,9 +84,12 @@ class Place(object):
             self.lng = 0
             self.happy_hour = [{}]
             self.name = ''
+            self.description = ''
             self.website = ''
             self.img_prefix = ''
             self.img_suffix = ''
+            self.img_width = 0
+            self.img_height = 0
             self.category = ''
             self.specials = [{}]
             self.menu_url = ''
@@ -104,6 +110,8 @@ class Place(object):
         print 'website: %s' % self.website
         print 'full image link: %s' % self.img_prefix + '500x500' + \
               self.img_suffix
+        print 'image dimensions: %s' % str(self.img_width) + 'x' + \
+              str(self.img_height)
         print 'main category: %s' % self.category
         print 'menu url: %s' % self.menu_url
         print 'hours_today: %s' % self.hours_today
@@ -194,6 +202,27 @@ class Place(object):
             place_instance = Place(venue_row[0])
             place_object_list.append(place_instance)
         return place_object_list
+
+    @staticmethod
+    def get_tips(fs_api_object):
+        """
+        Extracts all tips of type 'others' from the object returned by the fs
+        api. Returns a list of objects containing tip text and user firstname
+        """
+        tips_obj = fs_api_object.get('tips', {}).get('groups', [{}])
+        others_tip_obj = {}
+        for tip_group in tips_obj:
+            if tip_group.get('type') == 'others':
+                others_tip_obj = tip_group
+                break
+        tip_info_list = []
+        for item in others_tip_obj.get('items', [{}]):
+            tip_text = item.get('text', '')
+            tip_user = item.get('user', {}).get('firstName', '')
+            tip_dict = {'name': tip_user, 'text': tip_text}
+            tip_info_list.append(tip_dict)
+        return tip_dict
+
 
 class Day(object):
     """

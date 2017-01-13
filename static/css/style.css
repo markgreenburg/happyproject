@@ -25,9 +25,10 @@ html, body {
     height: 70%
 }
 
-nav.navbar {
+/*nav.navbar {
     margin-bottom: 0;
-}
+}*/
+
 #infowindow{
     padding: 0;
 }

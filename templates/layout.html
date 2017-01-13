@@ -23,12 +23,12 @@
         <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet/less" href="/static/css/main.less">
+    <link rel="stylesheet/less" href="{{ url_for('static', filename='css/main.less') }}">
     <!-- Bootstrap over-rides -->
     <script>window.jQuery || document.write('<script src="{{
     url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:600|Ubuntu:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Happy Finder</title>
 </head>
 <body>

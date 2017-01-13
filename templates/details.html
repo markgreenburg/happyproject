@@ -1,12 +1,43 @@
 {% extends "layout.html" %}
 {% block body %}
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-4 col-xs-12 details-header-image">
-                <img src="{{venue.img_prefix + '300x300' + venue.img_suffix}}" alt="{{venue.name}}" height="300" width="300" />
+        <div class="row clearfix">
+            <div class="col-sm-4 col-xs-12 details-header-image">
+                <img src="{{venue.img_prefix + '500x500' + venue.img_suffix}}" class="img-responsive" alt="{{venue.name}}" />
             </div>
-            <div class="col-md-8 col-xs-12 details-happy-hour">
-                <p> Some details here.</p>
+            <div class="col-sm-8 col-xs-12 details-happy-hour" style"border: 1px solid black;">
+                <div class="row details-top-right">
+                    <div class="col-xs-12 details-bus-hours">
+                        Here are the hours...
+                    </div>
+                </div>
+                <div class="row details-middle-right">
+                    <div class="col-xs-12 details-bus-links">
+                        <a href="#">Here are some links</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-sm-4 col-xs-12 details-bottom-thirds">
+                <div class="row">
+                    <div class="col-xs-12 details-venue-header">
+                        {{ venue.specials|length }}{{' Specials found for %s' % venue.name }}
+                    </div>
+                </div>
+                {% for special in venue.specials %}
+                <div class="row">
+                    <div class="col-xs-12 details-venue-special">"
+                        {{special.message}}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-sm-4 col-xs-12 details-bottom-thirds">
+                col 2
+            </div>
+            <div class="col-sm-4 col-xs-12 details-bottom-thirds">
+                col 3
             </div>
         </div>
     </div>

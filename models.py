@@ -30,15 +30,13 @@ class Place(object):
     using Curl. Generates based on internal ID for each venue.
     """
     def __init__(self, location_id=0):
-        self.location_id = location_id
         # Get local info from our db
         sql = ("SELECT venues.id, venue_id, lat, lng FROM"
                " happyhour.public.id_venue_id venues INNER JOIN"
                " happyhour.public.coordinates coords ON venues.id ="
                " coords.location_id WHERE venues.id = $1 LIMIT 1"
               )
-        venue_db_object = DbConnect.get_named_results(sql, True, \
-                          self.location_id)
+        venue_db_object = DbConnect.get_named_results(sql, True, location_id)
         if venue_db_object:
             self.location_id = venue_db_object.id
             self.venue_id = venue_db_object.venue_id
@@ -56,7 +54,19 @@ class Place(object):
                             ('venue', {})
             self.name = venue_details.get('name', '')
             self.website = venue_details.get('url', '')
-            self.best_image = ''
+            self.img_prefix = venue_details.get('bestPhoto', {}).get('prefix'\
+                              , '')
+            self.img_suffix = venue_details.get('bestPhoto', {}).get('suffix'\
+                              , '')
+            self.image_width = venue_details.get('bestPhoto', {}).get\
+                               ('width', 0)
+            self.image_height = venue_details.get('bestPhoto', {}).get('height'\
+                               , 0)
+            self.category = venue_details.get('categories', [{}])[0].get \
+                              ('name', '')
+            self.specials = venue_details.get('specials', {}).get('items', [{}])
+            self.hours_today = venue_details.get('hours', {}).get('status', '')
+            self.is_open = venue_details.get('hours', {}).get('isOpen', False)
             self.price_level = venue_details.get('price', {}).get('tier', 0)
             self.rating = venue_details.get('rating', 0.0)
             self.formatted_phone_number = venue_details.get('contact', {}).get\
@@ -66,16 +76,21 @@ class Place(object):
         else:
             self.location_id = 0
             self.venue_id = ''
-            self.happy_hour = []
-            self.name = ''
             self.lat = 0
             self.lng = 0
+            self.happy_hour = [{}]
+            self.name = ''
             self.website = ''
-            self.best_image = ''
+            self.img_prefix = ''
+            self.img_suffix = ''
+            self.category = ''
+            self.specials = [{}]
+            self.hours_today = ''
+            self.is_open = False
             self.price_level = 0
             self.rating = 0.0
             self.formatted_phone_number = ''
-            self.formatted_address = []
+            self.formatted_address = [{}]
         # Log to console to check returns of API calls
         print ''
         print '***************************************************************'

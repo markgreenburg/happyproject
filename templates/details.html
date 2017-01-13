@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-4 col-xs-12 details-header-image">
-                <img src="{{url_for('static', filename='300by300.png')}}" alt="{{venue.name}}" height="300" width="300" />
+                <img src="{{venue.img_prefix + '300x300' + venue.img_suffix}}" alt="{{venue.name}}" height="300" width="300" />
             </div>
             <div class="col-md-8 col-xs-12 details-happy-hour">
                 <p> Some details here.</p>

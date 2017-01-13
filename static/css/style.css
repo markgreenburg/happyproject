@@ -58,6 +58,10 @@ footer.navbar-fixed-bottom div {
 /* Mark's Details Page Styling Classes*/
 /**************************************/
 
+/*Top Row container...which is the only row for now*/
+div.container-fluid div.details-top-row {
+    border: 1px solid black;
+}
 /*Header Image*/
 div.details-top-row div.details-header-image {
     border: 1px solid black;
@@ -71,6 +75,7 @@ div.details-top-row div.details-bus-info-container {
 /*Main business rating and name row container*/
 div.details-bus-info-container div.details-location-name-row {
     border: 1px solid black;
+    height: 100%;
 }
 
 /*Venue name - left half of name and rating row container*/
@@ -173,6 +178,62 @@ div.details-bus-links span.span-first::after {
 /*Middle span(s) - using ::after*/
 div.details-bus-links span.span-between::after {
     content: " | "
+}
+
+/*Row container for the bottom row of venue details*/
+div.details-bus-info-container div.details-bottom-bar-row {
+    border: 1px solid black;
+}
+
+/*Div that contains table content with happy hour times*/
+div.details-bottom-bar-row div.details-location-happyhours-tbl {
+    border: 1px solid black;
+}
+
+/*Div that contains a row with divs for each tip for the location*/
+div.details-bottom-bar-row div.details-location-tips-container {
+    border: 1px solid black;
+}
+
+/*Row that contains divs with tips*/
+div.details-location-tips-container div.detail-location-tips-row {
+    border: 1px solid black;
+    overflow-y: scroll;
+    height: 200px;
+}
+
+/*Div that containss contents of each actual tip*/
+div.detail-location-tips-row div.detail-location-tip {
+    border: 1px solid black;
+}
+
+/*Contains a row with divs for each special in the list*/
+div.details-bottom-bar-row div.details-location-specials-container {
+    border: 1px solid black;
+    overflow-y: hidden;
+    height: 200px;
+}
+
+/*Contains title dive for Specials section*/
+div.details-location-specials-container div.details-location-specials-title-row {
+    border: 1px solid black;
+    overflow-y: hidden;
+}
+
+/*Contains title for Specials section*/
+div.details-location-specials-title-row div.details-specials-title {
+    border: 1px solid black;
+}
+
+/*Contains divs of Specials content*/
+div.details-location-specials-container div.details-location-specials-content-row {
+    border: 1px solid black;
+    overflow-y: scroll;
+}
+
+/*Holds actual content of each Special deal found on FS for the venue*/
+div.details-location-specials-content-row div.details-location-specials-content {
+    border: 1px solid black;
 }
 
 /*Middle span(s) - using neither ::before nor ::after

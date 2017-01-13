@@ -92,6 +92,7 @@ class Place(object):
             self.img_height = 0
             self.category = ''
             self.specials = [{}]
+            self.tips = [{}]
             self.menu_url = ''
             self.hours_today = ''
             self.is_open = False
@@ -121,6 +122,7 @@ class Place(object):
         print 'phone: %s' % self.formatted_phone_number
         print 'address: %s' % self.formatted_address
         print 'specials: %s' % self.specials
+        print 'tips: %s' % self.tips
         print 'Happy Hour Times: %s' % self.happy_hour
         print '***************************************************************'
 
@@ -221,7 +223,7 @@ class Place(object):
             tip_user = item.get('user', {}).get('firstName', '')
             tip_dict = {'name': tip_user, 'text': tip_text}
             tip_info_list.append(tip_dict)
-        return tip_dict
+        return tip_info_list
 
 
 class Day(object):

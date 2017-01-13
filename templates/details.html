@@ -69,9 +69,50 @@
                         </span>
                     </div>
                 </div>
+                <div class="row clearfix details-bottom-bar-row">
+                    <div class="col-sm-4 col-xs-12 details-location-happyhours-tbl">
+                        <table>
+                            {% for day in venue.happy_hour %}
+                            <tr>
+                                <td>
+                                    {{ day.day_string }}
+                                </td>
+                                <td>
+                                    {{ day.start_time.strftime("%I:%M %p") }} - 
+                                {{ day.end_time.strftime("%I:%M %p") }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="col-sm-4 col-xs-12 details-location-tips-container">
+                        <div class="row detail-location-tips-row">
+                            {% for tip in venue.tips %}
+                            <div class="col-xs-12 detail-location-tip">
+                                {{ tip.get('name', '') }} says: <br />
+                                {{  tip.get('text', '') }}<br />
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-xs-12 details-location-specials-container">
+                        <div class="row details-location-specials-row">
+                            <div class="col-xs-12 details-specials-title">
+                                {{ venue.specials|length }}{{' Specials found for %s' % venue.name }}
+                            </div>
+                        </div>
+                        <div class="row details-location-specials-scroll-row">
+                        {% for special in venue.specials %}
+                            <div class="col-xs-12 details-venue-special">"
+                                {{special.message}}
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row clearfix details-bottom-bar">
+        <!--<div class="row clearfix details-bottom-bar">
             <div class="col-sm-4 col-xs-12 details-bottom-thirds">
                 <div class="row">
                     <div class="col-xs-12 details-venue-specials">
@@ -92,6 +133,6 @@
             <div class="col-sm-4 col-xs-12 details-bottom-thirds">
                 Results powered By Foursquare, yada yada attribution
             </div>
-        </div>
+        </div>-->
     </div>
 {% endblock %}

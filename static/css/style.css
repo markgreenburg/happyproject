@@ -31,3 +31,6 @@ nav.navbar {
 #infowindow{
     padding: 0;
 }
+.container-fluid{
+    height: 90%;
+}

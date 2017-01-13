@@ -11,7 +11,8 @@
                         <div class="place_details">
                             <table class="place_descriptions" style="border: 1px solid dimgray; width: 100%">
                                 <tr>
-                                    <th colspan="2" style="text-align: center; border-bottom: 3px solid dimgray"><h4 class="place_descriptions">{{ place.name }}</h4></th>
+                                    <th colspan="2" style="text-align: center; border-bottom: 3px solid dimgray"><a
+                                            href="/details/{{ place.location_id }}"><h4 class="place_descriptions">{{ place.name }}</h4></a></th>
                                 </tr>
                                 <tr>
                                     <td style="width: 100%">
@@ -69,6 +70,9 @@
                 mapOptions);
             var userMarker = new google.maps.Marker({
                 position: myLatLng,
+                strokeColor: 'blue',
+                strokeOpacity: 0.4,
+                strokeWeight: 20,
                 map: map,
                 icon: im
             });

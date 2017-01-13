@@ -53,9 +53,9 @@ footer.navbar-fixed-bottom div {
   padding: 5px;
 }
 
-/**********************/
-/*Details Page Styling*/
-/**********************/
+/**************************************/
+/* Mark's Details Page Styling Classes*/
+/**************************************/
 
 /*Header Image*/
 div.details-top-row div.details-header-image {
@@ -67,10 +67,51 @@ div.details-top-row div.details-bus-info-container {
     border: 1px solid black;
 }
 
-/*Main business name row container*/
+/*Main business rating and name row container*/
 div.details-bus-info-container div.details-location-name-row {
     border: 1px solid black;
 }
+
+/*Venue name - left half of name and rating row container*/
+div.details-location-name-row div.details-location-name {
+    border: 1px solid black;
+}
+
+/*Venue price review average, venue category container*/
+div.details-location-name-row div.details-location-cat-rating-container {
+    border: 1px oslid black;
+}
+
+/*Row for div that contains ratings average and price tier*/
+div.details-location-cat-rating-container div.details-location-rating-price-row {
+    border: 1px solid black;
+}
+
+/*Column with actual rating, price content*/
+div.details-location-rating-price-row div.details-location-ratings {
+    border: 1px solid black;
+}
+
+/*Row for div that contains venue category info*/
+div.details-location-cat-rating-container div.details-location-category-row {
+    border: 1px solid black;
+}
+
+/*Column with actual venue category content*/
+div.details-location-category-row div.details-location-category {
+    border: 1px solid black;
+} 
+
+/*Row for div that contains venue category info*/
+div.details-location-cat-rating-container div.details-location-hrs-today-row {
+    border: 1px solid black;
+}
+
+/*Column with actual venue category content*/
+div.details-location-hrs-today-row div.details-location-hrs-today {
+    border: 1px solid black;
+} 
+
 
 /*Business contact address and map info row container*/
 div.details-bus-info-container div.details-bus-info-row {
@@ -104,7 +145,39 @@ div.details-bus-info-row div.details-bus-minimap {
     height: 100%;
 }
 
-/*
-div.details-bus-info-container div.details-bus-info-row {
+/*Row for url links*/
+div.details-bus-info-container div.details-bus-links-row {
     border: 1px solid black;
+}
+
+/*Div with actual business links to FS, venue website, FS menu (each in span)*/
+div.details-bus-links-row div.details-bus-links {
+    border: 1px solid black;
+}
+
+/**********/
+/*Spans for URL links - special classes for first, last, and between spans to */
+/*enable easier usage of before and after selectors*/
+
+/*General span class*/
+div.details-bus-links span.details-website-span {
+    border: 1px solid black;
+}
+
+/*First span in list - using ::after*/
+div.details-bus-links span.span-first::after {
+    content: " | "
+}
+    
+/*Middle span(s) - using ::after*/
+div.details-bus-links span.span-between::after {
+    content: " | "
+}
+
+/*Middle span(s) - using neither ::before nor ::after
+div.details-bus-links span.span-last {
+    content: " insert text here "
 }*/
+/*End spans styling*/
+/**********/
+

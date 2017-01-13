@@ -65,7 +65,7 @@ class Place(object):
             self.category = venue_details.get('categories', [{}])[0].get \
                               ('name', '')
             self.specials = venue_details.get('specials', {}).get('items', [{}])
-            self.menu_url = venue_details.get('menu',{}).get('url','')
+            self.menu_url = venue_details.get('menu', {}).get('url', '')
             self.hours_today = venue_details.get('hours', {}).get('status', '')
             self.is_open = venue_details.get('hours', {}).get('isOpen', False)
             self.price_level = venue_details.get('price', {}).get('tier', 0)

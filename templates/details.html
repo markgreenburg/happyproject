@@ -8,14 +8,31 @@
             </div>
             <div class="col-sm-8 col-xs-12 details-bus-info-container">
                 <div class="row details-location-name-row">
-                    <div class="col-xs-12 details-location-name">
+                    <div class="col-sm-6 col-xs-12 details-location-name">
                         <h3>
                             {{venue.name}}
                         </h3>
                     </div>
+                    <div class="col-sm-6 col-xs-12 details-location-cat-rating-container">
+                        <div class="row details-location-rating-price-row">
+                            <div class="col-xs-12 details-location-ratings">
+                                {{ '$' * venue.price_level }} | {{ venue.rating }}
+                            </div>
+                        </div>
+                        <div class="row details-location-category-row">
+                            <div class="col-xs-12 details-location-category">
+                                {{ venue.category }}
+                            </div>
+                        </div>
+                        <div class="row details-location-hrs-today-row">
+                            <div class="col-xs-12 details-location-hrs-today">
+                                {{ venue.hours_today }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row details-bus-info-row">
-                    <div class="col-xs-6 details-bus-info">
+                    <div class="col-sm-6 col-xs-12 details-bus-info">
                         <div class="row details-bus-contact">
                             {% for address in venue.formatted_address %}
                             <div class="col-xs-12 details-bus-address">
@@ -27,16 +44,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-6 details-bus-minimap">
+                    <div class="col-sm-6 col-xs-12 details-bus-minimap">
                         Map goes here:<br>
                         Lat: {{venue.lat}}<br>
-                        Lng: {{venue.lng}}
-                        Height set to 100% of parent div column
+                        Lng: {{venue.lng}}<br>
+                        Height set to 100%<br>
+                        of parent div column
                     </div>
                 </div>
-                <div class="row details-middle-right">
+                <div class="row details-bus-links-row">
                     <div class="col-xs-12 details-bus-links">
-                        <a href="#">Here are some links</a>
+                        <span class="details-website-span span-first">
+                            {% if venue.website|length > 0 %}
+                            <a href="{{ venue.website }}">Venue Website</a>
+                            {% endif %}
+                        </span> 
+                        <span class="details-website-span span-between">
+                            {% if venue.menu_url|length %}
+                            <a href="{{ venue.menu_url }}">View Menu on Foursquare</a>
+                            {% endif %}
+                        </span>
+                        <span class="details-website-span span-last">
+                            <a href="https://foursquare.com/v{{ venue.venue_id }}">Venue Website</a>
+                        </span>
                     </div>
                 </div>
             </div>

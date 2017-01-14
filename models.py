@@ -208,6 +208,8 @@ class Place(object):
         Args: lat - comma-separated string of a float lat, e.g. '-29.67'
               lng - comma-separated string of a float lng, e.g. '95.43'
               radius(opt) - string of miles, min '1', default '1'
+              is_active(opt) - Bool, restricts results to only those that
+                               are active now
         Returns: list of Place object instances
         """
         # For more info on the below query, see:

@@ -45,7 +45,8 @@ def location():
 @app.route('/happyhour/display')
 def display():
     """
-    gets a list of places based on a 10 mile radius from user's location
+    Gets a list of places based on a passed in mile radius from user's location
+    Returns render of the map template / display homepage
     """
     # location = str(session.get('lat',0)) + ',' + str(session.get('lng', 0))
     # place_list = Place.get_places(location)
@@ -53,8 +54,7 @@ def display():
 
     global lat
     global lng
-    place_list = Place.get_places(lat, lng\
-                 , '100')
+    place_list = Place.get_places(lat, lng, '10', True)
     # latlng_list = []
     # place_list = place_list
     # place_list_length = len(place_list)

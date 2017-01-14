@@ -63,12 +63,27 @@ html, body {
 
 }
 
-.navbar-brand {
+/*Header styling section*/
+div.navbar-header a.navbar-brand {
     font-family: 'Ubuntu', sans-serif;
+    font-weight: bolder;
+    font-size: 4 rem;
+    color: white;
 }
 
-.navbar {
+.navbar, .navbar-default {
     margin-bottom: 0;
+    background-color: rgb(60, 86, 226);
+}
+
+ul.navbar-right a.login-link {
+    color: white;
+}
+
+form.navbar-right button.btn-default {
+    color: white;
+    background-color: rgb(60, 86, 226);
+    border: 1px solid white;
 }
 
 .div-row {

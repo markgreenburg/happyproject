@@ -36,16 +36,16 @@
     <div class="top_page">
         {#        <div class="row" id="topbar">#}
         <div class="col-xs-3 imageone images">
-            <img src="/static/images/oldfashion.jpg" alt="">
+            <img src="{{ url_for('static', filename='images/oldfashion.jpg') }}" alt="">
         </div>
         <div class="col-xs-3 imagetwo images">
-            <img src="/static/images/foodandwine.jpg" alt="">
+            <img src="{{ url_for('static', filename='images/foodandwine.jpg') }}" alt="">
         </div>
         <div class="col-xs-3 imagethree images">
-            <img src="/static/images/beerandburger.jpg" alt="">
+            <img src="{{ url_for('static', filename='images/beerandburger.jpg') }}" alt="">
         </div>
         <div class="col-xs-3 imagefour images">
-            <img src="/static/images/wine.jpg" alt="">
+            <img src="{{ url_for('static', filename='images/wine.jpg') }}" alt="">
         </div>
         <h1 id="brandname">happyfinder.</h1>
         {#        </div>#}
@@ -64,48 +64,17 @@
                     </button>
                     <a class="navbar-brand" href="/">HappyFinder</a>
                 </div>
-
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">Link</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="login-link" href="#">Log In</a></li>
                     </ul>
-                    <form class="navbar-form navbar-left">
+                    <form class="navbar-form navbar-right">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Search">
                         </div>
                         <button type="submit" class="btn btn-default">Submit</button>
                     </form>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Link</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </li>
-                    </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>

@@ -232,9 +232,7 @@ class Place(object):
 
 class Day(object):
     """
-    Defines an individual day on which a Place has a Happy Hour. Optional params
-    are day_time_id (internal id_times pk) or BOTH day_of_week & loc_id (which
-    is the internal id of each venue from the id_venue_id table)
+    Defines an individual day on which a Place has a Happy Hour.
     """
     def __init__(self, day_time_id=0, day_of_week=0, loc_id=0):
         if day_time_id > 0:
@@ -261,16 +259,6 @@ class Day(object):
             self.day_time_id = day_time_id
             self.start_time = '00:00:00'
             self.end_time = '00:00:00'
-        # Log to console to check returns of API calls
-        print ''
-        print '***************************************************************'
-        print 'day of week: %s' % self.day_of_week
-        print 'day_string is: %s' % self.day_string
-        print 'location_id: %s' % self.location_id
-        print 'day_time_id: %s' % self.day_time_id
-        print 'start_time: %s' % self.start_time
-        print 'end_time: %s' % self.end_time
-        print '***************************************************************'
 
     def get_day_string(self):
         """

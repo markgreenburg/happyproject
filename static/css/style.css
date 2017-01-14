@@ -185,8 +185,28 @@ div.details-bus-info-container div.details-bottom-bar-row {
     border: 1px solid black;
 }
 
-/*Div that contains table content with happy hour times*/
-div.details-bottom-bar-row div.details-location-happyhours-tbl {
+/*Container that hold happy hour header and times info*/
+div.details-bottom-bar-row div.details-location-happyhours-container {
+    border: 1px solid black;
+}
+
+/*Row for happy hour heading div*/
+div.details-location-happyhours-container div.details-location-happyhours-title-row {
+    border: 1px solid black;
+}
+
+/*Content div with happy hour heading*/
+div.details-location-happyhours-title-row div.details-location-happyhours-title {
+    border: 1px solid black;
+}
+
+/*Row for happy hour content div*/
+div.details-location-happyhours-container div.details-location-happyhours-tbl-row {
+    border: 1px solid black;
+}
+
+/*Content div for happy hour times table*/
+div.details-location-happyhours-tbl-row div.details-location-happyhours-table {
     border: 1px solid black;
 }
 

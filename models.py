@@ -193,12 +193,16 @@ class Place(object):
         """
         # For more info on the below query, see:
         # http://www.movable-type.co.uk/scripts/latlong.html
-        sql = ("SELECT location_id FROM happyhour.public.coordinates WHERE"
-               " (acos(sin(lat * 0.0175) * sin($1 * 0.0175) + cos(lat *"
-               " 0.0175) * cos($2 * 0.0175) * cos(($3 * 0.0175) - (lng *"
-               " 0.0175))) * 3959 <= $4);"
+        # Get all results within specified radius, order results by distance
+        sql = ("SELECT location_id, (acos(sin(lat * 0.0175) * sin($1 * 0.0175)"
+               " + cos(lat * 0.0175) * cos($2 * 0.0175) * cos(($3 * 0.0175) -"
+               " (lng * 0.0175))) * 3959) as milesfromuser FROM"
+               " happyhour.public.coordinates WHERE (acos(sin(lat * 0.0175) *"
+               " sin($4 * 0.0175) + cos(lat * 0.0175) * cos($5 * 0.0175) *"
+               " cos(($6 * 0.0175) - (lng * 0.0175))) * 3959 <= $7) ORDER BY"
+               " milesfromuser ASC;"
               )
-        venue_id_objects = DbConnect.get_named_results(sql, False, lat, lat, lng, radius)
+        venue_id_objects = DbConnect.get_named_results(sql, False, lat, lat, lng, lat, lat, lng, radius)
         place_object_list = []
         for venue_row in venue_id_objects:
             place_instance = Place(venue_row[0])

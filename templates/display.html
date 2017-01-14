@@ -5,8 +5,8 @@
 {% block body %}
     <body onload="locate()">
         <div class="row div-row">
-            <div class="col-xs-9" id="map-canvas"></div>
-            <div class="col-xs-3" id="infowindow">
+            <div class="col-sm-9 col-xs-12" id="map-canvas"></div>
+            <div class="col-sm-3 col-xs-12" id="infowindow">
                 <div>
                     {% for place in place_list %}
                         <a href="javascript:google.maps.event.trigger(gmarkers['{{ place.formatted_address[0] }}'],'click');">

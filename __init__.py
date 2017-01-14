@@ -24,14 +24,14 @@ app.config['DEBUG'] = config.DEBUG
 
 lat = 0
 lng = 0
-@app.route('/')
+@app.route('/happyhour/')
 def get_map():
     """
     Homepage route - shows Google Map using the user's location
     """
     return render_template('location.html', apikey=g_api_key)
 
-@app.route('/_location', methods=['GET'])
+@app.route('/happyhour/location', methods=['GET'])
 def location():
     """
     gets a list of places based on a 10 mile radius from user's location
@@ -42,7 +42,7 @@ def location():
     lng = json.loads(request.args.get('lng'))
     return redirect(None)
 
-@app.route('/display')
+@app.route('/happyhour/display')
 def display():
     """
     gets a list of places based on a 10 mile radius from user's location
@@ -66,7 +66,7 @@ def display():
         "display.html", place_list=place_list, apikey=g_api_key, latitude=\
         lat, longitude=lng)
 
-@app.route('/details/<int:location_id>')
+@app.route('/happyhour/details/<int:location_id>')
 def show_location(location_id):
     """
     Shows the Foursquare and happyhour details for a given id from id_venue_id

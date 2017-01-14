@@ -2,6 +2,7 @@
 Module holds the object models, API calls, and db connections for the Happy
 Hour app
 """
+import datetime
 import json
 import StringIO
 import urllib
@@ -50,6 +51,7 @@ class Place(object):
                     client_id, \
                     secret)
                   )
+            self.is_happy_hour = self.get_happy_state()
             venue_details = ApiConnect.get_load(url).get('response', {}).get\
                             ('venue', {})
             self.name = venue_details.get('name', '')
@@ -83,6 +85,7 @@ class Place(object):
             self.lat = 0
             self.lng = 0
             self.happy_hour = [{}]
+            self.is_happy_hour = False
             self.name = ''
             self.description = ''
             self.website = ''
@@ -123,8 +126,24 @@ class Place(object):
         print 'address: %s' % self.formatted_address
         print 'specials: %s' % self.specials
         print 'tips: %s' % self.tips
+        print 'is_happy_hour: %s' % self.is_happy_hour
         print 'Happy Hour Times: %s' % self.happy_hour
         print '***************************************************************'
+
+    def get_happy_state(self):
+        """
+        Determines whether happy hour is currently open using self.happy_hour
+        object list. Returns True if happy hour is currently open or False.
+        """
+        # Our week starts on Monday = 1, Python's Monday = 0
+        today = datetime.datetime.today().weekday() + 1
+        now = datetime.datetime.now().time()
+        for day in self.happy_hour:
+            if now > day.end_time \
+            and now < day.start_time \
+            and today == day.day_of_week:
+                return True
+        return False
 
     def insert(self):
         """
@@ -183,7 +202,7 @@ class Place(object):
         return result_obj.location_id
 
     @staticmethod
-    def get_places(lat, lng, radius='1'):
+    def get_places(lat, lng, radius='1', active_only=False):
         """
         Gets all places within a certain mile radius of a geo from DB
         Args: lat - comma-separated string of a float lat, e.g. '-29.67'
@@ -206,7 +225,10 @@ class Place(object):
         place_object_list = []
         for venue_row in venue_id_objects:
             place_instance = Place(venue_row[0])
-            place_object_list.append(place_instance)
+            if active_only and place_instance.is_happy_hour:
+                place_object_list.append(place_instance)
+            elif not active_only:
+                place_object_list.append(place_instance)
         return place_object_list
 
     @staticmethod

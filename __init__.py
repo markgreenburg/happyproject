@@ -22,19 +22,32 @@ app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
 app.config['DEBUG'] = config.DEBUG
 
-lat = 0
-lng = 0
+# lat = 0
+# lng = 0
 @app.route('/happyhour/')
 def home():
     """
-    Homepage route - shows Google Map using the user's location
+    Retuns homepage template with Jumbotron and search fields to enable finding happy hours.
     """
     return render_template('homepage.html')
+
+@app.route('/convert_address', methods=['GET'])
+def convert_address():
+    """
+    Takes the address from user's search and uses the Geocoding API to convert
+    it to a lat and lng value, storing those in session. Returns the map
+    template with results & pins.
+    """
+    coords_tuple = Place.address_to_coords(request.args.get("address"))
+    session['lat'] = coords_tuple[0]
+    session['lng'] = coords_tuple[1]
+    return redirect(url_for('display'))
 
 @app.route('/happyhour/getlocation')
 def get_map():
     """
-    Homepage route - shows Google Map using the user's location
+    Template for getting user's location automatically. Page uses HTML5 geolocation to get
+    user's lat / lng, then redirects user to the map page with a JS redirect.
     """
     return render_template('location.html', apikey=g_api_key)
 
@@ -43,10 +56,13 @@ def location():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-    global lat
-    global lng
-    lat = json.loads(request.args.get('lat'))
-    lng = json.loads(request.args.get('lng'))
+    # Mark commented out the next four lines and added the following three
+    # global lat
+    # global lng
+    # lat = json.loads(request.args.get('lat'))
+    # lng = json.loads(request.args.get('lng'))
+    session['lat'] = json.loads(request.args.get('lat'))
+    session['lng'] = json.loads(request.args.get('lng'))
     return redirect(None)
 
 @app.route('/happyhour/display')
@@ -62,9 +78,13 @@ def display():
     #todo create radius dropdown in homepage and tickbox for all happy hours or current
     #todo get input from submit button if true call with models.apiconnect, if false return false.
     #todo set lat/lng to geocoding if true
-
-    global lat
-    global lng
+    # Mark commented out the next two lines
+    # global lat
+    # global lng
+    # Mark commented out the next line and replaced it with the following four lines
+    # place_list = Place.get_places(lat, lng, '50', False)
+    lat = session.get('lat')
+    lng = session.get('lng')
     place_list = Place.get_places(lat, lng, '50', False)
     # latlng_list = []
     # place_list = place_list

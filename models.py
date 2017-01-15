@@ -10,8 +10,9 @@ import pycurl
 import config
 import pg
 
-# API Keys
-# apikey = config.G_API_KEY
+# API Keys: Google
+apikey = config.G_API_KEY
+# API Keys: FS
 client_id = config.FS_CLIENT_ID
 secret = config.FS_CLIENT_SECRET
 
@@ -252,6 +253,23 @@ class Place(object):
             tip_dict = {'name': tip_user, 'text': tip_text}
             tip_info_list.append(tip_dict)
         return tip_info_list
+
+    @staticmethod
+    def address_to_coords(address):
+        """
+        Converts address strings to lat and lng coordinates
+        Args: address - In string format, e.g., '1600 amphitheatre parkway'
+        Returns: (lat, lng) - A tuple of the location's coordinates
+        """
+        url = ("https://maps.googleapis.com/maps/api/geocode/json?address=%s"
+               "&key=%s" % (urllib.quote_plus(address), apikey)
+              )
+        location_data = ApiConnect.get_load(url)
+        lat = location_data.get('results', [{}])[0].get('geometry', {}).\
+              get('location', {}).get('lat', 0)
+        lng = location_data.get('results', [{}])[0].get('geometry', {}).\
+              get('location', {}).get('lng', 0)
+        return (lat, lng)
 
 
 class Day(object):

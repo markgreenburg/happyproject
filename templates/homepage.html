@@ -1,1 +1,174 @@
 {% extends "layout.html" %}
+{% block head %}
+    <div class="navcontainer">
+        <nav class="navbar navbar-default navbar-static">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">HappyFinder</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="login-link" href="#">Log In</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Address">
+                        </div>
+                        <button type="submit" class="btn btn-default">Find Happy Hours</button>
+                    </form>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    </div>
+{% endblock %}
+{% block body %}
+    <body>
+    <div id="topBar">
+        <div class="carouselStyle">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" role="listbox">
+                    <div class="item carouselImage active ">
+                        <img src="/static/images/carousel_one.jpg" alt="carouselOne.jpg" class="resize">
+                        <div class="carousel-caption">
+                            <h2>Welcome to <strong>happyfinder!</strong></h2>
+                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
+                                near you!</h3>
+                            <button type="button" onclick="location.href='/happyhour/getlocation';"
+                                    class="btn btn-primary btn-lg homepageLocation">Use My Location
+                            </button>
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Find happy hours by address">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="item carouselImage">
+                        <img src="/static/images/carouseltwo.jpg" alt="carouselTwo.jpg" class="resize">
+                        <div class="carousel-caption">
+                            <h2>Welcoome to <strong>happyfinder!</strong></h2>
+                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
+                                near you!</h3>
+                            <button type="button" onclick="location.href='/happyhour/getlocation';"
+                                    class="btn btn-primary btn-lg homepageLocation">Use My Location
+                            </button>
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Find happy hours by address">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+
+                    <div class="item carouselImage">
+                        <img src="/static/images/carousel_three.jpg" alt="carouselThree.jpg" class="resize">
+                        <div class="carousel-caption">
+                            <h2>Welcome to <strong>happyfinder!</strong></h2>
+                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
+                                near you!</h3>
+                            <button type="button" onclick="location.href='/happyhour/getlocation';"
+                                    class="btn btn-primary btn-lg homepageLocation">Use My Location
+                            </button>
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Find happy hours by address">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="item carouselImage">
+                        <img src="/static/images/beerandburger.jpg" alt="carouselFour.jpg" class="resize">
+                        <div class="carousel-caption">
+                            <h2>Welcome to <strong>happyfinder!</strong></h2>
+                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
+                                near you!</h3>
+                            <button type="button" onclick="location.href='/happyhour/getlocation';"
+                                    class="btn btn-primary btn-lg homepageLocation">Use My Location
+                            </button>
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Find happy hours by address">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="item carouselImage">
+                        <img src="/static/images/oldfashion.jpg" alt="carouselFour.jpg" class="resize">
+                        <div class="carousel-caption">
+                            <h2>Welcome to <strong>happyfinder!</strong></h2>
+                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
+                                near you!</h3>
+                            <button type="button" onclick="location.href='/happyhour/getlocation';"
+                                    class="btn btn-primary btn-lg homepageLocation">Use My Location
+                            </button>
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Find happy hours by address">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="item carouselImage">
+                        <img src="/static/images/foodandwine.jpg" alt="carouselFour.jpg" class="resize">
+                        <div class="carousel-caption">
+                            <h2>Welcome to <strong>happyfinder!</strong></h2>
+                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
+                                near you!</h3>
+                            <button type="button" onclick="location.href='/happyhour/getlocation';"
+                                    class="btn btn-primary btn-lg homepageLocation">Use My Location
+                            </button>
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Find happy hours by address">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+{% endblock %}

@@ -25,6 +25,13 @@ app.config['DEBUG'] = config.DEBUG
 lat = 0
 lng = 0
 @app.route('/happyhour/')
+def home():
+    """
+    Homepage route - shows Google Map using the user's location
+    """
+    return render_template('homepage.html')
+
+@app.route('/happyhour/getlocation')
 def get_map():
     """
     Homepage route - shows Google Map using the user's location

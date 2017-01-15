@@ -13,15 +13,14 @@
           crossorigin="anonymous">
     <!-- Load Ajax from Google -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
     <!-- HTML5 shim, for IE 6-8 support of HTML elements -->
     <!-- HTML5 shim, for IE 6-8 support of HTML elements -->
     <!--[if lt IE 9]>
         <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet/less" href="{{ url_for('static', filename='css/main.less') }}">
     <!-- Bootstrap over-rides -->
@@ -33,7 +32,15 @@
 </head>
 <body>
 {% block head %}
-    <div class="top_page">
+    <script>
+        $(window).load(function () {
+            $('.images').find('img').each(function () {
+                var imgClass = (this.width / this.height > 1) ? 'wide' : 'tall';
+                $(this).addClass(imgClass);
+            })
+        })
+    </script>
+    <div class="top_page container-fluid">
         {#        <div class="row" id="topbar">#}
         <div class="col-xs-3 imageone images">
             <img src="{{ url_for('static', filename='images/oldfashion.jpg') }}" alt="">
@@ -48,36 +55,6 @@
             <img src="{{ url_for('static', filename='images/wine.jpg') }}" alt="">
         </div>
         <h1 id="brandname">happyfinder.</h1>
-        {#        </div>#}
-    </div>
-    <div class="navcontainer">
-        <nav class="navbar navbar-default navbar-static">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">HappyFinder</a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a class="login-link" href="#">Log In</a></li>
-                    </ul>
-                    <form class="navbar-form navbar-right">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Address">
-                        </div>
-                        <button type="submit" class="btn btn-default">Find Happy Hours</button>
-                    </form>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
     </div>
 {% endblock %}
 {% block body %}

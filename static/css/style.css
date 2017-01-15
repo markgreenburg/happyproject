@@ -10,7 +10,7 @@
 /* Optional: Makes the sample page fill the window. */
 
 
-/*!!!CHANGE FONT STYLE ON BUTTONS AND SEARCH BARS*/
+/*/!!CHANGE FONT STYLE ON BUTTONS AND SEARCH BARS*/
 
 
 html, body {
@@ -19,7 +19,21 @@ html, body {
     height: 100%;
     width: 100%;
 }
+.homepageButton{
+    color: darkslategray;
+    margin-bottom: 10px;
+}
+#myCarousel > div > div > div > form > div > div > button{
+    position: absolute;
+    bottom: 0;
+}
 
+#myCarousel > div > div > div > form > div > div{
+    width: auto;
+}
+#myCarousel > div > div.item.carouselImage > div > form > div > input{
+    margin-top: 10px;
+}
 .carouselStyle {
     width: 100%;
     height: 100%;
@@ -95,11 +109,12 @@ img.resize {
     max-height: 24%;
     width: 100%;
     padding: 0;
+    overflow: hidden;
 }
 
 .images {
     width: 25%;
-    height: 100%;
+    max-height: 24%;
     /*position: relative;*/
     padding: 0;
     z-index: -1;
@@ -154,16 +169,13 @@ form.navbar-right button.btn-default {
 }
 
 .div-row {
-    height: 100%;
+    height: 72%;
 }
 #map-canvas{
     height: 100%;
+    padding: 0;
 }
-.map_and_details {
-    height: 100%;
-    width: 100%
-    /*top: 50px;*/
-}
+
 
 /*.container-fluid {*/
 /*height: 100%;*/
@@ -172,8 +184,11 @@ form.navbar-right button.btn-default {
 .loading {
     height: 70%;
 }
-
+body > div.row.div-row{
+    margin: 0;
+}
 #infowindow {
+    height: 100%;
     padding: 0;
 }
 

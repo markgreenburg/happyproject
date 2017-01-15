@@ -3,7 +3,7 @@
     <script src="https://maps.google.com/maps/api/js?key={{ apikey }}"></script>
 {% endblock %}
 {% block body %}
-    <body onload="locate()">
+    <body>
     <div class="row div-row">
         <div class="col-sm-9 col-xs-12" id="map-canvas"></div>
         <div class="col-sm-3 col-xs-12" id="infowindow">
@@ -13,9 +13,9 @@
                         <div class="place_details">
                             <table class="place_descriptions" style="border: 1px solid dimgray; width: 100%">
                                 <tr>
-                                    <th colspan="2" style="text-align: center"><a
-                                            href="/happyhour/details/{{ place.location_id }}"><h4
-                                            class="place_descriptions">{{ place.name }}</h4></a></th>
+                                    <th colspan="2" style="text-align: center"><h4
+                                            class="place_descriptions">{{ place.name }} -</h4><a
+                                            href="/happyhour/details/{{ place.location_id }}"><p> Details</p></a></th>
                                 </tr>
                                 <tr>
                                     <th colspan="2" style="text-align: center; border-bottom: 3px solid dimgray"><h5
@@ -64,19 +64,20 @@
         var im = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
 
 
-        function locate() {
-            navigator.geolocation.getCurrentPosition(initialize, fail);
-        }
+        {#        function locate() {#}
+        {#            navigator.geolocation.getCurrentPosition(initialize, fail);#}
+        {#        }#}
 
-        function initialize(position) {
-            var myLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        function initialize() {
+            var myLatLng = new google.maps.LatLng({{ latitude }}, {{ longitude }});
             var map = new google.maps.Map(document.getElementById('map-canvas'), {
-                zoom: 12,
-                center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+                zoom: 11,
+                center: new google.maps.LatLng({{ latitude }}, {{ longitude }}),
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             });
 
             var infowindow = new google.maps.InfoWindow();
+
 
             function createMarker(latlng, html) {
                 var marker = new google.maps.Marker({
@@ -103,8 +104,14 @@
                 return marker;
             }
 
-            userMarker();
+            var address_input = {{ address_input }};
+
+            if (address_input != true){
+                userMarker();
+            }
+
             gmarkers = [];
+
             {% for place in place_list %}
                 var form_add = "{{ place.formatted_address[0] }}";
                 var name = "{{ place.name }}";

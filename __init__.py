@@ -39,21 +39,27 @@ def convert_address():
     it to a lat and lng value, storing those in session. Returns the map
     template with results & pins.
     """
-    coords_tuple = Place.address_to_coords(request.args.get('address', \
-                   'Houston TX'))
-    session['lat'] = coords_tuple[0]
-    session['lng'] = coords_tuple[1]
+    session['address_input'] = 0
     if request.args.get('is_active', 'anytime') == 'now':
         session['active_only'] = True
     else:
         session['active_only'] = False
-    session['radius'] = request.args.get('radius', '1')
-    print 'session address: %s' % request.args.get('address')
-    print 'lat: %s' % session['lat']
-    print 'lng: %s' % session['lng']
-    print 'active_only: %s' % session.get('active_only')
-    print 'radius: %s' % session.get('radius')
-    return redirect(url_for('display'))
+    session['radius'] = request.args.get('radius', '20')
+    address_input = request.args.get('address', '')
+    if address_input:
+        coords_tuple = Place.address_to_coords(request.args.get('address', \
+                       ''))
+        session['lat'] = coords_tuple[0]
+        session['lng'] = coords_tuple[1]
+        session['address_input'] = 1
+        print 'session address: %s' % request.args.get('address')
+        print 'lat: %s' % session['lat']
+        print 'lng: %s' % session['lng']
+        print 'active_only: %s' % session.get('active_only')
+        print 'radius: %s' % session.get('radius')
+        return redirect(url_for('display'))
+    else:
+        return render_template('location.html', apikey=g_api_key)
 
 @app.route('/happyhour/getlocation')
 def get_map():
@@ -99,7 +105,7 @@ def display():
     lat = session.get('lat', 29.7604)
     lng = session.get('lng', -95.3698)
     is_active = session.get('active_only', False)
-    radius = session.get('radius', '1')
+    radius = session.get('radius', '50')
     # print 'search settings:'
     # print 'lat: %f' % lat
     # print 'lng: %f' % lng
@@ -115,7 +121,7 @@ def display():
     #     latlng_list.append([float(place.lat), float(place.lng), place_name])
     return render_template(
         "display.html", place_list=place_list, apikey=g_api_key, latitude=\
-        lat, longitude=lng)
+        lat, longitude=lng, address_input = session.get('address_input'))
 
 @app.route('/happyhour/details/<int:location_id>')
 def show_location(location_id):

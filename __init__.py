@@ -54,7 +54,7 @@ def display():
 
     global lat
     global lng
-    place_list = Place.get_places(lat, lng, '10', True)
+    place_list = Place.get_places(lat, lng, '10', False)
     # latlng_list = []
     # place_list = place_list
     # place_list_length = len(place_list)

@@ -59,9 +59,13 @@ def display():
     # place_list = Place.get_places(location)
     # user = User()
 
+    #todo create radius dropdown in homepage and tickbox for all happy hours or current
+    #todo get input from submit button if true call with models.apiconnect, if false return false.
+    #todo set lat/lng to geocoding if true
+
     global lat
     global lng
-    place_list = Place.get_places(lat, lng, '10', False)
+    place_list = Place.get_places(lat, lng, '50', False)
     # latlng_list = []
     # place_list = place_list
     # place_list_length = len(place_list)

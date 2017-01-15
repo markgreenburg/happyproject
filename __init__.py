@@ -27,7 +27,8 @@ app.config['DEBUG'] = config.DEBUG
 @app.route('/happyhour/')
 def home():
     """
-    Retuns homepage template with Jumbotron and search fields to enable finding happy hours.
+    Retuns homepage template with Jumbotron and search fields to enable finding
+    happy hours.
     """
     return render_template('homepage.html')
 
@@ -38,16 +39,28 @@ def convert_address():
     it to a lat and lng value, storing those in session. Returns the map
     template with results & pins.
     """
-    coords_tuple = Place.address_to_coords(request.args.get("address"))
+    coords_tuple = Place.address_to_coords(request.args.get('address', \
+                   'Houston TX'))
     session['lat'] = coords_tuple[0]
     session['lng'] = coords_tuple[1]
+    if request.args.get('is_active', 'anytime') == 'now':
+        session['active_only'] = True
+    else:
+        session['active_only'] = False
+    session['radius'] = request.args.get('radius', '1')
+    print 'session address: %s' % request.args.get('address')
+    print 'lat: %s' % session['lat']
+    print 'lng: %s' % session['lng']
+    print 'active_only: %s' % session.get('active_only')
+    print 'radius: %s' % session.get('radius')
     return redirect(url_for('display'))
 
 @app.route('/happyhour/getlocation')
 def get_map():
     """
-    Template for getting user's location automatically. Page uses HTML5 geolocation to get
-    user's lat / lng, then redirects user to the map page with a JS redirect.
+    Template for getting user's location automatically. Page uses HTML5
+    geolocation to get user's lat / lng, then redirects user to the map page
+    with a JS redirect.
     """
     return render_template('location.html', apikey=g_api_key)
 
@@ -83,9 +96,16 @@ def display():
     # global lng
     # Mark commented out the next line and replaced it with the following four lines
     # place_list = Place.get_places(lat, lng, '50', False)
-    lat = session.get('lat')
-    lng = session.get('lng')
-    place_list = Place.get_places(lat, lng, '50', False)
+    lat = session.get('lat', 29.7604)
+    lng = session.get('lng', -95.3698)
+    is_active = session.get('active_only', False)
+    radius = session.get('radius', '1')
+    # print 'search settings:'
+    # print 'lat: %f' % lat
+    # print 'lng: %f' % lng
+    # print 'is_active %s' % is_active
+    # print 'radius: %s' % radius
+    place_list = Place.get_places(lat, lng, radius, is_active)
     # latlng_list = []
     # place_list = place_list
     # place_list_length = len(place_list)

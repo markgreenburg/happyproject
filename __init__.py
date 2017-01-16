@@ -111,12 +111,35 @@ def submit_new_account():
         new_user = User()
         new_user.username = username
         new_user.email = request.form.get('email', '')
-        new_user.password_hash = bcrypt.hashpw(password, bcrypt.gensalt())
+        new_user.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         new_user.save()
         flash("Account created for %s!" % new_user.username)
         return render_template('homepage.html')
     flash("Sorry, that username already exists.")
     return render_template('create_account.html')
+
+@app.route('/happyhour/account/login')
+def login():
+    """
+    Shows user form to allow them to log in
+    """
+    return render_template('login.html')
+
+@app.route('/happyhour/account/login_submit', methods=["POST"])
+def submit_login():
+    """
+    Tests user's form input against stored credentials. Logs user in and Shows
+    homepage or flashes authentication failure message and reloads itself.
+    Stores logged-in state in session
+    """
+    pass
+
+@app.route('/happyhour/account/logout')
+def logout():
+    """
+    Deletes user info from session, logging user out
+    """
+    pass    
 
 if __name__ == "__main__":
     app.run(threaded=True)

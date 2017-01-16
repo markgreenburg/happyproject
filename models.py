@@ -55,7 +55,7 @@ class User(object):
         validate_userinfo
         """
         sql = ("INSERT INTO happyhour.public.users (username,"
-               " email, password) VALUES ($1, $2, $3)"
+               " password, email) VALUES ($1, $2, $3)"
                " RETURNING id"
               )
         result_obj = DbConnect.get_named_results(sql, True, self.username, \
@@ -79,6 +79,16 @@ class User(object):
         else:
             self.insert()
         return self.user_id
+
+    def authenticate(self, test_username, test_pwd_hash):
+        """
+        Authenticates a user based on name & password_hash matching
+        Returns: Bool True if credentials match, False otherwise
+        """
+        if test_username == self.username and test_pwd_hash == \
+        self.password_hash:
+            return True
+        return False
 
     @staticmethod
     def validate_userinfo(username, password):

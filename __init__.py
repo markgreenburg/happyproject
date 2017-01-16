@@ -41,8 +41,6 @@ def convert_address():
     if session['lat']:
         del session['lat']
         del session['lng']
-        del session['radius']
-        del session['active_only']
 
     session['address_bool'] = 0
     if request.args.get('is_active', 'anytime') == 'now':

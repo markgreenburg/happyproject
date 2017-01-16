@@ -7,14 +7,14 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 import os
 import sys
 import json
-from flask import Flask, render_template, request, redirect, url_for, session, Markup
+from flask import Flask, render_template, request, redirect, url_for, session, Markup, flash
 import bcrypt
 import requests
 from models import *
 import config
 
 reload(sys)
-sys.setdefaultencoding('utf8')
+sys.setdefaultencoding('utf-8')
 app = Flask(__name__)
 g_api_key = config.G_API_KEY
 fs_client_id = config.FS_CLIENT_ID
@@ -104,7 +104,19 @@ def submit_new_account():
     """
     Takes user input and creates a new account for them
     """
-    
+    username = request.form.get('username', '')
+    password = request.form.get('password', '')
+    valid_userinfo = User.validate_userinfo(username, password)
+    if valid_userinfo:
+        new_user = User()
+        new_user.username = username
+        new_user.email = request.form.get('email', '')
+        new_user.password_hash = bcrypt.hashpw(password, bcrypt.gensalt())
+        new_user.save()
+        flash("Account created for %s!" % new_user.username)
+        return render_template('homepage.html')
+    flash("Sorry, that username already exists.")
+    return render_template('create_account.html')
 
 if __name__ == "__main__":
     app.run(threaded=True)

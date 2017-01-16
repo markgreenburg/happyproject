@@ -23,24 +23,80 @@ class User(object):
     comma-separated string value. Will add auth, add / edit
     functionality as fast-follow.
     """
-    def __init__(self, lat='', lng=''):
-        self.firstname = ''
+    def __init__(self, user_id=0):
+        sql = ("SELECT id, username, email, password FROM"
+                 " happyhour.public.users WHERE id = $1")
+        user_result = DbConnect.get_named_results(sql, True, user_id)
+        if user_result.id > 0:
+            self.user_id = user_result.id
+            self.username = user_result.username
+            self.email = user_result.email
+            self.password_hash = user_result.password
+        else:
+            self.user_id = 0
+            self.username = ''
+            self.email = ''
+            self.password_hash = ''
+
+    def update(self):
+        """
+        Updates existing user info in db
+        """
+        sql = ("UPDATE happyhour.public.users SET username = $1, password = $2,"
+               " email = $3 WHERE id = $4 RETURNING id")
+        result_obj = DbConnect.get_named_results(sql, True, self.username, \
+                        self.password_hash, self.email)
+        self.user_id = result_obj.id
+        return self.user_id
+
+    def insert(self):
+        """
+        Saves a new user in db. Username and PW validation done through
+        validate_userinfo
+        """
+        sql = ("INSERT INTO happyhour.public.users (username,"
+               " email, password) VALUES ($1, $2, $3)"
+               " RETURNING id"
+              )
+        result_obj = DbConnect.get_named_results(sql, True, self.username, \
+                        self.password_hash, self.email)
+        self.user_id = result_obj.id
+        return self.user_id
+
+    def delete(self):
+        """
+        Hard deletes a user in db.
+        """
+        sql = ("DELETE FROM happyhour.public.users WHERE id = $1 RETURNING id")
+        result_obj = DbConnect.get_named_results(sql, True, self.user_id)
+
+    def save(self):
+        """
+        Updates or inserts user info into db depending on whether user exists
+        """
+        if self.user_id > 0:
+            self.update()
+        else:
+            self.insert()
+        return self.user_id
 
     @staticmethod
-    def check_unique(username):
+    def validate_userinfo(username, password):
         """
         Checks whether a user's given username already exists in the system.
+        Also validates username and password rules: len username >= 4,
+        password must use at least one upper and one number
         Args: username - A string of the user's chosen username
         Returns: Bool - True if name unique or False if already in db
         """
         query = ("SELECT id FROM happyhour.public.users WHERE username"
                  " = $1 LIMIT 1")
         user_matches = DbConnect.get_named_results(query, True, username)
-        if len(user_matches) > 0:
+        if user_matches.id or len(username) < 4:
+            return False
+        if password.islower() or password.isalpha() or len(password) < 8:
             return False
         return True
-
-
 
 class Place(object):
     """
@@ -55,7 +111,7 @@ class Place(object):
                " coords.location_id WHERE venues.id = $1 LIMIT 1"
               )
         venue_db_object = DbConnect.get_named_results(sql, True, location_id)
-        if venue_db_object:
+        if venue_db_object.id > 0:
             self.location_id = venue_db_object.id
             self.venue_id = venue_db_object.venue_id
             self.lat = venue_db_object.lat
@@ -170,7 +226,7 @@ class Place(object):
         # Insert into venues & coords tables
         sql = ("WITH venues AS (INSERT INTO happyhour.public.id_venue_id"
                " (venue_id) VALUES ($1) RETURNING id) INSERT INTO"
-               " happyhour.pulic.coordinates (location_id, lat, lng) SELECT id,"
+               " happyhour.public.coordinates (location_id, lat, lng) SELECT id,"
                " $2, $3 FROM venues RETURNING id"
               )
         result_obj = DbConnect.get_named_results(sql, True, self.venue_id, \
@@ -182,7 +238,7 @@ class Place(object):
         """
         Updates an existing Place record. Is called by the save() method.
         """
-        sql = ("WITH updated_venue AS (UPDATE happyhour.pulic.id_venue_id SET"
+        sql = ("WITH updated_venue AS (UPDATE happyhour.public.id_venue_id SET"
                " venue_id = $1 WHERE id = $2 RETURNING id) UPDATE"
                " happyhour.public.coordinates SET lat = $3, lng = $4 WHERE"
                " location_id IN (SELECT id from updated_venue) RETURNING"
@@ -300,11 +356,11 @@ class Day(object):
             day_info = DbConnect.get_named_results(sql, True, day_time_id)
         elif day_of_week > 0 and loc_id > 0:
             sql = ("SELECT id, location_id, day_of_week, start_time, end_time"
-                   " FROM happyhour.pulic.id_times WHERE day_of_week = $1 AND"
+                   " FROM happyhour.public.id_times WHERE day_of_week = $1 AND"
                    " location_id = $2")
             day_info = DbConnect.get_named_results(sql, True, day_of_week, \
                        loc_id)
-        if day_info:
+        if day_info.id > 0:
             self.day_time_id = day_info.id
             self.location_id = day_info.location_id
             self.day_of_week = day_info.day_of_week
@@ -361,7 +417,7 @@ class Day(object):
         Updates existing day record in id_times table.
         Returns: record's id.
         """
-        sql = ("UPDATE happyhour.pulic.id_times SET location_id = $1,"
+        sql = ("UPDATE happyhour.public.id_times SET location_id = $1,"
                " day_of_week = $2, start_time = $3, end_time = $4 WHERE"
                " id = $5 RETURNING id"
               )
@@ -466,12 +522,16 @@ class DbConnect(object):
               get_one - Bool that determines whether list or first
                         result of list are returned (default = False)
               *args   - pass in as many parameters for the query as needed
-        Returns: the fetchOne or fetchAll of the query
+        Returns: the fetchOne or fetchAll of the query. Returns empty object
+        if get_one is True and no results found.
         """
         conx = DbConnect.get_connection()
         query = conx.query(sql, *args)
         results = query.namedresult()
         if get_one:
-            results = results[0]
+            if len(results) == 0:
+                results = type('empty', (), {'id': 0})()
+            else:
+                results = results[0]
         conx.close()
         return results

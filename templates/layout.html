@@ -55,6 +55,17 @@
             <img src="{{ url_for('static', filename='images/wine.jpg') }}" alt="">
         </div>
         <h1 id="brandname">HappyFinder.</h1>
+        <div class="row">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flashes">
+              {% for message in messages %}
+                <li>{{ message | safe }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+      </div>
     </div>
 {% endblock %}
 {% block body %}

@@ -32,81 +32,53 @@
 </head>
 <body>
 {% block head %}
-    <script>
-        $(window).load(function () {
-            $('.images').find('img').each(function () {
-                var imgClass = (this.width / this.height > 1) ? 'wide' : 'tall';
-                $(this).addClass(imgClass);
-            })
+<script>
+    $(window).load(function () {
+        $('.images').find('img').each(function () {
+            var imgClass = (this.width / this.height > 1) ? 'wide' : 'tall';
+            $(this).addClass(imgClass);
         })
-    </script>
-    <div class="navcontainer">
-        <nav class="navbar navbar-default navbar-static">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/happyhour">HappyFinder.</a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a class="login-link" href="account/create">Create Account</a></li>
-                    </ul>
-                    <form class="navbar-form navbar-right" action="{{ url_for('convert_address') }}" method="GET">
-                        <div class="form-group">
-                            <input type="text" name="address" class="form-control" placeholder="Search by address">
-                            <select name="radius" class="nav-radius-dropdown">
-                                <option value="5" selected>5 miles</option>
-                                <option value="10">10 miles</option>
-                                <option value="25">25 miles</option>
-                                <option value="50">50 miles</option>
-                            </select>
-                            <select name="is_active" class="nav-isactive-dropdown">
-                                <option value="now" selected>now</option>
-                                <option value="anytime">anytime</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-default">Find Happy Hours</button>
-                    </form>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
-    </div>
-{#    <div class="top_page container-fluid">#}
-        {#        <div class="row" id="topbar">#}
-{#        <div class="col-xs-3 imageone images">#}
-{#            <img src="{{ url_for('static', filename='images/oldfashion.jpg') }}" alt="">#}
-{#        </div>#}
-{#        <div class="col-xs-3 imagetwo images">#}
-{#            <img src="{{ url_for('static', filename='images/foodandwine.jpg') }}" alt="">#}
-{#        </div>#}
-{#        <div class="col-xs-3 imagethree images">#}
-{#            <img src="{{ url_for('static', filename='images/beerandburger.jpg') }}" alt="">#}
-{#        </div>#}
-{#        <div class="col-xs-3 imagefour images">#}
-{#            <img src="{{ url_for('static', filename='images/wine.jpg') }}" alt="">#}
-{#        </div>#}
-{#        <h1 id="brandname">HappyFinder.</h1>#}
-{#        <div class="row">#}
-{#            {% with messages = get_flashed_messages() %}#}
-{#                {% if messages %}#}
-{#                    <ul class="flashes">#}
-{#                        {% for message in messages %}#}
-{#                            <li>{{ message | safe }}</li>#}
-{#                        {% endfor %}#}
-{#                    </ul>#}
-{#                {% endif %}#}
-{#            {% endwith %}#}
-{#        </div>#}
-{#    </div>#}
-{% endblock %}
+    })
+</script>
+<div class="navcontainer">
+    <nav class="navbar navbar-default navbar-static">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/happyhour">HappyFinder.</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a class="login-link" href="account/create">Create Account</a></li>
+                </ul>
+                <form class="navbar-form navbar-right" action="{{ url_for('convert_address') }}" method="GET">
+                    <div class="form-group">
+                        <input type="text" name="address" class="form-control" placeholder="Search by address">
+                        <select name="radius" class="nav-radius-dropdown">
+                            <option value="5" selected>5 miles</option>
+                            <option value="10">10 miles</option>
+                            <option value="25">25 miles</option>
+                            <option value="50">50 miles</option>
+                        </select>
+                        <select name="is_active" class="nav-isactive-dropdown">
+                            <option value="now" selected>now</option>
+                            <option value="anytime">anytime</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-default">Find Happy Hours</button>
+                </form>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
 {% block body %}
     <p>testing</p>
 {% endblock %}

@@ -104,7 +104,7 @@ def submit_new_account():
     """
     Takes user input and creates a new account for them
     """
-
+    
 
 if __name__ == "__main__":
     app.run(threaded=True)

@@ -17,7 +17,7 @@ apikey = config.G_API_KEY
 client_id = config.FS_CLIENT_ID
 secret = config.FS_CLIENT_SECRET
 
-class User(UserMixin, object):
+class User(object):
     """
     User class. Stores basic lat / lon data for each user as a
     comma-separated string value. Will add auth, add / edit
@@ -29,11 +29,17 @@ class User(UserMixin, object):
     @staticmethod
     def check_unique(username):
         """
-        Checks whether a user's given username already exists in the system
+        Checks whether a user's given username already exists in the system.
+        Args: username - A string of the user's chosen username
+        Returns: Bool - True if name unique or False if already in db
         """
         query = ("SELECT id FROM happyhour.public.users WHERE username"
                  " = $1 LIMIT 1")
         user_matches = DbConnect.get_named_results(query, True, username)
+        if len(user_matches) > 0:
+            return False
+        return True
+
 
 
 class Place(object):

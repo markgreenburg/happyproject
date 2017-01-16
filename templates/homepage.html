@@ -48,111 +48,37 @@
                 <div class="carousel-inner" role="listbox">
                     <div class="item carouselImage active ">
                         <img src="/static/images/carousel_one.jpg" alt="carouselOne.jpg" class="resize">
-                        <div class="carousel-caption">
-                            <h2>
-                                Welcome to <strong>HappyFinder!</strong>
-                            </h2>
-                            <h3>
-                                I do all the work in finding happy hours going on <strong><em>right now</em></strong>
-                                near you!
-                            </h3>
-                            <form class='jumbotron-address-search' action="{{ url_for('convert_address') }}" method="GET">
-                                <div class="input-group">
-                                    Find happy hours happening
-                                    <select name="is_active" class="homepageButton">
-                                        <option value="now" disabled selected>now</option>
-                                        <option value="anytime">anytime</option>
-                                    </select>
-                                    within
-                                    <select name="radius" class="homepageButton">
-                                        <option value="5" disabled selected>5 miles</option>
-                                        <option value="10">10 miles</option>
-                                        <option value="25">25 miles</option>
-                                        <option value="50">50 miles</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My Location</button>
-                                    <input name="address" type="text" class="form-control" placeholder="1234 Houston Ave. Houston,TX">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default searchButton" type="submit">
-                                            <i class="glyphicon glyphicon-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
+                </div>
 
-                    <div class="item carouselImage">
-                        <img src="/static/images/carouseltwo.jpg" alt="carouselTwo.jpg" class="resize">
-                        <div class="carousel-caption">
-                            <h2>Welcome to <strong>HappyFinder!</strong></h2>
-                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
-                                near you!</h3>
-                            <form class='jumbotron-address-search' action="{{ url_for('convert_address') }}" method="GET">
-                                <div class="input-group">
-                                    Find happy hours happening
-                                    <select name="is_active" class="homepageButton">
-                                        <option value="now" disabled selected>now</option>
-                                        <option value="anytime">anytime</option>
-                                    </select>
-                                    within
-                                    <select name="radius" class="homepageButton">
-                                        <option value="5" disabled selected>5 miles</option>
-                                        <option value="10">10 miles</option>
-                                        <option value="25">25 miles</option>
-                                        <option value="50">50 miles</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My Location</button>
-                                    <input name="address" type="text" class="form-control" placeholder="1234 Houston Ave. Houston, TX">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default searchButton" type="submit">
-                                            <i class="glyphicon glyphicon-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                <div class="item carouselImage">
+                    <img src="/static/images/carouseltwo.jpg" alt="carouselTwo.jpg" class="resize">
+                </div>
 
-                    <div class="item carouselImage">
-                        <img src="/static/images/carousel_three.jpg" alt="carouselThree.jpg" class="resize">
-                        <div class="carousel-caption">
-                            <h2>Welcome to <strong>HappyFinder!</strong></h2>
-                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
-                                near you!</h3>
-                            <form class='jumbotron-address-search' action="{{ url_for('convert_address') }}" method="GET">
-                                <div class="input-group">
-                                    Find happy hours happening
-                                    <select name="is_active" class="homepageButton">
-                                        <option value="now" disabled selected>now</option>
-                                        <option value="anytime">anytime</option>
-                                    </select>
-                                    within
-                                    <select name="radius" class="homepageButton">
-                                        <option value="5" disabled selected>5 miles</option>
-                                        <option value="10">10 miles</option>
-                                        <option value="25">25 miles</option>
-                                        <option value="50">50 miles</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My Location</button>
-                                    <input name="address" type="text" class="form-control" placeholder="address">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default searchButton" type="submit">
-                                            <i class="glyphicon glyphicon-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                <div class="item carouselImage">
+                    <img src="/static/images/carousel_three.jpg" alt="carouselThree.jpg" class="resize">
+
+                </div>
+                <div class="item carouselImage">
+                    <img src="/static/images/beerandburger.jpg" alt="carouselFour.jpg" class="resize">
+
+                </div>
+                <div class="item carouselImage">
+                    <img src="/static/images/oldfashion.jpg" alt="carouselFour.jpg" class="resize">
+                </div>
+                <div class="item carouselImage">
+                    <img src="/static/images/foodandwine.jpg" alt="carouselFour.jpg" class="resize">
+                </div>
+                <div class="form container-fluid">
+                    <div class="caption">
+                        <p>Welcome to <strong>HappyFinder!</strong></p>
+                        <p>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
+                            near you!</p>
                     </div>
-                    <div class="item carouselImage">
-                        <img src="/static/images/beerandburger.jpg" alt="carouselFour.jpg" class="resize">
-                        <div class="carousel-caption">
-                            <h2>Welcome to <strong>HappyFinder!</strong></h2>
-                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
-                                near you!</h3>
-                           <form class='jumbotron-address-search' action="{{ url_for('convert_address') }}" method="GET">
-                                <div class="input-group">
+                    <div>
+                        <form class='home-form' action="{{ url_for('convert_address') }}" method="GET">
+                            <div class="input-group">
+                                <div class="dropdownmenu">
                                     Find happy hours happening
                                     <select name="is_active" class="homepageButton">
                                         <option value="now" disabled selected>now</option>
@@ -165,78 +91,18 @@
                                         <option value="25">25 miles</option>
                                         <option value="50">50 miles</option>
                                     </select>
-                                    <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My Location</button>
-                                    <input name="address" type="text" class="form-control" placeholder="address">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default searchButton" type="submit">
-                                            <i class="glyphicon glyphicon-search"></i>
-                                        </button>
-                                    </div>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="item carouselImage">
-                        <img src="/static/images/oldfashion.jpg" alt="carouselFour.jpg" class="resize">
-                        <div class="carousel-caption">
-                            <h2>Welcome to <strong>HappyFinder!</strong></h2>
-                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
-                                near you!</h3>
-                            <form class='jumbotron-address-search' action="{{ url_for('convert_address') }}" method="GET">
-                                <div class="input-group">
-                                    Find happy hours happening
-                                    <select name="is_active" class="homepageButton">
-                                        <option value="now" disabled selected>now</option>
-                                        <option value="anytime">anytime</option>
-                                    </select>
-                                    within
-                                    <select name="radius" class="homepageButton">
-                                        <option value="5" disabled selected>5 miles</option>
-                                        <option value="10">10 miles</option>
-                                        <option value="25">25 miles</option>
-                                        <option value="50">50 miles</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My Location</button>
-                                    <input name="address" type="text" class="form-control" placeholder="address">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default searchButton" type="submit">
-                                            <i class="glyphicon glyphicon-search"></i>
-                                        </button>
-                                    </div>
+                                <div class="home_location_button">
+                                    <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My
+                                        Location
+                                    </button>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="item carouselImage">
-                        <img src="/static/images/foodandwine.jpg" alt="carouselFour.jpg" class="resize">
-                        <div class="carousel-caption">
-                            <h2>Welcome to <strong>HappyFinder!</strong></h2>
-                            <h3>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
-                                near you!</h3>
-                            <form>
-                                <div class="input-group">
-                                    Find happy hours happening
-                                    <select name="is_active" class="homepageButton">
-                                        <option value="now" disabled selected>now</option>
-                                        <option value="anytime">anytime</option>
-                                    </select>
-                                    within
-                                    <select name="radius" class="homepageButton">
-                                        <option value="5" disabled selected>5 miles</option>
-                                        <option value="10">10 miles</option>
-                                        <option value="25">25 miles</option>
-                                        <option value="50">50 miles</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My Location</button>
-                                    <input name="address" type="text" class="form-control" placeholder="address">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default searchButton" type="submit">
-                                            <i class="glyphicon glyphicon-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                                <input name="address" type="text" class="form-control input-group-btn"
+                                       placeholder="1234 Houston Ave. Houston, TX">
+                                <button class="btn btn-default searchButton" type="submit">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                        </form>
                     </div>
                 </div>
             </div>

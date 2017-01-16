@@ -139,7 +139,7 @@ def logout():
     """
     Deletes user info from session, logging user out
     """
-    pass    
+    pass
 
 if __name__ == "__main__":
     app.run(threaded=True)

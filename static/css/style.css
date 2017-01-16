@@ -23,18 +23,57 @@ html, body {
     margin-bottom: 10px;
 }
 
-#myCarousel > div > div > div > form > div > div > button {
-    position: absolute;
-    bottom: 0;
+/*.form > div > div > button {*/
+/*position: relative;*/
+/*bottom: 0;*/
+/*}*/
+#myCarousel > div > div.form > form > div > input {
+    width: 50%;
+
 }
 
-#myCarousel > div > div > div > form > div > div {
-    width: auto;
+.home-form {
+    width: 100%;
+    text-align: center;
 }
 
-#myCarousel > div > div.item.carouselImage > div > form > div > input {
-    margin-top: 10px;
+#dropdowns {
+    clear: right;
 }
+
+.form {
+    display: block;
+    margin: 0 auto 0 auto;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: absolute; /*newly added*/
+    right: 5px; /*newly added*/
+    padding-bottom: 30%;
+    z-index: 2;
+    top: 0;
+    /*font-size: 2em;*/
+    padding-top: 5%;
+    /*bottom: auto;*/
+    /*position: absolute;*/
+    /*padding-top: 30%;*/
+}
+
+/*#myCarousel > div > div.form > form > div > div{*/
+/*margin-top: 100%;*/
+/*}*/
+.input-group {
+    width: 100%;
+    margin: 0 auto 0 auto;
+}
+
+/*#myCarousel > div > div > div > form > div > div {*/
+/*width: auto;*/
+/*}*/
+
+/*#myCarousel > div > div.item.carouselImage > div > form > div > input {*/
+/*margin-top: 10px;*/
+/*}*/
 
 .carouselStyle {
     width: 100%;
@@ -43,7 +82,19 @@ html, body {
     padding: 0;
 }
 
+.form * {
+    margin: 5px auto 5px auto;
+}
+.dropdownmenu{
+    color: #fff;
+    font-family: inherit;
+}
+.homepageLocation {
+    clear: both;
+}
+
 #topBar {
+    background-color: darkslategray;
     background-size: cover;
     background-position: center;
     margin: 0;
@@ -57,9 +108,9 @@ html, body {
     padding-top: 25px;
 }
 
-#topBar h2 {
-    font-size: 56px;
-    padding: 15% 5% 5% 5%;
+.caption > p:nth-child(1) {
+    font-size: 2.5em;
+    padding: 0 5% 5% 5%;
     line-height: 1.3;
     color: #fff;
     margin: 0 auto;
@@ -67,8 +118,8 @@ html, body {
     text-shadow: 2px 2px black;
 }
 
-#topBar h3 {
-    font-size: 26px;
+.caption > p:nth-child(2) {
+    font-size: 2em;
     line-height: 1.3;
     padding: 0 40px 10px 40px;
     max-width: 740px;
@@ -77,11 +128,6 @@ html, body {
     margin: 0 auto;
     font-weight: bold;
     text-shadow: 2px 2px black;
-}
-
-.carousel-caption {
-    margin: 0px auto 10% auto;
-    width: 500px;
 }
 
 #myCarousel {
@@ -94,18 +140,58 @@ html, body {
     width: 100%;
 }
 
+.searchButton {
+    height: 35px;
+    box-sizing: border-box;
+    color: black;
+}
+
+/*.form-control{*/
+/*float: left;*/
+/*width: 80%;*/
+/*}*/
+.input-group .form-control {
+    width: 50%;
+    box-sizing: border-box;
+    color: #fff;
+    font-family: inherit;
+    /*box-sizing: border-box;*/
+    /*height: 25px;*/
+}
+#myCarousel > div.form.container-fluid > div:nth-child(2) > form > div > input{
+    float: none;
+    margin-top: 0;
+}
+#myCarousel > div.form.container-fluid > div:nth-child(2) > form > div > button{
+    float: none;
+}
+/*#myCarousel > div > div.form > form > div > button{*/
+/*clear: right;*/
+/*margin-left: 50px;*/
+/*margin-right: auto;*/
+/*}*/
 .carouselImage {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-img.resize {
-    width: 100%;
-    max-height: 100%;
-    overflow: hidden;
+.carouselImage img {
+    flex-shrink: 0;
+    min-width: 100%;
+    background-repeat: repeat-y;
+    min-height: 100%
 }
-
+#myCarousel > div.carousel-inner > div > img{
+    flex-shrink: 0;
+    min-width: 100%;
+    background-repeat: repeat;
+    min-height: 100%
+}
 .top_page {
     position: relative;
     max-height: 24%;
@@ -226,13 +312,86 @@ footer.navbar-fixed-bottom div {
     width: 100%;
     text-align: center;
 }
-footer.navbar-fixed-bottom{
+
+footer.navbar-fixed-bottom {
     height: 4%;
     width: 100%;
 }
-/**************************************/
-/* Mark's Details Page Styling Classes*/
-/**************************************/
+
+.venuename {
+    width: 10%;
+    margin-bottom: 0;
+    background-color: transparent;
+}
+
+.venuename h3 {
+    float: left;
+    text-shadow: -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+    color: rgb(60, 86, 226);
+}
+
+.venuename_search {
+    float: right;
+    width: 15%;
+}
+
+/*.details-bus-info-container > div{*/
+/*height: 100%;*/
+/*}*/
+/*.details-bus-info-container{*/
+/*height: 100%;*/
+
+/*}*/
+/*.details-top-row{*/
+/*height: 100%;*/
+/*}*/
+/*.venue_map{*/
+/*height: 100%;*/
+/*width: 60%;*/
+/*padding: 0;*/
+/*}*/
+/*#map {*/
+/*min-height: 209px;*/
+/*height: 100%;*/
+/*width: 100%;*/
+/*}*/
+/*.details-header-image{*/
+/*padding: 0;*/
+/*}*/
+
+/*.top-page{*/
+/*height: 35%;*/
+/*width: 100%;*/
+/*margin: 0;*/
+/*padding: 0;*/
+/*}*/
+/*.bottom-page{*/
+/*height: 35%;*/
+/*width: 100%;*/
+/*padding: 0;*/
+/*margin: 0;*/
+/*}*/
+/*.detail-location-tip{*/
+/*width: 100%;*/
+/*}*/
+/*.details-location-tips-container{*/
+/*width: 40%;*/
+/*height: 100%;*/
+/*float: right;*/
+/*padding: 0;*/
+/*margin: 0;*/
+/*overflow: scroll;*/
+/*}*/
+/*.details-bus-links-row{*/
+/*text-align: center;*/
+/*font-size: 1.5em;*/
+/*height: 4%;*/
+/*width: 100%;*/
+/*overflow: scroll;*/
+/*}*/
 
 /*Main container*/
 div.details-page-container {

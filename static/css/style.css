@@ -588,7 +588,7 @@ div.details-page-container div.bottom-row-container {
 div.details-bottom-bar-row div.details-location-happyhours-container {
     border: 1px solid lightgray;
     color: white;
-    background-color: #6572E8;
+    background-color: rgb(60, 86, 226);
     border-radius: 3px;
     height: 150px;
 }
@@ -638,7 +638,7 @@ div.detail-location-tips-row div.detail-location-tip {
     /*border: 1px solid lightgray;*/
     border-radius: 3px;
     color: white;
-    background-color: #6572E8;
+    background-color: rgb(60, 86, 226);
     padding: 5px;
     margin-bottom: 3px;
 }
@@ -653,7 +653,7 @@ div.details-bottom-bar-row div.details-location-specials-container {
     border: 1px solid lightgray;
     border-radius: 3px;
     color: white;
-    background-color: #6572E8;
+    background-color: rgb(60, 86, 226);
     overflow-y: hidden;
     height: 150px;
 }

@@ -17,17 +17,15 @@ apikey = config.G_API_KEY
 client_id = config.FS_CLIENT_ID
 secret = config.FS_CLIENT_SECRET
 
-
 class User(object):
     """
     User class. Stores basic lat / lon data for each user as a
     comma-separated string value. Will add auth, add / edit
     functionality as fast-follow.
     """
-
     def __init__(self, user_id=0):
         sql = ("SELECT id, username, email, password FROM"
-               " happyhour.public.users WHERE id = $1")
+                 " happyhour.public.users WHERE id = $1")
         user_result = DbConnect.get_named_results(sql, True, user_id)
         if user_result.id > 0:
             self.user_id = user_result.id
@@ -47,7 +45,7 @@ class User(object):
         sql = ("UPDATE happyhour.public.users SET username = $1, password = $2,"
                " email = $3 WHERE id = $4 RETURNING id")
         result_obj = DbConnect.get_named_results(sql, True, self.username, \
-                                                 self.password_hash, self.email)
+                        self.password_hash, self.email)
         self.user_id = result_obj.id
         return self.user_id
 
@@ -59,9 +57,9 @@ class User(object):
         sql = ("INSERT INTO happyhour.public.users (username,"
                " password, email) VALUES ($1, $2, $3)"
                " RETURNING id"
-               )
+              )
         result_obj = DbConnect.get_named_results(sql, True, self.username, \
-                                                 self.password_hash, self.email)
+                        self.password_hash, self.email)
         self.user_id = result_obj.id
         return self.user_id
 
@@ -88,7 +86,7 @@ class User(object):
         Returns: Bool True if credentials match, False otherwise
         """
         if test_username == self.username and test_pwd_hash == \
-                self.password_hash:
+        self.password_hash:
             return True
         return False
 
@@ -110,20 +108,18 @@ class User(object):
             return False
         return True
 
-
 class Place(object):
     """
     Place superclass. Gets various detail attributes from the Foursquare api
     using Curl. Generates based on internal ID for each venue.
     """
-
     def __init__(self, location_id=0):
         # Get local info from our db
         sql = ("SELECT venues.id, venue_id, lat, lng FROM"
                " happyhour.public.id_venue_id venues INNER JOIN"
                " happyhour.public.coordinates coords ON venues.id ="
                " coords.location_id WHERE venues.id = $1 LIMIT 1"
-               )
+              )
         venue_db_object = DbConnect.get_named_results(sql, True, location_id)
         if venue_db_object.id > 0:
             self.location_id = venue_db_object.id
@@ -137,24 +133,24 @@ class Place(object):
                    (self.venue_id, \
                     client_id, \
                     secret)
-                   )
+                  )
             self.is_happy_hour = self.get_happy_state()
-            venue_details = ApiConnect.get_load(url).get('response', {}).get \
-                ('venue', {})
+            venue_details = ApiConnect.get_load(url).get('response', {}).get\
+                            ('venue', {})
             self.name = venue_details.get('name', '')
             self.description = venue_details.get('page', {}).get('pageInfo', \
-                                                                 {}).get('description', '')
+                               {}).get('description', '')
             self.website = venue_details.get('url', '')
-            self.img_prefix = venue_details.get('bestPhoto', {}).get('prefix' \
-                                                                     , '')
-            self.img_suffix = venue_details.get('bestPhoto', {}).get('suffix' \
-                                                                     , '')
-            self.img_width = venue_details.get('bestPhoto', {}).get \
-                ('width', 0)
-            self.img_height = venue_details.get('bestPhoto', {}).get('height' \
-                                                                     , 0)
+            self.img_prefix = venue_details.get('bestPhoto', {}).get('prefix'\
+                              , '')
+            self.img_suffix = venue_details.get('bestPhoto', {}).get('suffix'\
+                              , '')
+            self.img_width = venue_details.get('bestPhoto', {}).get\
+                               ('width', 0)
+            self.img_height = venue_details.get('bestPhoto', {}).get('height'\
+                               , 0)
             self.category = venue_details.get('categories', [{}])[0].get \
-                ('name', '')
+                              ('name', '')
             self.specials = venue_details.get('specials', {}).get('items', [{}])
             self.tips = self.get_tips(venue_details)
             self.menu_url = venue_details.get('menu', {}).get('url', '')
@@ -162,10 +158,10 @@ class Place(object):
             self.is_open = venue_details.get('hours', {}).get('isOpen', False)
             self.price_level = venue_details.get('price', {}).get('tier', 0)
             self.rating = venue_details.get('rating', 0.0)
-            self.formatted_phone_number = venue_details.get('contact', {}).get \
-                ('formattedPhone', '')
-            self.formatted_address = venue_details.get('location', {}).get \
-                ('formattedAddress', [])
+            self.formatted_phone_number = venue_details.get('contact', {}).get\
+            ('formattedPhone', '')
+            self.formatted_address = venue_details.get('location', {}).get\
+            ('formattedAddress', [])
         else:
             self.location_id = 0
             self.venue_id = ''
@@ -227,8 +223,8 @@ class Place(object):
         now = datetime.datetime.now().time()
         for day in self.happy_hour:
             if now > day.end_time \
-                    and now < day.start_time \
-                    and today == day.day_of_week:
+            and now < day.start_time \
+            and today == day.day_of_week:
                 return True
         return False
 
@@ -242,9 +238,9 @@ class Place(object):
                " (venue_id) VALUES ($1) RETURNING id) INSERT INTO"
                " happyhour.public.coordinates (location_id, lat, lng) SELECT id,"
                " $2, $3 FROM venues RETURNING id"
-               )
+              )
         result_obj = DbConnect.get_named_results(sql, True, self.venue_id, \
-                                                 self.lat, self.lng)
+                     self.lat, self.lng)
         self.location_id = result_obj.id
         return self.location_id
 
@@ -257,9 +253,9 @@ class Place(object):
                " happyhour.public.coordinates SET lat = $3, lng = $4 WHERE"
                " location_id IN (SELECT id from updated_venue) RETURNING"
                " location_id;"
-               )
-        result_obj = DbConnect.get_named_results(sql, True, self.venue_id, \
-                                                 self.location_id, self.lat, self.lng)
+              )
+        result_obj = DbConnect.get_named_results(sql, True, self.venue_id,\
+                     self.location_id, self.lat, self.lng)
         return result_obj.location_id
 
     def save(self):
@@ -285,7 +281,7 @@ class Place(object):
         sql = ("UPDATE happyhour.public.id_venue_id SET deleted = $1 WHERE"
                " id = $2")
         result_obj = DbConnect.get_named_results(sql, True, deleted, \
-                                                 self.location_id)
+                     self.location_id)
         return result_obj.location_id
 
     @staticmethod
@@ -309,9 +305,9 @@ class Place(object):
                " sin($4 * 0.0175) + cos(lat * 0.0175) * cos($5 * 0.0175) *"
                " cos(($6 * 0.0175) - (lng * 0.0175))) * 3959 <= $7) ORDER BY"
                " milesfromuser ASC;"
-               )
+              )
         venue_id_objects = DbConnect.get_named_results(sql, False, lat, lat, \
-                                                       lng, lat, lat, lng, radius)
+                           lng, lat, lat, lng, radius)
         place_object_list = []
         for venue_row in venue_id_objects:
             place_instance = Place(venue_row[0])
@@ -350,12 +346,12 @@ class Place(object):
         """
         url = ("https://maps.googleapis.com/maps/api/geocode/json?address=%s"
                "&key=%s" % (urllib.quote_plus(address), apikey)
-               )
+              )
         location_data = ApiConnect.get_load(url)
-        lat = location_data.get('results', [{}])[0].get('geometry', {}). \
-            get('location', {}).get('lat', 0)
-        lng = location_data.get('results', [{}])[0].get('geometry', {}). \
-            get('location', {}).get('lng', 0)
+        lat = location_data.get('results', [{}])[0].get('geometry', {}).\
+              get('location', {}).get('lat', 0)
+        lng = location_data.get('results', [{}])[0].get('geometry', {}).\
+              get('location', {}).get('lng', 0)
         return (lat, lng)
 
 
@@ -363,7 +359,6 @@ class Day(object):
     """
     Defines an individual day on which a Place has a Happy Hour.
     """
-
     def __init__(self, day_time_id=0, day_of_week=0, loc_id=0):
         if day_time_id > 0:
             sql = ("SELECT id, location_id, day_of_week, start_time, end_time"
@@ -374,7 +369,7 @@ class Day(object):
                    " FROM happyhour.public.id_times WHERE day_of_week = $1 AND"
                    " location_id = $2")
             day_info = DbConnect.get_named_results(sql, True, day_of_week, \
-                                                   loc_id)
+                       loc_id)
         if day_info.id > 0:
             self.day_time_id = day_info.id
             self.location_id = day_info.location_id
@@ -421,9 +416,9 @@ class Day(object):
         sql = ("INSERT INTO happyhour.public.id_times (location_id,"
                " day_of_week, start_time, end_time) VALUES ($1, $2, $3, $4)"
                " RETURNING id"
-               )
+              )
         result_obj = DbConnect.get_named_results(sql, True, self.location_id, \
-                                                 self.day_of_week, self.start_time, self.end_time)
+                     self.day_of_week, self.start_time, self.end_time)
         self.day_time_id = result_obj.id
         return self.day_time_id
 
@@ -435,10 +430,10 @@ class Day(object):
         sql = ("UPDATE happyhour.public.id_times SET location_id = $1,"
                " day_of_week = $2, start_time = $3, end_time = $4 WHERE"
                " id = $5 RETURNING id"
-               )
+              )
         result_obj = DbConnect.get_named_results(sql, True, self.location_id, \
-                                                 self.day_of_week, self.start_time, self.end_time, \
-                                                 self.day_time_id)
+                     self.day_of_week, self.start_time, self.end_time, \
+                     self.day_time_id)
         return result_obj.id
 
     def save(self):
@@ -462,7 +457,7 @@ class Day(object):
         sql = ("UPDATE happyhour.public.id_times SET deleted = $1 WHERE"
                " id = $2")
         result_obj = DbConnect.get_named_results(sql, True, deleted, \
-                                                 self.day_time_id)
+                     self.day_time_id)
         return result_obj.id
 
     @staticmethod
@@ -472,7 +467,7 @@ class Day(object):
         """
         sql = ("SELECT id FROM happyhour.public.id_times WHERE location_id"
                " = $1 ORDER BY day_of_week ASC"
-               )
+              )
         day_id_list = DbConnect.get_named_results(sql, False, location_id)
         day_objects_list = []
         for day in day_id_list:
@@ -480,12 +475,10 @@ class Day(object):
             day_objects_list.append(day_object)
         return day_objects_list
 
-
 class ApiConnect(object):
     """
     Holds Curl code to get info from our API partners
     """
-
     @staticmethod
     def get_load(api_call):
         """
@@ -498,13 +491,12 @@ class ApiConnect(object):
         curl_object.setopt(curl_object.URL, api_call)
         curl_object.setopt(curl_object.WRITEFUNCTION, response.write)
         curl_object.setopt(curl_object.HTTPHEADER, ['Content-Type: application/json', \
-                                                    'Accept-Charset: UTF-8'])
+        'Accept-Charset: UTF-8'])
         curl_object.perform()
         curl_object.close()
         json_values = json.loads(response.getvalue())
         response.close()
         return json_values
-
 
 class DbConnect(object):
     """
@@ -512,7 +504,6 @@ class DbConnect(object):
     generalized methods for running queries / establish and release
     connections in pSQL
     """
-
     @staticmethod
     def get_connection():
         """
@@ -523,7 +514,7 @@ class DbConnect(object):
             user=config.DBUSER,
             passwd=config.DBPASS,
             dbname=config.DBNAME
-        )
+            )
 
     @staticmethod
     def escape(value):

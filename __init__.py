@@ -23,7 +23,6 @@ app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
 app.config['DEBUG'] = config.DEBUG
 
-
 @app.route('/')
 def home():
     """
@@ -31,7 +30,6 @@ def home():
     happy hours.
     """
     return render_template('homepage.html')
-
 
 @app.route('/convert_address', methods=['GET'])
 def convert_address():
@@ -53,7 +51,7 @@ def convert_address():
     if address_input:
         session['address_bool'] = 1
         coords_tuple = Place.address_to_coords(request.args.get('address', \
-                                                                ''))
+                       ''))
         session['lat'] = coords_tuple[0]
         session['lng'] = coords_tuple[1]
         print 'session address: %s' % request.args.get('address')
@@ -65,7 +63,6 @@ def convert_address():
     else:
         return render_template('location.html', apikey=g_api_key)
 
-
 @app.route('/location', methods=['GET'])
 def location():
     """
@@ -74,7 +71,6 @@ def location():
     session['lat'] = json.loads(request.args.get('lat'))
     session['lng'] = json.loads(request.args.get('lng'))
     return None
-
 
 @app.route('/display')
 def display():
@@ -88,9 +84,8 @@ def display():
     radius = session.get('radius', '50')
     place_list = Place.get_places(lat, lng, radius, is_active)
     return render_template(
-        "display.html", place_list=place_list, apikey=g_api_key, latitude= \
-            lat, longitude=lng, address_input=session.get('address_bool'))
-
+        "display.html", place_list=place_list, apikey=g_api_key, latitude=\
+        lat, longitude=lng, address_input = session.get('address_bool'))
 
 @app.route('/details/<int:location_id>')
 def show_location(location_id):
@@ -100,14 +95,12 @@ def show_location(location_id):
     location_object = Place(location_id)
     return render_template("details.html", venue=location_object, apikey=g_api_key)
 
-
 @app.route('/account/create', methods=["GET", "POST"])
 def create_account():
     """
     Displays form to user that allows signups
     """
     return render_template('create_account.html')
-
 
 @app.route('/account/submit', methods=["POST"])
 def submit_new_account():
@@ -128,14 +121,12 @@ def submit_new_account():
     flash("Sorry, that username already exists.")
     return render_template('create_account.html')
 
-
 @app.route('/account/login')
 def login():
     """
     Shows user form to allow them to log in
     """
     return render_template('login.html')
-
 
 @app.route('/account/login_submit', methods=["POST"])
 def submit_login():
@@ -146,14 +137,12 @@ def submit_login():
     """
     pass
 
-
 @app.route('/account/logout')
 def logout():
     """
     Deletes user info from session, logging user out
     """
     pass
-
 
 if __name__ == "__main__":
     app.run(threaded=True)

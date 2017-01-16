@@ -153,7 +153,7 @@ html, body {
 .input-group .form-control {
     width: 50%;
     box-sizing: border-box;
-    color: #fff;
+    color: darkslategrey;
     font-family: inherit;
     /*box-sizing: border-box;*/
     /*height: 25px;*/
@@ -194,7 +194,6 @@ html, body {
 }
 .top_page {
     position: relative;
-    max-height: 24%;
     width: 100%;
     padding: 0;
     overflow: hidden;
@@ -203,7 +202,7 @@ html, body {
 .images {
     width: 25%;
     max-height: 24%;
-    /*position: relative;*/
+    position: relative;
     padding: 0;
     z-index: -1;
 }
@@ -257,7 +256,8 @@ form.navbar-right button.btn-default {
 }
 
 .div-row {
-    height: 72%;
+    height: 91%;
+    overflow: hidden;
 }
 
 #map-canvas {

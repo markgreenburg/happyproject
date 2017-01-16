@@ -5,8 +5,8 @@
 {% block body %}
     <body>
     <div class="row div-row">
-        <div class="col-sm-9 col-xs-12" id="map-canvas"></div>
-        <div class="col-sm-3 col-xs-12" id="infowindow">
+        <div class="col-xs-9" id="map-canvas"></div>
+        <div class="col-xs-3" id="infowindow">
             <div>
                 {% for place in place_list %}
                     <div class="place_details">
@@ -28,7 +28,7 @@
                                         Show On Map</a>
                                 </td>
                                 <td>
-                                    <a href="/happyhour/details/{{ place.location_id }}">
+                                    <a href="/details/{{ place.location_id }}">
                                         More Details</a>
                                 </td>
                             </tr>

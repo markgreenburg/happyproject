@@ -23,7 +23,7 @@ app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
 app.config['DEBUG'] = config.DEBUG
 
-@app.route('/happyhour/')
+@app.route('/')
 def home():
     """
     Retuns homepage template with Jumbotron and search fields to enable finding
@@ -31,7 +31,7 @@ def home():
     """
     return render_template('homepage.html')
 
-@app.route('/happyhour/convert_address', methods=['GET'])
+@app.route('/convert_address', methods=['GET'])
 def convert_address():
     """
     Takes the address from user's search and uses the Geocoding API to convert
@@ -60,7 +60,7 @@ def convert_address():
     else:
         return render_template('location.html', apikey=g_api_key)
 
-@app.route('/happyhour/location', methods=['GET'])
+@app.route('/location', methods=['GET'])
 def location():
     """
     gets a list of places based on a 10 mile radius from user's location
@@ -69,7 +69,7 @@ def location():
     session['lng'] = json.loads(request.args.get('lng'))
     return None
 
-@app.route('/happyhour/display')
+@app.route('/display')
 def display():
     """
     Gets a list of places based on a passed in mile radius from user's location
@@ -84,7 +84,7 @@ def display():
         "display.html", place_list=place_list, apikey=g_api_key, latitude=\
         lat, longitude=lng, address_input = session.get('address_bool'))
 
-@app.route('/happyhour/details/<int:location_id>')
+@app.route('/details/<int:location_id>')
 def show_location(location_id):
     """
     Shows the Foursquare and happyhour details for a given id from id_venue_id
@@ -92,14 +92,14 @@ def show_location(location_id):
     location_object = Place(location_id)
     return render_template("details.html", venue=location_object, apikey=g_api_key)
 
-@app.route('/happyhour/account/create', methods=["GET", "POST"])
+@app.route('/account/create', methods=["GET", "POST"])
 def create_account():
     """
     Displays form to user that allows signups
     """
     return render_template('create_account.html')
 
-@app.route('/happyhour/account/submit', methods=["POST"])
+@app.route('/account/submit', methods=["POST"])
 def submit_new_account():
     """
     Takes user input and creates a new account for them
@@ -118,14 +118,14 @@ def submit_new_account():
     flash("Sorry, that username already exists.")
     return render_template('create_account.html')
 
-@app.route('/happyhour/account/login')
+@app.route('/account/login')
 def login():
     """
     Shows user form to allow them to log in
     """
     return render_template('login.html')
 
-@app.route('/happyhour/account/login_submit', methods=["POST"])
+@app.route('/account/login_submit', methods=["POST"])
 def submit_login():
     """
     Tests user's form input against stored credentials. Logs user in and Shows
@@ -134,7 +134,7 @@ def submit_login():
     """
     pass
 
-@app.route('/happyhour/account/logout')
+@app.route('/account/logout')
 def logout():
     """
     Deletes user info from session, logging user out

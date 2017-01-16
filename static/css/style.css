@@ -9,9 +9,7 @@
 
 /* Optional: Makes the sample page fill the window. */
 
-
 /*/!!CHANGE FONT STYLE ON BUTTONS AND SEARCH BARS*/
-
 
 html, body {
     font-size: 100%;
@@ -19,21 +17,25 @@ html, body {
     height: 100%;
     width: 100%;
 }
-.homepageButton{
+
+.homepageButton {
     color: darkslategray;
     margin-bottom: 10px;
 }
-#myCarousel > div > div > div > form > div > div > button{
+
+#myCarousel > div > div > div > form > div > div > button {
     position: absolute;
     bottom: 0;
 }
 
-#myCarousel > div > div > div > form > div > div{
+#myCarousel > div > div > div > form > div > div {
     width: auto;
 }
-#myCarousel > div > div.item.carouselImage > div > form > div > input{
+
+#myCarousel > div > div.item.carouselImage > div > form > div > input {
     margin-top: 10px;
 }
+
 .carouselStyle {
     width: 100%;
     height: 100%;
@@ -171,11 +173,11 @@ form.navbar-right button.btn-default {
 .div-row {
     height: 72%;
 }
-#map-canvas{
+
+#map-canvas {
     height: 100%;
     padding: 0;
 }
-
 
 /*.container-fluid {*/
 /*height: 100%;*/
@@ -184,12 +186,27 @@ form.navbar-right button.btn-default {
 .loading {
     height: 70%;
 }
-body > div.row.div-row{
+
+body > div.row.div-row {
     margin: 0;
 }
+
 #infowindow {
     height: 100%;
     padding: 0;
+    overflow: scroll;
+}
+
+a:hover {
+    text-decoration: none;
+    color: slategray;
+    font-family: 'Josefin Slab', serif;
+}
+
+a {
+    text-decoration: none;
+    color: darkslategray;
+    font-family: 'Josefin Slab', serif;
 }
 
 .bigcontainer {
@@ -204,8 +221,15 @@ footer.navbar-fixed-bottom div {
     border-radius: 4px;
     color: rgb(51, 51, 51);
     padding: 5px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    text-align: center;
 }
-
+footer.navbar-fixed-bottom{
+    height: 4%;
+    width: 100%;
+}
 /**************************************/
 /* Mark's Details Page Styling Classes*/
 /**************************************/

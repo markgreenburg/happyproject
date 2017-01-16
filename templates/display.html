@@ -4,57 +4,66 @@
 {% endblock %}
 {% block body %}
     <body>
+    <form method="get">
+        <script>
+            // HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    $.getJSON('/happyhour/display', {
+                        lat: JSON.stringify(pos.lat),
+                        lng: JSON.stringify(pos.lng)
+                    });
+
+                    // Old Function
+                    //$.getJSON('/_location', {
+                    //  lat: JSON.stringify(pos.lat),
+                    //  lng: JSON.stringify(pos.lng)
+                    //}, function (data) {
+                    //    console.log(data.result);
+                    //    $("#result").text(data.result);
+                    //});
+
+                    // Sets the location of the current window itself.
+                    // window.location = '/happyhour/display';
+                });
+            }
+        </script>
+    </form>
     <div class="row div-row">
         <div class="col-sm-9 col-xs-12" id="map-canvas"></div>
         <div class="col-sm-3 col-xs-12" id="infowindow">
             <div>
                 {% for place in place_list %}
-                    <a href="javascript:google.maps.event.trigger(gmarkers['{{ place.formatted_address[0] }}'],'click');">
-                        <div class="place_details">
-                            <table class="place_descriptions" style="border: 1px solid dimgray; width: 100%">
-                                <tr>
-                                    <th colspan="2" style="text-align: center"><h4
-                                            class="place_descriptions">{{ place.name }} -</h4><a
-                                            href="/happyhour/details/{{ place.location_id }}"><p> Details</p></a></th>
-                                </tr>
-                                <tr>
-                                    <th colspan="2" style="text-align: center; border-bottom: 3px solid dimgray"><h5
-                                            class="place_descriptions">{{ place.price_level * '$' }} -
-                                        Rating: {{ place.rating }}</h5></th>
-                                </tr>
-                                <tr>
-                                    <td style="width: 100%">
-                                        <table style="width: 100%">
-                                            <tr style="display: none">
-                                                <th style="display: none"></th>
-                                            </tr>
-                                            <tr>
-                                                <td style="width: 100%">
-                                                    {% for day in place.happy_hour %}
-                                                        <table style="width: 100%; border-right:1px solid dimgray;">
-                                                            <tr style="display: none">
-                                                                <th style="display: none"></th>
-                                                                <th style="display: none"></th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="text-align: center; width: 50%; font-weight: bold">
-                                                                    {{ day.day_string }}
-                                                                </td>
-                                                                <td style="text-align: center; width: 50%">
-                                                                    {{ day.start_time.strftime("%I:%M %p") }}
-                                                                    - {{ day.end_time.strftime("%I:%M %p") }}
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    {% endfor %}
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </a>
+                    <div class="place_details">
+                        <table class="place_descriptions" style="border: 1px solid dimgray; width: 100%">
+                            <tr>
+                                <th colspan="2" style="text-align: center">
+                                    <p class="place_descriptions">{{ place.name }}</p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center"><p
+                                        class="place_descriptions">{{ place.price_level * '$' }} -
+                                    Rating: {{ place.rating }}</p>
+                                </td>
+                            </tr>
+                            <tr style="text-align: center; border-bottom: 3px solid dimgray">
+                                <td>
+                                    <a href="javascript:google.maps.event.trigger(gmarkers['{{ place.formatted_address[0] }}'],'click');">
+                                        Show On Map</a>
+                                </td>
+                                <td>
+                                    <a href="/happyhour/details/{{ place.location_id }}">
+                                        More Details</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -106,7 +115,7 @@
 
             var address_input = {{ address_input }};
 
-            if (address_input != true){
+            if (address_input != true) {
                 userMarker();
             }
 
@@ -118,7 +127,41 @@
                 var lat = parseFloat({{ place.lat }});
                 var lng = parseFloat({{ place.lng }});
 
-                gmarkers[form_add] = createMarker(new google.maps.LatLng(lat, lng), name + "<br>" + form_add);
+                gmarkers[form_add] = createMarker(new google.maps.LatLng(lat, lng),
+                    "<a href='/happyhour/details/{{ place.location_id }}'>"
+                    + "<h4><strong>" + name + "</strong></h4>" + '</a>' + form_add + "<br>" + "<form action='http://maps.google.com/maps' method="
+                    + 'get" target="_blank">'
+                    + '<label for="saddr"></label>'
+                    + '<input type="hidden" value="{{ latitude }}, {{ longitude }}" name="saddr" />'
+                    + '<input type="hidden" name="daddr" value="{{ place.formatted_address[0]}}, {{ place.formatted_address[1] }}" />'
+                    + '<input type="submit" style = "width: 8em;  height: 1.7em; margin-bottom: 3px" value="Get directions" />'
+                    + '</form>'
+                    + '<table style = "width: 100%;">'
+                    + '<tr style="display: none">'
+                    + '<th style="display: none"></th>'
+                    + '</tr>'
+                    + '<tr>'
+                    + '<td style="width: 100%">'
+                    + '{% for day in place.happy_hour %}'
+                        + '<table style="width: 100%;">'
+                        + '<tr style="display: none">'
+                        + '<th style="display: none"></th>'
+                        + '<th style="display: none"></th>'
+                        + '</tr>'
+                        + '<tr>'
+                        + '<td style="text-align: left; width: 25%; font-weight: bold; border-top: 1px solid black">'
+                        + '{{ day.day_string }}:'
+                        + '</td>'
+                        + '<td style="text-align: right; width: 75%; border-top: 1px solid black">'
+                        + '{{ day.start_time.strftime("%I:%M %p") }}'
+                        + '- {{ day.end_time.strftime("%I:%M %p") }}'
+                        + '</td>'
+                        + '</tr>'
+                        + '</table>'
+                        + '{% endfor %}'
+                    + '</td>'
+                    + '</tr>'
+                    + '</table>');
             {% endfor %}
         }
 

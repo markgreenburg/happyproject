@@ -211,6 +211,9 @@ div.navbar-header a.navbar-brand {
     font-size: 2em;
     color: white;
 }
+div.navbar-header a.navbar-brand:hover {
+    color: lightgray;
+}
 
 .navbar {
     margin-bottom: 0;

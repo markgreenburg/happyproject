@@ -45,7 +45,6 @@ def convert_address():
         session['active_only'] = False
     session['radius'] = request.args.get('radius', '20')
     if session.get('lat'):
-
         del session['lat']
         del session['lng']
     address_input = request.args.get('address', '')

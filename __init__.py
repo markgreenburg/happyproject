@@ -38,16 +38,16 @@ def convert_address():
     it to a lat and lng value, storing those in session. Returns the map
     template with results & pins.
     """
-    if session['lat']:
-        del session['lat']
-        del session['lng']
-
     session['address_bool'] = 0
     if request.args.get('is_active', 'anytime') == 'now':
         session['active_only'] = True
     else:
         session['active_only'] = False
     session['radius'] = request.args.get('radius', '20')
+    if session.get('lat'):
+
+        del session['lat']
+        del session['lng']
     address_input = request.args.get('address', '')
     if address_input:
         session['address_bool'] = 1

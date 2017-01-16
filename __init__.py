@@ -90,7 +90,7 @@ def show_location(location_id):
     Shows the Foursquare and happyhour details for a given id from id_venue_id
     """
     location_object = Place(location_id)
-    return render_template("details.html", venue=location_object)
+    return render_template("details.html", venue=location_object, apikey=g_api_key)
 
 @app.route('/happyhour/account/create', methods=["GET", "POST"])
 def create_account():

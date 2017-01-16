@@ -13,7 +13,7 @@
 
 html, body {
     font-size: 100%;
-    font-family: 'Josefin Slab', serif;
+    font-family: 'Open Sans Light', sans-serif;
     height: 100%;
     width: 100%;
 }
@@ -234,107 +234,153 @@ footer.navbar-fixed-bottom{
 /* Mark's Details Page Styling Classes*/
 /**************************************/
 
+/*Main container*/
+div.details-page-container {
+    margin: 10px, 30px, 30px, 50px;
+    /*border: 1px solid gray;*/
+}
+
 /*Top Row container...which is the only row for now*/
 div.container-fluid div.details-top-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 /*Header Image*/
 div.details-top-row div.details-header-image {
-    border: 1px solid black;
+    /*border: 1px solid lightgray;*/
+    /*padding: 5px;*/
 }
 
 /*Container to the right of the header image*/
 div.details-top-row div.details-bus-info-container {
-    border: 1px solid black;
+    /*border: 1px solid lightgray;*/
 }
 
 /*Main business rating and name row container*/
 div.details-bus-info-container div.details-location-name-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     height: 100%;
 }
 
 /*Venue name - left half of name and rating row container*/
 div.details-location-name-row div.details-location-name {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    font-size: 3rem;
+    text-align: center;
 }
 
 /*Venue price review average, venue category container*/
 div.details-location-name-row div.details-location-cat-rating-container {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 /*Row for div that contains ratings average and price tier*/
 div.details-location-cat-rating-container div.details-location-rating-price-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 /*Column with actual rating, price content*/
 div.details-location-rating-price-row div.details-location-ratings {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: bolder;
+}
+
+div.details-location-ratings span.price {
+    color: #85bb65;    
+}
+
+div.details-location-ratings span.star {
+    color: #D3CE09;
+}
+
+div.details-location-ratings span.price {
+
 }
 
 /*Row for div that contains venue category info*/
 div.details-location-cat-rating-container div.details-location-category-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 /*Column with actual venue category content*/
 div.details-location-category-row div.details-location-category {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    text-align: center;
+    font-size: 1.2rem;
 }
 
 /*Row for div that contains venue category info*/
 div.details-location-cat-rating-container div.details-location-hrs-today-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 /*Column with actual venue category content*/
 div.details-location-hrs-today-row div.details-location-hrs-today {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 10px;
 }
+
+div.details-location-hrs-today-row #closed {
+    color: darkred;
+}
+
+div.details-location-hrs-today-row # open {
+    color: darkgreen;
+}
+
 
 /*Business contact address and map info row container*/
 div.details-bus-info-container div.details-bus-info-row {
-    border: 1px solid black;
+    /*border: 1px solid lightgray;*/
 }
 
 /*Left half of business contact info row - contains address and number*/
 div.details-bus-info-row div.details-bus-info {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 /*Address and phone number row - contains divs for each address string &
 /*number*/
 div.details-bus-info div.details-bus-contact {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    border-radius: 4px;
 }
 
 /*Contains a component of the address (e.g., stree, city/state/zip, country)*/
 div.details-bus-contact div.details-bus-address {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    text-align: center;
+    
 }
 
 /*Contains business phone number*/
 div.details-bus-contact div.details-bus-phone {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    text-align: center;
 }
 
 /*Right half of business contact info row - contains minimap*/
 div.details-bus-info-row div.details-bus-minimap {
-    border: 1px solid black;
-    height: 100%;
+    border: 1px solid lightgray;
+    height: 200px;
 }
 
 /*Row for url links*/
 div.details-bus-info-container div.details-bus-links-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 /*Div with actual business links to FS, venue website, FS menu (each in span)*/
 div.details-bus-links-row div.details-bus-links {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    font-size: 1.25rem;
+    text-align: center;
 }
 
 /**********/
@@ -343,7 +389,7 @@ div.details-bus-links-row div.details-bus-links {
 
 /*General span class*/
 div.details-bus-links span.details-website-span {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 /*First span in list - using ::after*/
@@ -358,72 +404,105 @@ div.details-bus-links span.span-between::after {
 
 /*Row container for the bottom row of venue details*/
 div.details-bus-info-container div.details-bottom-bar-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+}
+
+div.details-page-container div.bottom-row-container {
+    margin: 0px;
 }
 
 /*Container that hold happy hour header and times info*/
 div.details-bottom-bar-row div.details-location-happyhours-container {
-    border: 1px solid black;
+    border: 1px solid lightgray;
+    color: white;
+    background-color: #6572E8;
+    border-radius: 3px;
+    height: 150px;
 }
 
 /*Row for happy hour heading div*/
 div.details-location-happyhours-container div.details-location-happyhours-title-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    margin: 0 5px;
 }
 
 /*Content div with happy hour heading*/
 div.details-location-happyhours-title-row div.details-location-happyhours-title {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    text-align: center;
 }
 
 /*Row for happy hour content div*/
 div.details-location-happyhours-container div.details-location-happyhours-tbl-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    text-align: center;
+    margin: 0 5px;
 }
 
 /*Content div for happy hour times table*/
 div.details-location-happyhours-tbl-row div.details-location-happyhours-table {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    text-align: center;
+    /*padding-left: 50px;*/
 }
 
 /*Div that contains a row with divs for each tip for the location*/
 div.details-bottom-bar-row div.details-location-tips-container {
-    border: 1px solid black;
+    /*border: 1px solid lightgray;*/
+    border-radius: 3px;
 }
 
 /*Row that contains divs with tips*/
 div.details-location-tips-container div.detail-location-tips-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     overflow-y: scroll;
-    height: 200px;
+    height: 150px;
+    margin: 0 5px;
 }
 
 /*Div that containss contents of each actual tip*/
 div.detail-location-tips-row div.detail-location-tip {
-    border: 1px solid black;
+    /*border: 1px solid lightgray;*/
+    border-radius: 3px;
+    color: white;
+    background-color: #6572E8;
+    padding: 5px;
+    margin-bottom: 3px;
+}
+
+div.detail-location-tip span.tip-title {
+    font-weight: bold;
 }
 
 /*Contains a row with divs for each special in the list*/
 div.details-bottom-bar-row div.details-location-specials-container {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    color: white;
+    background-color: #6572E8;
     overflow-y: hidden;
-    height: 200px;
+    height: 150px;
 }
 
 /*Contains title dive for Specials section*/
 div.details-location-specials-container div.details-location-specials-title-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    margin: 0 5px;
     overflow-y: hidden;
 }
 
 /*Contains title for Specials section*/
 div.details-location-specials-title-row div.details-specials-title {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    font-weight: bold;
+    text-align: center;
 }
 
 /*Contains divs of Specials content*/
 div.details-location-specials-container div.details-location-specials-content-row {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    margin: 0 5px;
     overflow-y: scroll;
 }
 

@@ -6,62 +6,70 @@
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner" role="listbox">
                     <div class="item carouselImage active ">
-                        <img src="{{ url_for('static', filename='images/carousel_one.jpg') }}" alt="carouselOne.jpg" class="resize">
+                        <img src="{{ url_for('static', filename='images/foodandwine.jpg') }}" alt="carouselOne.jpg"
+                             class="resize">
                     </div>
-                </div>
 
-                <div class="item carouselImage">
-                    <img src="{{ url_for('static', filename='images/carouseltwo.jpg') }}" alt="carouselTwo.jpg" class="resize">
-                </div>
 
-                <div class="item carouselImage">
-                    <img src="{{ url_for('static', filename='images/carousel_three.jpg') }}" alt="carouselThree.jpg" class="resize">
-
-                </div>
-                <div class="item carouselImage">
-                    <img src="{{ url_for('static', filename='images/beerandburger.jpg') }}" alt="carouselFour.jpg" class="resize">
-
-                </div>
-                <div class="item carouselImage">
-                    <img src="{{ url_for('static', filename='images/oldfashion.jpg') }}" alt="carouselFour.jpg" class="resize">
-                </div>
-                <div class="item carouselImage">
-                    <img src="{{ url_for('static', filename='images/foodandwine.jpg') }}" alt="carouselFour.jpg" class="resize">
-                </div>
-                <div class="form container-fluid">
-                    <div class="caption">
-                        <p>Welcome to <strong>HappyFinder!</strong></p>
-                        <p>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
-                            near you!</p>
+                    <div class="item carouselImage">
+                        <img src="{{ url_for('static', filename='images/carouseltwo.jpg') }}" alt="carouselTwo.jpg"
+                             class="resize">
                     </div>
-                    <div>
-                        <form class='home-form' action="{{ url_for('convert_address') }}" method="GET">
-                            <div class="input-group">
-                                <div class="dropdownmenu">
-                                    Find happy hours happening
-                                    <select name="is_active" class="homepageButton">
-                                        <option value="now" selected>now</option>
-                                        <option value="anytime">anytime</option>
-                                    </select>
-                                    within
-                                    <select name="radius" class="homepageButton">
-                                        <option value="5" selected>5 miles</option>
-                                        <option value="10">10 miles</option>
-                                        <option value="25">25 miles</option>
-                                        <option value="50">50 miles</option>
-                                    </select>
-                                </div>
-                                <div class="home_location_button">
-                                    <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My
-                                        Location
+
+                    <div class="item carouselImage">
+                        <img src="{{ url_for('static', filename='images/carousel_three.jpg') }}" alt="carouselThree.jpg"
+                             class="resize">
+
+                    </div>
+                    <div class="item carouselImage">
+                        <img src="{{ url_for('static', filename='images/beerandburger.jpg') }}" alt="carouselFour.jpg"
+                             class="resize">
+
+                    </div>
+                    <div class="item carouselImage">
+                        <img src="{{ url_for('static', filename='images/oldfashion.jpg') }}" alt="carouselFour.jpg"
+                             class="resize">
+                    </div>
+                    <div class="item carouselImage">
+                        <img src="{{ url_for('static', filename='images/foodandwine.jpg') }}" alt="carouselFour.jpg"
+                             class="resize">
+                    </div>
+                    <div class="form container-fluid">
+                        <div class="caption">
+                            <p>Welcome to <strong>HappyFinder!</strong></p>
+                            <p>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
+                                near you!</p>
+                        </div>
+                        <div>
+                            <form class='home-form' action="{{ url_for('convert_address') }}" method="GET">
+                                <div class="input-group">
+                                    <div class="dropdownmenu">
+                                        Find happy hours happening
+                                        <select name="is_active" class="homepageButton">
+                                            <option value="now" selected>now</option>
+                                            <option value="anytime">anytime</option>
+                                        </select>
+                                        within
+                                        <select name="radius" class="homepageButton">
+                                            <option value="5" selected>5 miles</option>
+                                            <option value="10">10 miles</option>
+                                            <option value="25">25 miles</option>
+                                            <option value="50">50 miles</option>
+                                        </select>
+                                    </div>
+                                    <div class="home_location_button">
+                                        <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My
+                                            Location
+                                        </button>
+                                    </div>
+                                    <input name="address" type="text" class="form-control input-group-btn"
+                                           placeholder="1234 Houston Ave. Houston, TX">
+                                    <button class="btn btn-default searchButton" type="submit">
+                                        <i class="glyphicon glyphicon-search"></i>
                                     </button>
                                 </div>
-                                <input name="address" type="text" class="form-control input-group-btn"
-                                       placeholder="1234 Houston Ave. Houston, TX">
-                                <button class="btn btn-default searchButton" type="submit">
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </button>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

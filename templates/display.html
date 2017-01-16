@@ -4,36 +4,6 @@
 {% endblock %}
 {% block body %}
     <body>
-    <form method="get">
-        <script>
-            // HTML5 geolocation.
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-
-                    $.getJSON('/happyhour/display', {
-                        lat: JSON.stringify(pos.lat),
-                        lng: JSON.stringify(pos.lng)
-                    });
-
-                    // Old Function
-                    //$.getJSON('/_location', {
-                    //  lat: JSON.stringify(pos.lat),
-                    //  lng: JSON.stringify(pos.lng)
-                    //}, function (data) {
-                    //    console.log(data.result);
-                    //    $("#result").text(data.result);
-                    //});
-
-                    // Sets the location of the current window itself.
-                    // window.location = '/happyhour/display';
-                });
-            }
-        </script>
-    </form>
     <div class="row div-row">
         <div class="col-sm-9 col-xs-12" id="map-canvas"></div>
         <div class="col-sm-3 col-xs-12" id="infowindow">

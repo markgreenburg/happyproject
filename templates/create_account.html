@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container-fluid account-signup-container">
+    <div class="row signup-form-header-row">
+        <div class="col-xs-12 signup-form-header">
+            <h3>Signup for HappyFinder</h3>
+        </div>
+    </div>
+    <div class="row signup-form-content-row">
+        <div class="col-xs-12 signup-form-content">
+            <form action="{{ url_for('submit_new_account') }}" method="POST">
+                <div class="form-group firstname">
+                    <input type="text" name="firstname" placeholder="First Name" minlength="2" required>
+                </div>
+                <div class="form-group email">
+                    <input type="email" name="email" placeholder="Email" minlength="5" required>
+                </div>
+                <div class="form-group password">
+                    <input type="password" name="password" placeholder="Password" id="password" minlength="8" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" required>
+                    <label>(must user upper, lower, and numbers)</label>
+                </div>
+                <div class="form-group password-confirm">
+                    <input type="password" name="password-confirm" placeholder="Confirm Password" minlength="8" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" oninput="check(this)" required>
+                    <script language='javascript' type='text/javascript'>
+                        function check(input) {
+                            if (input.value != document.getElementById('password').value) {
+                                input.setCustomValidity('Passwords must match');
+                            } else {
+                                input.setCustomValidity('');
+                            }
+                        }
+                    </script>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}

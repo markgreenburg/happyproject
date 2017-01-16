@@ -8,6 +8,7 @@ import os
 import sys
 import json
 from flask import Flask, render_template, request, redirect, url_for, session, Markup
+import bcrypt
 import requests
 from models import *
 import config
@@ -22,8 +23,6 @@ app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
 app.config['DEBUG'] = config.DEBUG
 
-# lat = 0
-# lng = 0
 @app.route('/happyhour/')
 def home():
     """
@@ -130,6 +129,20 @@ def show_location(location_id):
     """
     location_object = Place(location_id)
     return render_template("details.html", venue=location_object)
+
+@app.route('/happyhour/account/create', methods=["GET", "POST"])
+def create_account():
+    """
+    Displays form to user that allows signups
+    """
+    return render_template('create_account.html')
+
+@app.route('/happyhour/account/submit', methods=["POST"])
+def submit_new_account():
+    """
+    Takes user input and creates a new account for them
+    """
+
 
 if __name__ == "__main__":
     app.run(threaded=True)

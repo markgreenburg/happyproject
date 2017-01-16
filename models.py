@@ -7,6 +7,7 @@ import json
 import StringIO
 import urllib
 import pycurl
+import bcrypt
 import config
 import pg
 
@@ -16,15 +17,24 @@ apikey = config.G_API_KEY
 client_id = config.FS_CLIENT_ID
 secret = config.FS_CLIENT_SECRET
 
-class User(object):
+class User(UserMixin, object):
     """
     User class. Stores basic lat / lon data for each user as a
     comma-separated string value. Will add auth, add / edit
     functionality as fast-follow.
     """
     def __init__(self, lat='', lng=''):
-        self.lat = lat
-        self.lng = lng
+        self.firstname = ''
+
+    @staticmethod
+    def check_unique(username):
+        """
+        Checks whether a user's given username already exists in the system
+        """
+        query = ("SELECT id FROM happyhour.public.users WHERE username"
+                 " = $1 LIMIT 1")
+        user_matches = DbConnect.get_named_results(query, True, username)
+
 
 class Place(object):
     """

@@ -69,6 +69,7 @@ class User(object):
         """
         sql = ("DELETE FROM happyhour.public.users WHERE id = $1 RETURNING id")
         result_obj = DbConnect.get_named_results(sql, True, self.user_id)
+        return result_obj.id
 
     def save(self):
         """
@@ -85,7 +86,7 @@ class User(object):
         Authenticates a user based on name & password_hash matching
         Returns: Bool True if credentials match, False otherwise
         """
-        test_pwd_hash = bcrypt.hashpw(test_password, self.password)
+        test_pwd_hash = bcrypt.hashpw(test_password, self.password_hash)
         if test_username == self.username and test_pwd_hash == \
         self.password_hash:
             return True

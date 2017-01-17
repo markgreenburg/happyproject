@@ -51,11 +51,6 @@ def convert_address():
                        ''))
         session['lat'] = coords_tuple[0]
         session['lng'] = coords_tuple[1]
-        print 'session address: %s' % request.args.get('address')
-        print 'lat: %s' % session['lat']
-        print 'lng: %s' % session['lng']
-        print 'active_only: %s' % session.get('active_only')
-        print 'radius: %s' % session.get('radius')
         return redirect(url_for('display'))
     else:
         return render_template('location.html', apikey=g_api_key)
@@ -65,17 +60,12 @@ def location():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-    print json.loads(request.args.get('lat'))
-    print json.loads(request.args.get('lng'))
-    print '%%%%%%%%%%'
     session['lat'] = json.loads(request.args.get('lat'))
     session['lng'] = json.loads(request.args.get('lng'))
-    print '%%%%%%%%%%'
-    print app.config['SECRET_KEY']
-    print session.get('lat')
-    print session.get('lng')
+    print session.get('lat', 'no lat found')
+    print session.get('lng', 'no lng found')
     #todo finish debugging location!!
-    return None
+    return 'go to display'
 
 @app.route('/display')
 def display():
@@ -84,8 +74,6 @@ def display():
     Returns render of the map template / display homepage
     """
     # todo finish debugging location!!
-    print session.get('lat')
-    print session.get('lng')
     lat = session.get('lat', 29.7604)
     lng = session.get('lng', -95.3698)
     print lat, lng
@@ -116,7 +104,7 @@ def submit_new_account():
     """
     Takes user input and creates a new account for them
     """
-    username = request.form.get('username', '')
+    username = request.form.get('username', '').lower()
     password = request.form.get('password', '')
     valid_userinfo = User.validate_userinfo(username, password)
     if valid_userinfo:
@@ -126,6 +114,7 @@ def submit_new_account():
         new_user.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         new_user.save()
         flash("Account created for %s!" % new_user.username)
+        session['username'] = new_user.username
         return render_template('homepage.html')
     flash("Sorry, that username already exists.")
     return render_template('create_account.html')
@@ -144,14 +133,22 @@ def submit_login():
     homepage or flashes authentication failure message and reloads itself.
     Stores logged-in state in session
     """
-    pass
+    username_test = request.form.get('username', '').lower()
+    password_test = request.form.get('password', '')
+    user_to_login = User(username=username_test)
+    if user_to_login.authenticate(username_test, password_test):
+        session['username'] = user_to_login.username
+        return redirect(url_for('home'))
+    flash("Incorrect username or password")
+    return redirect(url_for('login'))
 
 @app.route('/account/logout')
 def logout():
     """
-    Deletes user info from session, logging user out
+    Logs user out by deleting their username from session
     """
-    pass
+    del session['username']
+    return redirect(url_for('home'))
 
 if __name__ == "__main__":
     app.run(threaded=True)

@@ -19,14 +19,19 @@ secret = config.FS_CLIENT_SECRET
 
 class User(object):
     """
-    User class. Stores basic lat / lon data for each user as a
-    comma-separated string value. Will add auth, add / edit
-    functionality as fast-follow.
+    User class. Stores profile info for each user. Has methods to change
+    users table in db as well as authenticate users.
     """
-    def __init__(self, user_id=0):
-        sql = ("SELECT id, username, email, password FROM"
-                 " happyhour.public.users WHERE id = $1")
-        user_result = DbConnect.get_named_results(sql, True, user_id)
+    def __init__(self, user_id=0, username=''):
+        if user_id > 0:
+            sql = ("SELECT id, username, email, password FROM"
+                   " happyhour.public.users WHERE id = $1")
+            user_result = DbConnect.get_named_results(sql, True, user_id)
+        elif len(username) > 0:
+            sql = ("SELECT id, username, email, password FROM"
+                   " happyhour.public.users WHERE username = $1")
+            user_result = DbConnect.get_named_results(sql, True, username)
+        print user_result.id
         if user_result.id > 0:
             self.user_id = user_result.id
             self.username = user_result.username
@@ -86,9 +91,9 @@ class User(object):
         Authenticates a user based on name & password_hash matching
         Returns: Bool True if credentials match, False otherwise
         """
-        test_pwd_hash = bcrypt.hashpw(test_password, self.password_hash)
+        test_pwd_hash = bcrypt.hashpw(test_password.encode('utf-8'), self.password_hash)
         if test_username == self.username and test_pwd_hash == \
-        self.password_hash:
+        self.password_hash and self.user_id > 0:
             return True
         return False
 
@@ -104,7 +109,7 @@ class User(object):
         query = ("SELECT id FROM happyhour.public.users WHERE username"
                  " = $1 LIMIT 1")
         user_matches = DbConnect.get_named_results(query, True, username)
-        if user_matches.id or len(username) < 4:
+        if user_matches.id or len(username) < 2 or ' ' in username:
             return False
         if password.islower() or password.isalpha() or len(password) < 8:
             return False

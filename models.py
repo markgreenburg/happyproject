@@ -91,10 +91,13 @@ class User(object):
         Authenticates a user based on name & password_hash matching
         Returns: Bool True if credentials match, False otherwise
         """
-        test_pwd_hash = bcrypt.hashpw(test_password.encode('utf-8'), self.password_hash)
-        if test_username == self.username and test_pwd_hash == \
-        self.password_hash and self.user_id > 0:
-            return True
+        try:
+            test_pwd_hash = bcrypt.hashpw(test_password.encode('utf-8'), self.password_hash)
+            if test_username == self.username and test_pwd_hash == \
+            self.password_hash and self.user_id > 0:
+                return True
+        except ValueError:
+            pass
         return False
 
     @staticmethod

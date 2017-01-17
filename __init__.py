@@ -60,23 +60,35 @@ def convert_address():
     else:
         return render_template('location.html', apikey=g_api_key)
 
-@app.route('/location', methods=['GET'])
+@app.route('/location')
 def location():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
+    print json.loads(request.args.get('lat'))
+    print json.loads(request.args.get('lng'))
+    print '%%%%%%%%%%'
     session['lat'] = json.loads(request.args.get('lat'))
     session['lng'] = json.loads(request.args.get('lng'))
+    print '%%%%%%%%%%'
+    print app.config['SECRET_KEY']
+    print session.get('lat')
+    print session.get('lng')
+    #todo finish debugging location!!
     return None
 
-@app.route('/display')
+@app.route('/display', methods=['GET'])
 def display():
     """
     Gets a list of places based on a passed in mile radius from user's location
     Returns render of the map template / display homepage
     """
-    lat = session.get('lat', 29.7604)
-    lng = session.get('lng', -95.3698)
+    # todo finish debugging location!!
+    print session.get('lat')
+    print session.get('lng')
+    lat = session.get('lat')
+    lng = session.get('lng')
+    print lat, lng
     is_active = session.get('active_only', False)
     radius = session.get('radius', '50')
     place_list = Place.get_places(lat, lng, radius, is_active)

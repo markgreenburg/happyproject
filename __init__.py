@@ -86,8 +86,8 @@ def display():
     # todo finish debugging location!!
     print session.get('lat')
     print session.get('lng')
-    lat = session.get('lat')
-    lng = session.get('lng')
+    lat = session.get('lat', 29.7604)
+    lng = session.get('lng', -95.3698)
     print lat, lng
     is_active = session.get('active_only', False)
     radius = session.get('radius', '50')

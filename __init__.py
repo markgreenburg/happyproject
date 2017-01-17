@@ -60,7 +60,7 @@ def convert_address():
     else:
         return render_template('location.html', apikey=g_api_key)
 
-@app.route('/location')
+@app.route('/location', methods=['GET'])
 def location():
     """
     gets a list of places based on a 10 mile radius from user's location
@@ -77,7 +77,7 @@ def location():
     #todo finish debugging location!!
     return None
 
-@app.route('/display', methods=['GET'])
+@app.route('/display')
 def display():
     """
     Gets a list of places based on a passed in mile radius from user's location
@@ -86,8 +86,8 @@ def display():
     # todo finish debugging location!!
     print session.get('lat')
     print session.get('lng')
-    lat = session.get('lat')
-    lng = session.get('lng')
+    lat = session.get('lat', 29.7604)
+    lng = session.get('lng', -95.3698)
     print lat, lng
     is_active = session.get('active_only', False)
     radius = session.get('radius', '50')

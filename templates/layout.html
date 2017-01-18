@@ -5,7 +5,6 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     {#    <script src="https://maps.google.com/maps/api/js?key={{ g_api_key }}&.js"></script>#}
     {% block apikey %}
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ apikey }}"></script>
     {% endblock %}
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -28,7 +27,7 @@
     url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:600|Ubuntu:400,700" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>Happy Finder</title>
+    <title>HappyFinder.</title>
 </head>
 <body>
 {% block head %}

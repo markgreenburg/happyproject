@@ -16,12 +16,6 @@ import config
 reload(sys)
 sys.setdefaultencoding('utf-8')
 app = Flask(__name__)
-g_api_key = config.G_API_KEY
-fs_client_id = config.FS_CLIENT_ID
-fs_secret = config.FS_CLIENT_SECRET
-app.config['SECRET_KEY'] = config.SECRET_KEY
-app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
-app.config['DEBUG'] = config.DEBUG
 
 @app.route('/')
 def home():
@@ -60,12 +54,12 @@ def location():
     """
     gets a list of places based on a 10 mile radius from user's location
     """
-    session['lat'] = json.loads(request.args.get('lat'))
-    session['lng'] = json.loads(request.args.get('lng'))
-    print session.get('lat', 'no lat found')
-    print session.get('lng', 'no lng found')
-    #todo finish debugging location!!
-    return 'go to display'
+    templat = json.loads(request.args.get('lat'))
+    templng = json.loads(request.args.get('lng'))
+    session['lat'] = templat
+    session['lng'] = templng
+    session.modified = True
+    return ""
 
 @app.route('/display')
 def display():
@@ -73,10 +67,8 @@ def display():
     Gets a list of places based on a passed in mile radius from user's location
     Returns render of the map template / display homepage
     """
-    # todo finish debugging location!!
     lat = session.get('lat', 29.7604)
     lng = session.get('lng', -95.3698)
-    print lat, lng
     is_active = session.get('active_only', False)
     radius = session.get('radius', '50')
     place_list = Place.get_places(lat, lng, radius, is_active)
@@ -151,4 +143,10 @@ def logout():
     return redirect(url_for('home'))
 
 if __name__ == "__main__":
-    app.run(threaded=True)
+    g_api_key = config.G_API_KEY
+    fs_client_id = config.FS_CLIENT_ID
+    fs_secret = config.FS_CLIENT_SECRET
+    app.secret_key = config.SECRET_KEY
+    # app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
+    app.config['DEBUG'] = config.DEBUG
+    app.run()

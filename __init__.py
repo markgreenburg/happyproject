@@ -52,24 +52,15 @@ def convert_address():
     else:
         return render_template('location.html', apikey=g_api_key)
 
-@app.route('/location', methods=['GET'])
-def location():
-    """
-    gets a list of places based on a 10 mile radius from user's location
-    """
-    templat = json.loads(request.args.get('lat'))
-    templng = json.loads(request.args.get('lng'))
-    session['lat'] = templat
-    session['lng'] = templng
-    session.modified = True
-    return ""
-
-@app.route('/display')
+@app.route('/display', methods=["GET", "POST"])
 def display():
     """
     Gets a list of places based on a passed in mile radius from user's location
     Returns render of the map template / display homepage
     """
+    if not session.get('address_bool'):
+        session['lat'] = request.form.get('lat', '')
+        session['lng'] = request.form.get('lng', '')
     lat = session.get('lat', 29.7604)
     lng = session.get('lng', -95.3698)
     is_active = session.get('active_only', False)

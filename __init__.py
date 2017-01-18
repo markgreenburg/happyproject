@@ -52,7 +52,7 @@ def convert_address():
     else:
         return render_template('location.html', apikey=g_api_key)
 
-@app.route('/location', methods=['GET'])
+@app.route('/happyhour/location', methods=['GET'])
 def location():
     """
     gets a list of places based on a 10 mile radius from user's location

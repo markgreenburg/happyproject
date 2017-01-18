@@ -67,6 +67,9 @@ def display():
     is_active = session.get('active_only', False)
     radius = session.get('radius', '50')
     place_list = Place.get_places(lat, lng, radius, is_active)
+    for place in place_list:
+        print"*********"
+        print place.is_happy_hour
     return render_template(
         "display.html", place_list=place_list, apikey=g_api_key, latitude=\
         lat, longitude=lng, address_input = session.get('address_bool'))

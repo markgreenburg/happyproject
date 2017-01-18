@@ -232,8 +232,8 @@ class Place(object):
         today = datetime.datetime.today().weekday() + 1
         now = datetime.datetime.now().time()
         for day in self.happy_hour:
-            if now > day.end_time \
-            and now < day.start_time \
+            if now < day.end_time \
+            and now > day.start_time \
             and today == day.day_of_week:
                 return True
         return False

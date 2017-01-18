@@ -99,7 +99,7 @@
 
                 gmarkers[form_add] = createMarker(new google.maps.LatLng(lat, lng),
                     "<a href='/happyhour/details/{{ place.location_id }}'>"
-                    + "<h4><strong>" + name + "</strong></h4>" + '</a>' + form_add + "<br>" + "<form action='http://maps.google.com/maps' method="
+                    + "<h4><strong>" + name + "</strong></h4>" + '</a>' + form_add + "<br>" + "<form action='https://maps.google.com/maps' method="
                     + 'get" target="_blank">'
                     + '<label for="saddr"></label>'
                     + '<input type="hidden" value="{{ latitude }}, {{ longitude }}" name="saddr" />'

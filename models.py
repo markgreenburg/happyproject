@@ -31,7 +31,7 @@ class User(object):
             sql = ("SELECT id, username, email, password FROM"
                    " happyhour.public.users WHERE username = $1")
             user_result = DbConnect.get_named_results(sql, True, username)
-        print user_result.id
+        # print user_result.id
         if user_result.id > 0:
             self.user_id = user_result.id
             self.username = user_result.username
@@ -197,31 +197,31 @@ class Place(object):
             self.formatted_phone_number = ''
             self.formatted_address = [{}]
         # Log to console to check returns of API calls
-        print ''
-        print '***************************************************************'
-        print 'name: %s' % self.name
-        print 'location_id: %d' % self.location_id
-        print 'venue_id: %s' % self.venue_id
-        print 'lat: %f' % self.lat
-        print 'lng: %f' % self.lng
-        print 'website: %s' % self.website
-        print 'full image link: %s' % self.img_prefix + '500x500' + \
-              self.img_suffix
-        print 'image dimensions: %s' % str(self.img_width) + 'x' + \
-              str(self.img_height)
-        print 'main category: %s' % self.category
-        print 'menu url: %s' % self.menu_url
-        print 'hours_today: %s' % self.hours_today
-        print 'is_open: %s' % self.is_open
-        print 'price level: %d' % self.price_level
-        print 'rating: %d' % self.rating
-        print 'phone: %s' % self.formatted_phone_number
-        print 'address: %s' % self.formatted_address
-        print 'specials: %s' % self.specials
-        print 'tips: %s' % self.tips
-        print 'is_happy_hour: %s' % self.is_happy_hour
-        print 'Happy Hour Times: %s' % self.happy_hour
-        print '***************************************************************'
+        # print ''
+        # print '***************************************************************'
+        # print 'name: %s' % self.name
+        # print 'location_id: %d' % self.location_id
+        # print 'venue_id: %s' % self.venue_id
+        # print 'lat: %f' % self.lat
+        # print 'lng: %f' % self.lng
+        # print 'website: %s' % self.website
+        # print 'full image link: %s' % self.img_prefix + '500x500' + \
+        #       self.img_suffix
+        # print 'image dimensions: %s' % str(self.img_width) + 'x' + \
+        #       str(self.img_height)
+        # print 'main category: %s' % self.category
+        # print 'menu url: %s' % self.menu_url
+        # print 'hours_today: %s' % self.hours_today
+        # print 'is_open: %s' % self.is_open
+        # print 'price level: %d' % self.price_level
+        # print 'rating: %d' % self.rating
+        # print 'phone: %s' % self.formatted_phone_number
+        # print 'address: %s' % self.formatted_address
+        # print 'specials: %s' % self.specials
+        # print 'tips: %s' % self.tips
+        # print 'is_happy_hour: %s' % self.is_happy_hour
+        # print 'Happy Hour Times: %s' % self.happy_hour
+        # print '***************************************************************'
 
     def get_happy_state(self):
         """

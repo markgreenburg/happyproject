@@ -42,21 +42,14 @@
     <script>
         var im = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
 
-
-        {#        function locate() {#}
-        {#            navigator.geolocation.getCurrentPosition(initialize, fail);#}
-        {#        }#}
-
         function initialize() {
             var myLatLng = new google.maps.LatLng({{ latitude }}, {{ longitude }});
             var map = new google.maps.Map(document.getElementById('map-canvas'), {
-                zoom: 13,
-                center: new google.maps.LatLng({{ latitude }}, {{ longitude }}),
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             });
 
             var infowindow = new google.maps.InfoWindow();
-
+            var latlngbounds = new google.maps.LatLngBounds();
 
             function createMarker(latlng, html) {
                 var marker = new google.maps.Marker({
@@ -66,7 +59,11 @@
                 google.maps.event.addListener(marker, 'click', function () {
                     infowindow.setContent(html);
                     infowindow.open(map, marker);
+                    map.setZoom(14);
+                    map.setCenter(marker.getPosition());
                 });
+                //Extend each marker's position in LatLngBounds object.
+                latlngbounds.extend(marker.position);
                 return marker;
             }
 
@@ -80,6 +77,8 @@
                     infowindow.setContent("My Location");
                     infowindow.open(map, marker);
                 });
+                //Extend each marker's position in LatLngBounds object.
+                latlngbounds.extend(marker.position);
                 return marker;
             }
 
@@ -90,7 +89,6 @@
             }
 
             gmarkers = [];
-
             {% for place in place_list %}
                 var form_add = "{{ place.formatted_address[0] }}";
                 var name = "{{ place.name }}";
@@ -133,13 +131,27 @@
                     + '</tr>'
                     + '</table>');
             {% endfor %}
-        }
+            //Get the boundaries of the Map.
+            var bounds = new google.maps.LatLngBounds();
+            google.maps.event.addListenerOnce(map, 'bounds_changed', function () {
+                this.setZoom(map.getZoom() - 1);
 
-        google.maps.event.addDomListener(window, 'load', initialize);
+                if (this.getZoom() > 15) {
+                    this.setZoom(15);
+                }
+            });
+
+            //Center map and adjust Zoom based on the position of all markers.
+            map.setCenter(latlngbounds.getCenter());
+            map.fitBounds(latlngbounds);
+        }
 
         function fail() {
             alert('navigator.geolocation failed, may not be supported');
         }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
     </script>
     </body>
 {% endblock %}

@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>HappyFinder.</title>
 </head>
+{#body of html page#}
 <body>
 {% block head %}
     <script>
@@ -86,37 +87,12 @@
             </div><!-- /.container-fluid -->
         </nav>
     </div>
-    {#    <div class="top_page container-fluid">#}
-    {#        <div class="row" id="topbar">#}
-    {#        <div class="col-xs-3 imageone images">#}
-    {#            <img src="{{ url_for('static', filename='images/oldfashion.jpg') }}" alt="">#}
-    {#        </div>#}
-    {#        <div class="col-xs-3 imagetwo images">#}
-    {#            <img src="{{ url_for('static', filename='images/foodandwine.jpg') }}" alt="">#}
-    {#        </div>#}
-    {#        <div class="col-xs-3 imagethree images">#}
-    {#            <img src="{{ url_for('static', filename='images/beerandburger.jpg') }}" alt="">#}
-    {#        </div>#}
-    {#        <div class="col-xs-3 imagefour images">#}
-    {#            <img src="{{ url_for('static', filename='images/wine.jpg') }}" alt="">#}
-    {#        </div>#}
-    {#        <h1 id="brandname">HappyFinder.</h1>#}
-    {#        <div class="row">#}
-    {#            {% with messages = get_flashed_messages() %}#}
-    {#                {% if messages %}#}
-    {#                    <ul class="flashes">#}
-    {#                        {% for message in messages %}#}
-    {#                            <li>{{ message | safe }}</li>#}
-    {#                        {% endfor %}#}
-    {#                    </ul>#}
-    {#                {% endif %}#}
-    {#            {% endwith %}#}
-    {#        </div>#}
-    {#    </div>#}
 {% endblock %}
+
 {% block body %}
     <p>testing</p>
 {% endblock %}
+
 {% block footer %}
     <footer class="navbar-default navbar-fixed-bottom">
         <div class="text-center">

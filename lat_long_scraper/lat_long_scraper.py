@@ -212,7 +212,7 @@ class Place(object):
 
 
 def scrape():
-    # # start at bottom right location
+    # start at bottom right location
     # current_lat = 29.563902
     # current_lng = -95.883179
     # # end at top right location

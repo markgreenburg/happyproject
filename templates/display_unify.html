@@ -97,13 +97,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     {% if session['username'] %}
-                                    <li><a class="login-link" href="{{ url_for('logout') }}">Log Out<span
-                                            class="sr-only">(current)</span></a>
-                                    </li>
+                                        <li><a class="login-link" href="{{ url_for('logout') }}">Log Out<span
+                                                class="sr-only">(current)</span></a>
+                                        </li>
                                     {% else %}
-                                    <li><a class="login-link" href="{{ url_for('login') }}">Log In<span
-                                            class="sr-only">(current)</span></a>
-                                    </li>
+                                        <li><a class="login-link" href="{{ url_for('login') }}">Log In<span
+                                                class="sr-only">(current)</span></a>
+                                        </li>
                                     {% endif %}
                                 </ul>
                                 <ul class="dropdown-menu create-account-link">
@@ -131,42 +131,65 @@
 					Welcome to HappyFinder!
 				</span>
             <h2 class="promo-text-v2 color-light cd-headline letters type margin-bottom-20">
-                I find happy hours going on
-                <span class="cd-words-wrapper">
-						<b class="is-visible">right now!</b>
-                    <b>near you!</b>
-					</span>
+                I find happy hours going on <em>right now</em>, near you!
             </h2>
             <div class="animated fadeInUp wow" data-wow-duration="1.5s" data-wow-delay="1s">
-                <a href="#"
-                   class="btn-u btn-brd btn-brd-width-2 btn-brd-hover btn-u-light btn-u-block rounded-4x margin-right-10">Use
-                    My Location</a>
-                <a href="#" class="btn-u btn-brd btn-brd-width-2 btn-brd-hover btn-u-light btn-u-block rounded-4x">Purchase
-                    Now</a>
+                <form id="addressFormTwo" class='home-form' action="{{ url_for('convert_address') }}" method="GET">
+                    <div class="input-group" style="margin: 0 auto;">
+                        <div class="dropdownmenu">
+                            Find happy hours happening
+                            <select name="is_active" class="homepageButton">
+                                <option value="now" selected>now</option>
+                                <option value="anytime">anytime</option>
+                            </select>
+                            within
+                            <select name="radius" class="homepageButton">
+                                <option value="5">5 miles</option>
+                                <option value="10">10 miles</option>
+                                <option value="25" selected>25 miles</option>
+                                <option value="50">50 miles</option>
+                            </select>
+                        </div>
+                        <div class="home_location_button">
+                            <button type="submit" class="btn-u btn-brd btn-brd-width-2 btn-brd-hover btn-u-light
+                                btn-u-block rounded-4x margin-right-10 homepageLocation">Use My Location
+                            </button>
+                        </div>
+                        <div class="input-group" style="width: 100%">
+                            <input name="address" type="text" class="form-control input-group-btn homepageButton"
+                                   placeholder="1234 Houston Ave. Houston, TX">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default searchButton homepageButton" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     <!--=== End Full Height Text Rotater ===-->
+    <div class="footer-v1">
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>
+                            2016 &copy; All Rights Reserved.
+                        </p>
+                    </div>
 
-    <div class="copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <p>
-                        2016 &copy; All Rights Reserved.
-                    </p>
+                    <!-- Social Links -->
+                    <div class="col-md-9">
+                        <p>Cody Taylor & Mark Greenburg: Built with Python, Flask, JavaScript, PostgreSQL, Jinja,
+                            Bootstrap</p>
+                    </div>
+                    <!-- End Social Links -->
                 </div>
-
-                <!-- Social Links -->
-                <div class="col-md-9">
-                    <p>Cody Taylor & Mark Greenburg: Built with Python, Flask, JavaScript, PostgreSQL, Jinja,
-                        Bootstrap</p>
-                </div>
-                <!-- End Social Links -->
             </div>
-        </div>
-    </div><!--/copyright-->
-    <!--=== End Footer Version 1 ===-->
+        </div><!--/copyright-->
+    </div><!--=== End Footer Version 1 ===-->
 </div><!--/wrapper-->
 
 

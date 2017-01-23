@@ -2,6 +2,7 @@
 body {
     height: 100%;
     width: 100%;
+    background-color: #313131;
 }
 
 .homepageButton {
@@ -137,4 +138,16 @@ body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nt
 }
 body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(1) > h2{
     border-top: 1px solid darkslategrey;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(2) > ul > li{
+    color: whitesmoke;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(2) > ul > li:nth-child(4) > a{
+    color: whitesmoke;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(1) > h2{
+    color: whitesmoke;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(1) > h3{
+    color: whitesmoke;
 }

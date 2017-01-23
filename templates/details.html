@@ -9,16 +9,12 @@
                 <div class="col-md-4 md-margin-bottom-50">
                     <!-- Our Services -->
                     <h2>{{ venue.name }}</h2>
+                    <div id="{% if 'Open' in venue.hours_today %}{{ 'open' }}{% else %}{{ 'closed' }}{% endif %}">
+                        <h3>{{ venue.hours_today }} today</h3>
+                    </div>
                     <div class="tag-box tag-box-v1">
                         <img src="{{ venue.img_prefix + '500x500' + venue.img_suffix }}" class="img-responsive"
                              alt="{{ venue.name }}"/>
-                    </div>
-                    <div
-                            id="
-
-
-                            {% if 'Open' in venue.hours_today %}{{ 'open' }}{% else %}{{ 'closed' }}{% endif %}">
-                        <h3>{{ venue.hours_today }} today</h3>
                     </div>
                     <br>
 
@@ -71,7 +67,7 @@
                         <h3>Tips for {{ venue.name }}</h3>
                         {% for tip in venue.tips %}
                             <div class="col-xs-12 detail-location-tip">
-                                <span class="tip-title">strong{{ tip.get('name', '') }} says: </span><br/><br/>
+                                <span class="tip-title">{{ tip.get('name', '') }} says: </span><br/><br/>
                                 {{ tip.get('text', '') }}<br/>
                             </div>
                         {% endfor %}

@@ -1,233 +1,149 @@
-<!DOCTYPE html>
-<!--[if IE 8]>
-<html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]>
-<html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en"> <!--<![endif]-->
-<head>
-    <title>Home Basic 4 | Unify - Responsive Website Template</title>
+{% extends "layout.html" %}
+{% block apikey %}
+    <script src="https://maps.google.com/maps/api/js?key={{ apikey }}"></script>
+{% endblock %}
+{% block body %}
+    <!--=== Blog Posts ===-->
+    <div class="bg-color-light">
+        <div class="container content-sm">
+            <div class="row div-row">
+                <!-- Map -->
+                <div class="col-xs-9" id="map-canvas"></div>
+                <!-- End Map -->
 
-    <!-- Meta -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="favicon.ico">
-
-    <!-- Web Fonts -->
-    <link rel='stylesheet' type='text/css'
-          href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
-
-    <!-- CSS Global Compulsory -->
-    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-
-    <!-- CSS Header and Footer -->
-    <link rel="stylesheet" href="assets/css/headers/header-v6.css">
-    <link rel="stylesheet" href="assets/css/footers/footer-v1.css">
-
-    <!-- CSS Implementing Plugins -->
-    <link rel="stylesheet" href="assets/plugins/animate.css">
-    <link rel="stylesheet" href="assets/plugins/line-icons/line-icons.css">
-    <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/plugins/animated-headline/css/animated-headline.css">
-    <link rel="stylesheet" href="assets/plugins/parallax-slider/css/parallax-slider.css">
-    <link rel="stylesheet" href="assets/plugins/fancybox/source/jquery.fancybox.css">
-    <link rel="stylesheet" href="assets/plugins/owl-carousel/owl-carousel/owl.carousel.css">
-
-    <!-- CSS Theme -->
-    <link rel="stylesheet" href="assets/css/theme-colors/default.css" id="style_color">
-    <link rel="stylesheet" href="assets/css/theme-skins/dark.css">
-
-    <!-- CSS Customization -->
-    <link rel="stylesheet" href="assets/css/custom.css">
-</head>
-
-<body class="header-fixed">
-<div class="wrapper">
-    <!--=== Header v6 ===-->
-    <div class="header-v6 header-transparent header-dark-dropdown header-sticky">
-        <!-- Navbar -->
-        <div class="navbar mega-menu" role="navigation">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="menu-container">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse"
-                            data-target=".navbar-responsive-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <!-- Navbar Brand -->
-                    <div class="navbar-brand">
-                        <a href="/happyhour">
-                            <h1 class="default-logo">HappyFinder!</h1>
-                        </a>
-                    </div>
-                    <!-- ENd Navbar Brand -->
-
-                    <!-- Header Inner Right -->
-                    <div class="header-inner-right">
-                        <ul class="menu-icons-list">
-                            <li class="menu-icons">
-                                <i class="menu-icons-style search search-close search-btn fa fa-search"></i>
-                                <div class="search-open">
-                                    <input type="text" class="animated fadeIn form-control"
-                                           placeholder="Start searching ...">
-                                </div>
+                <!-- Map Sidebar -->
+                <div class="col-md-3" id="infowindow">
+                    <div class="headline-v2"><h2>Places</h2></div>
+                    {% for place in place_list %}
+                        <ul class="list-unstyled blog-latest-posts margin-bottom-50">
+                            <li>
+                                <h3>{{ place.name }}</h3>
+                                <small>{{ place.price_level * '$' }} -
+                                    Rating: {{ place.rating }}</small>
+                                <p>
+                                    <a href="javascript:google.maps.event.trigger(gmarkers['{{ place.formatted_address[0] }}'],'click');">
+                                    Show On Map </a>|<a href="details/{{ place.location_id }}">
+                                    More Details</a></p>
                             </li>
                         </ul>
-                    </div>
-                    <!-- End Header Inner Right -->
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse navbar-responsive-collapse">
-                    <div class="menu-container">
-                        <ul class="nav navbar-nav">
-                            <!-- Home -->
-                            <li class="dropdown active">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
-                                    Home
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% if session['username'] %}
-                                        <li><a class="login-link" href="{{ url_for('logout') }}">Log Out<span
-                                                class="sr-only">(current)</span></a>
-                                        </li>
-                                    {% else %}
-                                        <li><a class="login-link" href="{{ url_for('login') }}">Log In<span
-                                                class="sr-only">(current)</span></a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                                <ul class="dropdown-menu create-account-link">
-                                    <li><a href="url_for('create_account')">Create Account</a></li>
-                                </ul>
-                                <ul class="dropdown-menu">
-                                    <li><a href="/happyhour">Homepage</a></li>
-                                </ul>
-                            </li>
-                            <!-- End Home -->
-                        </ul>
-                    </div>
-                </div><!--/navbar-collapse-->
-            </div>
-        </div>
-        <!-- End Navbar -->
-    </div>
-    <!--=== End Header v6 ===-->
-
-    <!--=== Full Height Text Rotater ===-->
-    <div class="fullscreen-static-image1 fullheight bg-color-darker">
-        <div class="container valign__middle text-center">
-            <span class="promo-text-v1 color-light animated fadeInDown wow margin-bottom-10"
-                  data-wow-duration="1.5s" data-wow-delay=".5s">
-					Welcome to HappyFinder!
-				</span>
-            <h2 class="promo-text-v2 color-light cd-headline letters type margin-bottom-20">
-                I find happy hours going on <em>right now</em>, near you!
-            </h2>
-            <div class="animated fadeInUp wow" data-wow-duration="1.5s" data-wow-delay="1s">
-                <form id="addressFormTwo" class='home-form' action="{{ url_for('convert_address') }}" method="GET">
-                    <div class="input-group" style="margin: 0 auto;">
-                        <div class="dropdownmenu">
-                            Find happy hours happening
-                            <select name="is_active" class="homepageButton">
-                                <option value="now" selected>now</option>
-                                <option value="anytime">anytime</option>
-                            </select>
-                            within
-                            <select name="radius" class="homepageButton">
-                                <option value="5">5 miles</option>
-                                <option value="10">10 miles</option>
-                                <option value="25" selected>25 miles</option>
-                                <option value="50">50 miles</option>
-                            </select>
-                        </div>
-                        <div class="home_location_button">
-                            <button type="submit" class="btn-u btn-brd btn-brd-width-2 btn-brd-hover btn-u-light
-                                btn-u-block rounded-4x margin-right-10 homepageLocation">Use My Location
-                            </button>
-                        </div>
-                        <div class="input-group" style="width: 100%">
-                            <input name="address" type="text" class="form-control input-group-btn homepageButton"
-                                   placeholder="1234 Houston Ave. Houston, TX">
-                            <span class="input-group-btn">
-                            <button class="btn btn-default searchButton homepageButton" type="submit">
-                            <i class="glyphicon glyphicon-search"></i>
-                            </button>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!--=== End Full Height Text Rotater ===-->
-    <div class="footer-v1">
-        <div class="copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p>
-                            2016 &copy; All Rights Reserved.
-                        </p>
-                    </div>
-
-                    <!-- Social Links -->
-                    <div class="col-md-9">
-                        <p>Cody Taylor & Mark Greenburg: Built with Python, Flask, JavaScript, PostgreSQL, Jinja,
-                            Bootstrap</p>
-                    </div>
-                    <!-- End Social Links -->
+                    {% endfor %}
                 </div>
             </div>
-        </div><!--/copyright-->
-    </div><!--=== End Footer Version 1 ===-->
-</div><!--/wrapper-->
+            <!-- End Map Sidebar -->
+        </div>
+    </div><!--/end container-->
+    <script>
+        var im = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
 
+        function initialize() {
+            var myLatLng = new google.maps.LatLng({{ latitude }}, {{ longitude }});
+            var map = new google.maps.Map(document.getElementById('map-canvas'), {
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
 
-<!-- JS Global Compulsory -->
-<script src="assets/plugins/jquery/jquery.min.js"></script>
-<script src="assets/plugins/jquery/jquery-migrate.min.js"></script>
-<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<!-- JS Implementing Plugins -->
-<script src="assets/plugins/back-to-top.js"></script>
-<script src="assets/plugins/smoothScroll.js"></script>
-<script src="assets/plugins/backstretch/backstretch-ini.js"></script>
-<script src="assets/plugins/wow-animations/js/wow.min.js"></script>
-<script src="assets/plugins/animated-headline/js/modernizr.js"></script>
-<script src="assets/plugins/animated-headline/js/animated-headline.js"></script>
-<script src="assets/plugins/jquery.parallax.js"></script>
-<script src="assets/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
-<script src="assets/plugins/owl-carousel/owl-carousel/owl.carousel.js"></script>
-<!-- JS Customization -->
-<script src="assets/js/custom.js"></script>
-<!-- JS Page Level -->
-<script src="assets/js/app.js"></script>
-<script src="assets/js/plugins/fancy-box.js"></script>
-<script src="assets/js/plugins/owl-carousel.js"></script>
-<script src="assets/js/plugins/style-switcher.js"></script>
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        App.init();
-        new WOW().init();
-        App.initParallaxBg();
-        FancyBox.initFancybox();
-        OwlCarousel.initOwlCarousel();
-        StyleSwitcher.initStyleSwitcher();
-    });
-</script>
-<!--[if lt IE 9]>
-<script src="assets/plugins/respond.js"></script>
-<script src="assets/plugins/html5shiv.js"></script>
-<script src="assets/plugins/placeholder-IE-fixes.js"></script>
-<![endif]-->
-</body>
-</html>
+            var infowindow = new google.maps.InfoWindow();
+            var latlngbounds = new google.maps.LatLngBounds();
+
+            function createMarker(latlng, html) {
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map
+                });
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.setContent(html);
+                    infowindow.open(map, marker);
+                    map.setZoom(14);
+                    map.setCenter(marker.getPosition());
+                });
+                //Extend each marker's position in LatLngBounds object.
+                latlngbounds.extend(marker.position);
+                return marker;
+            }
+
+            function userMarker() {
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    icon: im,
+                    map: map
+                });
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.setContent("My Location");
+                    infowindow.open(map, marker);
+                });
+                //Extend each marker's position in LatLngBounds object.
+                latlngbounds.extend(marker.position);
+                return marker;
+            }
+
+            var address_input = {{ address_input }};
+
+            if (address_input != true) {
+                userMarker();
+            }
+
+            gmarkers = [];
+            {% for place in place_list %}
+                var form_add = "{{ place.formatted_address[0] }}";
+                var name = "{{ place.name }}";
+                var lat = parseFloat({{ place.lat }});
+                var lng = parseFloat({{ place.lng }});
+
+                gmarkers[form_add] = createMarker(new google.maps.LatLng(lat, lng),
+                    "<a href='/happyhour/details/{{ place.location_id }}'>"
+                    + "<h4><strong>" + name + "</strong></h4>" + '</a>' + form_add + "<br>" + "<form action='https://maps.google.com/maps' method="
+                    + 'get" target="_blank">'
+                    + '<label for="saddr"></label>'
+                    + '<input type="hidden" value="{{ latitude }}, {{ longitude }}" name="saddr" />'
+                    + '<input type="hidden" name="daddr" value="{{ place.formatted_address[0]}}, {{ place.formatted_address[1] }}" />'
+                    + '<input type="submit" style = "width: 8em;  height: 1.7em; margin-bottom: 3px" value="Get directions" />'
+                    + '</form>'
+                    + '<table style = "width: 100%;">'
+                    + '<tr style="display: none">'
+                    + '<th style="display: none"></th>'
+                    + '</tr>'
+                    + '<tr>'
+                    + '<td style="width: 100%">'
+                    + '{% for day in place.happy_hour %}'
+                        + '<table style="width: 100%;">'
+                        + '<tr style="display: none">'
+                        + '<th style="display: none"></th>'
+                        + '<th style="display: none"></th>'
+                        + '</tr>'
+                        + '<tr>'
+                        + '<td style="text-align: left; width: 25%; font-weight: bold; border-top: 1px solid black">'
+                        + '{{ day.day_string }}:'
+                        + '</td>'
+                        + '<td style="text-align: right; width: 75%; border-top: 1px solid black">'
+                        + '{{ day.start_time.strftime("%I:%M %p") }}'
+                        + '- {{ day.end_time.strftime("%I:%M %p") }}'
+                        + '</td>'
+                        + '</tr>'
+                        + '</table>'
+                        + '{% endfor %}'
+                    + '</td>'
+                    + '</tr>'
+                    + '</table>');
+            {% endfor %}
+            //Get the boundaries of the Map.
+            var bounds = new google.maps.LatLngBounds();
+            google.maps.event.addListenerOnce(map, 'bounds_changed', function () {
+                this.setZoom(map.getZoom() - 1);
+
+                if (this.getZoom() > 15) {
+                    this.setZoom(15);
+                }
+            });
+
+            //Center map and adjust Zoom based on the position of all markers.
+            map.setCenter(latlngbounds.getCenter());
+            map.fitBounds(latlngbounds);
+        }
+
+        function fail() {
+            alert('navigator.geolocation failed, may not be supported');
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+{% endblock %}

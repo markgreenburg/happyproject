@@ -74,8 +74,8 @@ def display():
     #     print"*********"
     #     print place.is_happy_hour
     return render_template(
-        "display.html", place_list=place_list, apikey=g_api_key, latitude= \
-            lat, longitude=lng, address_input=session.get('address_bool'))
+        "display.html", place_list=place_list, apikey=g_api_key, latitude=
+        lat, longitude=lng, address_input=session.get('address_bool'))
 
 
 @app.route('/details/<int:location_id>')
@@ -83,8 +83,10 @@ def show_location(location_id):
     """
     Shows the Foursquare and happyhour details for a given id from id_venue_id
     """
+    lat = session.get('lat', 29.7604)
+    lng = session.get('lng', -95.3698)
     location_object = Place(location_id)
-    return render_template("details.html", venue=location_object, apikey=g_api_key)
+    return render_template("details.html", latitude=lat, longitude=lng, venue=location_object, apikey=g_api_key)
 
 
 @app.route('/account/create', methods=["GET", "POST"])

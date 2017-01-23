@@ -3,42 +3,35 @@
     <script src="https://maps.google.com/maps/api/js?key={{ apikey }}"></script>
 {% endblock %}
 {% block body %}
-    <body>
-    <div class="row div-row">
-        <div class="col-xs-9" id="map-canvas"></div>
-        <div class="col-xs-3" id="infowindow">
-            <div>
-                {% for place in place_list %}
-                    <div class="place_details">
-                        <table class="place_descriptions" style="border: 1px solid dimgray; width: 100%">
-                            <tr>
-                                <th colspan="2" style="text-align: center">
-                                    <p class="place_descriptions">{{ place.name }}</p>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: center"><p
-                                        class="place_descriptions">{{ place.price_level * '$' }} -
-                                    Rating: {{ place.rating }}</p>
-                                </td>
-                            </tr>
-                            <tr style="text-align: center; border-bottom: 3px solid dimgray">
-                                <td>
-                                    <a href="javascript:google.maps.event.trigger(gmarkers['{{ place.formatted_address[0] }}'],'click');">
-                                        Show On Map</a>
-                                </td>
-                                <td>
-                                    <a href="details/{{ place.location_id }}">
-                                        More Details</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+    <!--=== Blog Posts ===-->
+    <div class="fullheight bg-color-darker map-div">
+        <div class="container content-sm map-div-two">
+            <div class="row div-row">
+                <!-- Map -->
+                <div class="col-xs-9" id="map-canvas"></div>
+                <!-- End Map -->
 
+                <!-- Map Sidebar -->
+                <div class="col-md-3" id="infowindow">
+                    <div class="headline-v2"><h1>Places:</h1></div>
+                    {% for place in place_list %}
+                        <ul class="list-unstyled blog-latest-posts margin-bottom-50" style="color: whitesmoke">
+                            <li>
+                                <h3>{{ place.name }}</h3>
+                                <small>{{ place.price_level * '$' }} -
+                                    Rating: {{ place.rating }}</small>
+                                <p>
+                                    <a href="javascript:google.maps.event.trigger(gmarkers['{{ place.formatted_address[0] }}'],'click');">
+                                        Show On Map </a>|<a href="details/{{ place.location_id }}">
+                                    More Details</a></p>
+                            </li>
+                        </ul>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- End Map Sidebar -->
+        </div>
+    </div><!--/end container-->
     <script>
         var im = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
 
@@ -97,12 +90,12 @@
 
                 gmarkers[form_add] = createMarker(new google.maps.LatLng(lat, lng),
                     "<a href='/happyhour/details/{{ place.location_id }}'>"
-                    + "<h4><strong>" + name + "</strong></h4>" + '</a>' + form_add + "<br>" + "<form action='https://maps.google.com/maps' method="
+                    + "<h4><strong>" + name + "</strong></h4>" + '</a>' + '<p>' + form_add +'</p>' + "<br>" + "<form action='https://maps.google.com/maps' method="
                     + 'get" target="_blank">'
                     + '<label for="saddr"></label>'
                     + '<input type="hidden" value="{{ latitude }}, {{ longitude }}" name="saddr" />'
                     + '<input type="hidden" name="daddr" value="{{ place.formatted_address[0]}}, {{ place.formatted_address[1] }}" />'
-                    + '<input type="submit" style = "width: 8em;  height: 1.7em; margin-bottom: 3px" value="Get directions" />'
+                    + '<input type="submit" style = "color: darkslategrey; width: 8em;  height: 1.7em; margin-bottom: 3px" value="Get directions" />'
                     + '</form>'
                     + '<table style = "width: 100%;">'
                     + '<tr style="display: none">'
@@ -117,10 +110,10 @@
                         + '<th style="display: none"></th>'
                         + '</tr>'
                         + '<tr>'
-                        + '<td style="text-align: left; width: 25%; font-weight: bold; border-top: 1px solid black">'
+                        + '<td style="color: darkslategrey; text-align: left; width: 25%; font-weight: bold; border-top: 1px solid black">'
                         + '{{ day.day_string }}:'
                         + '</td>'
-                        + '<td style="text-align: right; width: 75%; border-top: 1px solid black">'
+                        + '<td style="color: darkslategrey; text-align: right; width: 75%; border-top: 1px solid black">'
                         + '{{ day.start_time.strftime("%I:%M %p") }}'
                         + '- {{ day.end_time.strftime("%I:%M %p") }}'
                         + '</td>'
@@ -153,5 +146,4 @@
         google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
-    </body>
 {% endblock %}

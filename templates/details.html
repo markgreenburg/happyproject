@@ -1,142 +1,100 @@
 {% extends "layout.html" %}
 {% block apikey %}
-   <script src="https://maps.google.com/maps/api/js?key={{ apikey }}"></script>
-   <script>
-       //initMap();
-       function initMap() {
-           var venue_location = {lat: {{ venue.lat }}, lng: {{ venue.lng }}};
-           var map = new google.maps.Map(document.getElementById('map'), {
-               zoom: 16,
-               center: venue_location
-           });
-           var marker = new google.maps.Marker({
-               position: venue_location,
-               map: map
-           });
-       }
-       google.maps.event.addDomListener(window, 'load', initMap);
-   </script>
+    <script src="https://maps.google.com/maps/api/js?key={{ apikey }}"></script>
 {% endblock %}
 {% block body %}
-    <div class="container details-page-container">
-        <div class="row details-top-row clearfix">
-            <div class="col-sm-4 col-xs-12 details-header-image thumbnail">
-                <!-- Image resizes dynamically, do not specify size in tag -->
-                <img src="{{venue.img_prefix + '500x500' + venue.img_suffix}}" class="img-responsive" alt="{{venue.name}}" />
-            </div>
-            <div class="col-sm-8 col-xs-12 details-bus-info-container">
-                <div class="row details-location-name-row">
-                    <div class="col-xs-12 details-location-name">
-                        <div>
-                            {{venue.name}}
-                        </div>
+    <div class="fullheight bg-color-darker map-div">
+        <div class="container content">
+            <div class="row">
+                <div class="col-md-4 md-margin-bottom-50">
+                    <!-- Our Services -->
+                    <h2>{{ venue.name }}</h2>
+                    <div class="tag-box tag-box-v1">
+                        <img src="{{ venue.img_prefix + '500x500' + venue.img_suffix }}" class="img-responsive"
+                             alt="{{ venue.name }}"/>
                     </div>
-                </div>
-                <div class="row details-bus-info-row">
-                    <div class="col-sm-6 col-xs-12 details-bus-info">
-                        <div class="row details-bus-contact">
-                            {% for address in venue.formatted_address %}
-                            <div class="col-xs-12 details-bus-address">
-                                {{address}}
-                            </div>
+                    <div
+                            id="
+
+
+                            {% if 'Open' in venue.hours_today %}{{ 'open' }}{% else %}{{ 'closed' }}{% endif %}">
+                        <h3>{{ venue.hours_today }} today</h3>
+                    </div>
+                    <br>
+
+                    <div class="tag-box tag-box-v1">
+                        <h3>Happy Hours Times</h3>
+                        <table class="details-happy-hours">
+                            {% for day in venue.happy_hour %}
+                                <tr>
+                                    <td>
+                                        {{ day.day_string }}
+                                    </td>
+                                    <td>
+                                        {{ day.start_time.strftime("%I:%M %p") }} -
+                                        {{ day.end_time.strftime("%I:%M %p") }}
+                                    </td>
+                                </tr>
                             {% endfor %}
-                            <div class="col-xs-12 details-bus-phone">
-                                <a href="tel:{{venue.formatted_phone_number}}">{{venue.formatted_phone_number}}</a>
-                            </div>
-                        </div>
-                        <div class="row details-location-rating-price-row">
-                            <div class="col-xs-12 details-location-ratings">
-                                <span class="price">{{ '$' * venue.price_level }}</span> | <span class="rating">{{ venue.rating }}</span>
-                                <span class="star">&#9733;</span>
-                            </div>
-                        </div>
-                        <div class="row details-location-category-row">
-                            <div class="col-xs-12 details-location-category">
-                                {{ venue.category }}
-                            </div>
-                        </div>
-                        <div class="row details-location-hrs-today-row">
-                            <div class="col-xs-12 details-location-hrs-today" id="{% if 'Open' in venue.hours_today %}{{'open'}}{% else %}{{'closed'}}{% endif %}">
-                                {{ venue.hours_today }}
-                            </div>
-                        </div>
-                    </div>
-                    <div id="map" class="col-sm-6 col-xs-12 details-bus-minimap">
-                        <!--Minimap inserted via JS into this div-->
+                        </table>
                     </div>
                 </div>
-                <hr />
-                <div class="row details-bus-links-row">
-                    <div class="col-xs-12 details-bus-links">
-                        <span class="details-website-span span-first">
-                            {% if venue.website|length > 0 %}
-                            <a href="{{ venue.website }}">Venue Website</a>
-                            {% endif %}
-                        </span>
-                        <span class="details-website-span span-between">
-                            {% if venue.menu_url|length %}
-                            <a href="{{ venue.menu_url }}">View Menu on Foursquare</a>
-                            {% endif %}
-                        </span>
-                        <span class="details-website-span span-last">
-                            <a href="https://foursquare.com/v/{{ venue.venue_id }}">Open on Foursquare</a>
-                        </span>
+                <div class="col-md-4 md-margin-bottom-50">
+                    <!-- Google Map -->
+                    <div id="little-map" class="map map-box map-box-space1 margin-bottom-40">
+                    </div><!---/map-->
+                    <!-- End Google Map -->
+                    <ul class="list-unstyled who margin-bottom-30">
+                        {% for address in venue.formatted_address %}
+                            <li>{{ address }}</li>
+                        {% endfor %}
+                        <li><a href="tel:{{ venue.formatted_phone_number }}">{{ venue.formatted_phone_number }}</a></li>
+                        <li><span class="price">{{ '$' * venue.price_level }}</span> | <span
+                                class="rating">{{ venue.rating }}</span>
+                            <span class="star">&#9733;</span></li>
+                        <li>{{ venue.category }}</li>
+                    </ul>
+                    <form action='https://maps.google.com/maps' method=
+                            get" target="_blank">
+                        <label for="saddr"></label>
+                        <input type="hidden" value="{{ latitude }}, {{ longitude }}" name="saddr"/>
+                        <input type="hidden" name="daddr"
+                               value="{{ venue.formatted_address[0] }}, {{ venue.formatted_address[1] }}"/>
+                        <input type="submit"
+                               style="color: darkslategrey; width: 8em;  height: 1.7em; margin-bottom: 3px"
+                               value="Get directions"/>
+                    </form>
+                </div><!--/col-md-4-->
+                <div class="col-md-4 md-margin-bottom-50">
+                    <!-- Our Services -->
+                    <div class="tag-box tag-box-v1">
+                        <h3>Tips for {{ venue.name }}</h3>
+                        {% for tip in venue.tips %}
+                            <div class="col-xs-12 detail-location-tip">
+                                <span class="tip-title">strong{{ tip.get('name', '') }} says: </span><br/><br/>
+                                {{ tip.get('text', '') }}<br/>
+                            </div>
+                        {% endfor %}
                     </div>
-                </div>
-                <hr />
-            </div>
-        </div>
-        <div class="row bottom-row-container">
-            <div class="row clearfix details-bottom-bar-row">
-                        <div class="col-sm-4 col-xs-12 details-location-happyhours-container">
-                            <div class="row details-location-happyhours-title-row">
-                                <div class="col-xs-12 details-location-happyhours-title">
-                                    <h4>Happy Hours Times</h4>
-                                </div>
-                            </div>
-                            <div class="row details-location-happyhours-tbl-row">
-                                <div class="col-xs-12 details-location-happyhours-table">
-                                    <table>
-                                        {% for day in venue.happy_hour %}
-                                        <tr>
-                                            <td>
-                                                {{ day.day_string }}
-                                            </td>
-                                            <td>
-                                                {{ day.start_time.strftime("%I:%M %p") }} -
-                                            {{ day.end_time.strftime("%I:%M %p") }}
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-xs-12 details-location-tips-container">
-                            <div class="row detail-location-tips-row">
-                                {% for tip in venue.tips %}
-                                <div class="col-xs-12 detail-location-tip">
-                                    <span class="tip-title">{{ tip.get('name', '') }} says: </span><br />
-                                    {{  tip.get('text', '') }}<br />
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-xs-12 details-location-specials-container">
-                            <div class="row details-location-specials-title-row">
-                                <div class="col-xs-12 details-specials-title">
-                                    {{ venue.specials|length }}{{' Specials found for %s' % venue.name }}
-                                </div>
-                            </div>
-                            <div class="row details-location-specials-content-row">
-                            {% for special in venue.specials %}
-                                <div class="col-xs-12 details-location-specials-content">"
-                                    {{special.message}}
-                                </div>
-                            {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-            </div>
+                </div><!--/col-md-4-->
+            </div><!--/row-->
+
+        </div><!--/container-->
     </div>
+    <script>
+        initMap();
+        function initMap() {
+            var venue_location = {lat: {{ venue.lat }}, lng: {{ venue.lng }}};
+            var map = new google.maps.Map(document.getElementById('little-map'), {
+                zoom: 16,
+                center: venue_location
+            });
+            var marker = new google.maps.Marker({
+                position: venue_location,
+                map: map
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initMap);
+    </script>
 {% endblock %}
+<!--=== End Content Part ===-->

@@ -1,0 +1,140 @@
+/* Add here all your css styles (customizations) */
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.homepageButton {
+    color: darkslategrey;
+    border-radius: 10px;
+}
+
+.home_location_button {
+    margin: 10px auto;
+}
+
+#addressFormTwo > div > div.input-group > input {
+    color: darkslategrey;
+    font-size: 1em;
+}
+
+.promo-text-v2 {
+    font-size: 2.5em;
+    text-shadow: 2px 2px black;
+}
+
+#addressFormTwo > div > div.dropdownmenu {
+    text-shadow: 1px 1px black;
+}
+
+.div-row {
+    height: 100%;
+    overflow: hidden;
+}
+
+#map-canvas {
+    min-height: 400px;
+    height: 100%;
+    padding: 0;
+}
+
+body > div.row.div-row {
+    margin: 0;
+    height: 100%;
+}
+
+#infowindow {
+    height: 100%;
+    padding: 0;
+    overflow: scroll;
+}
+
+.map-div-two {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 0;
+}
+
+.footer-v1 {
+    bottom: 0;
+}
+
+.map-div {
+    padding-top: 20px;
+    padding-bottom: 0;
+    height: 100%;
+
+}
+
+#infowindow > div {
+    border-left: none;
+    background-color: #ddd;
+}
+
+#infowindow {
+    background-color: #ddd;
+}
+
+#infowindow > ul > li {
+    padding-left: 10px;
+}
+
+#map-canvas > div > div > div {
+    color: darkslategrey;
+}
+
+.placeholder-div {
+    min-height: 1000px;
+}
+
+#map-canvas > div > div > div > div > div > div > div.gm-style-iw > div > div > p {
+    margin-bottom: 0;
+}
+
+.details-div {
+    padding-top: 20px;
+    padding-bottom: 0;
+    height: 100%;
+}
+
+#little-map{
+    min-height: 400px;
+    margin-top: 47px;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(3) > div{
+    height: 667px;
+    overflow: scroll;
+    background-color: whitesmoke;
+    text-align: left;
+    color: darkslategrey;
+    padding:0 10px 0 10px;
+    margin-top: 47px;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(3){
+    padding-top: 20px;
+}
+body > div.wrapper > div.container.content > div > div:nth-child(1) > div.service-block{
+    padding: 0;
+}
+/*body > div.wrapper > div.container.content > div > div:nth-child(3){*/
+    /*height: 400px;*/
+    /*overflow: scroll;*/
+/*}*/
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(2){
+    height: 100%;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(1) > div:nth-child(5){
+    color: darkslategrey;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(3){
+    padding-top: 0;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(3) > div > div{
+    border-bottom: 2px solid darkslategrey;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(2) > ul{
+    color: whitesmoke;
+}
+body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(1) > h2{
+    border-top: 1px solid darkslategrey;
+}

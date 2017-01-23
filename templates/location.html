@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block body %}
-    <body>
     <form action="{{ url_for('display') }}" method="POST" id="locationForm">
         <input type="hidden" id="latitude" name="lat">
         <input type="hidden" id="longitude" name="lng">
@@ -19,5 +18,4 @@
             });
         }
     </script>
-    </body>
 {% endblock %}

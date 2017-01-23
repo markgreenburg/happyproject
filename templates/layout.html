@@ -47,6 +47,7 @@
 
     <!-- CSS Customization -->
     <link rel="stylesheet" href="/static/assets/css/custom.css">
+    <link rel="stylesheet" href="/static/assets/css/pages/blog_masonry_3col.css">
 </head>
 
 <body class="header-fixed">
@@ -68,7 +69,7 @@
 
                     <!-- Navbar Brand -->
                     <div class="navbar-brand">
-                        <a href="/happyhour">
+                        <a href="/">
                             <h1 class="default-logo">HappyFinder!</h1>
                         </a>
                     </div>
@@ -132,7 +133,7 @@
                                         <a href="{{ url_for('create_account') }}">Create Account</a>
                                     </li>
                                     <li class="dropdown-submenu">
-                                        <a href="/happyhour">Homepage</a>
+                                        <a href="/">Homepage</a>
                                     </li>
                                 </ul>
                             </li>
@@ -149,7 +150,7 @@
         </div>
     {% endblock %}
     <!--=== End Full Height Text Rotater ===-->
-    <div class="footer-v1">
+    <div class="footer-v1 navbar-default navbar-fixed-bottom">
         <div class="copyright">
             <div class="container">
                 <div class="row">
@@ -168,8 +169,8 @@
                 </div>
             </div>
         </div><!--/copyright-->
-    </div><!--=== End Footer Version 1 ===-->
-</div><!--/wrapper-->
+    </div>
+</div><!--=== End Footer Version 1 ===-->
 
 
 <!-- JS Global Compulsory -->

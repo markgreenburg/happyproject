@@ -6,7 +6,7 @@ happy_days = {'monday': 1, 'tuesday': 2, 'wednesday': 3, 'thursday': 4, 'friday'
 happy_day_nums = [1, 2, 3, 4, 5, 6, 7]
 # set the string (this would be within the iterative loop, when
 # looping over the foursquare string results
-str = "served monday-friday | 3:00 A.M. - 6:30 p.m. dine-in bar area only. $2.95 minimum beverage " \
+str = "served monday-friday | 3:00 - 6:30 p.m. dine-in bar area only. $2.95 minimum beverage " \
       "purchase per guest.	4b25390ef964a520466e24e3	" \
       "2515 S. Loop W. Fwy. (btwn Buffalo Spdwy. & Kirby)"
 # use regex to find matches to any of the days of week, and even the three letter abbreviation

@@ -152,3 +152,6 @@ body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nt
 body > div.wrapper > div.fullheight.bg-color-darker.map-div > div > div > div:nth-child(1) > h3{
     color: whitesmoke;
 }
+#loading {
+    position: absolute; width: 20%; height: 20%; background: url('/happyhour/static/images/loadingimage.gif') no-repeat center center;
+}

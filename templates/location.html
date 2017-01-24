@@ -2,6 +2,7 @@
 {% block body %}
     <div class="fullscreen-static-image1 fullheight bg-color-darker">
         <div class="container valign__middle text-center">
+            <div id="loading"></div>
             <form action="{{ url_for('display') }}" method="POST" id="locationForm">
                 <input type="hidden" id="latitude" name="lat">
                 <input type="hidden" id="longitude" name="lng">

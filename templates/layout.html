@@ -152,26 +152,28 @@
         </div>
     {% endblock %}
     <!--=== End Full Height Text Rotater ===-->
-    <div class="footer-v1">
-        <div class="copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p>
-                            2016 &copy; All Rights Reserved.
-                        </p>
-                    </div>
+    {% block footer %}
+        <div class="footer-v1">
+            <div class="copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p>
+                                2016 &copy; All Rights Reserved.
+                            </p>
+                        </div>
 
-                    <!-- Social Links -->
-                    <div class="col-md-9">
-                        <p>Cody Taylor & Mark Greenburg: Built with Python, Flask, JavaScript, PostgreSQL, Jinja,
-                            Bootstrap</p>
+                        <!-- Social Links -->
+                        <div class="col-md-9">
+                            <p>Cody Taylor & Mark Greenburg: Built with Python, Flask, JavaScript, PostgreSQL, Jinja,
+                                Bootstrap</p>
+                        </div>
+                        <!-- End Social Links -->
                     </div>
-                    <!-- End Social Links -->
                 </div>
-            </div>
-        </div><!--/copyright-->
-    </div>
+            </div><!--/copyright-->
+        </div>
+    {% endblock %}
 </div><!--=== End Footer Version 1 ===-->
 
 

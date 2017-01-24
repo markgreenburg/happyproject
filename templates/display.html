@@ -38,7 +38,7 @@
         function initialize() {
             var myLatLng = new google.maps.LatLng({{ latitude }}, {{ longitude }});
             var map = new google.maps.Map(document.getElementById('map-canvas'), {
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
             });
 
             var infowindow = new google.maps.InfoWindow();
@@ -75,11 +75,12 @@
                 return marker;
             }
 
-            var address_input = {{ address_input }};
+            //var address_input = {{ address_input }};
+           // console.log(address_input);
 
-            if (address_input != true) {
-                userMarker();
-            }
+           // if (address_input != true) {
+            userMarker();
+          //  }
 
             gmarkers = [];
             {% for place in place_list %}

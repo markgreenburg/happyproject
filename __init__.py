@@ -43,7 +43,6 @@ def convert_address():
     else:
         session['active_only'] = False
     session['radius'] = request.args.get('radius', '20')
-    address_input = ''
     address_input = request.args.get('address')
     if address_input:
         session['address_bool'] = 1

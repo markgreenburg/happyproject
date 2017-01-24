@@ -34,6 +34,7 @@
     </div><!--/end container-->
     <script>
         var im = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
+        var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 
         function initialize() {
             var myLatLng = new google.maps.LatLng({{ latitude }}, {{ longitude }});
@@ -75,22 +76,13 @@
                 return marker;
             }
 
-            var goldStar = {
-                path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
-                fillColor: 'yellow',
-                fillOpacity: 0.8,
-                scale: 10,
-                strokeColor: 'gold',
-                strokeWeight: 14
-            };
             var address_input = {{ address_input }};
-            // console.log(address_input);
 
             if (address_input != true) {
                 userMarker(im);
             }
-            else {
-                userMarker(goldStar);
+            else{
+                userMarker(image);
             }
 
             gmarkers = [];

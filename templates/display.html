@@ -34,6 +34,7 @@
     </div><!--/end container-->
     <script>
         var im = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
+        var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 
         function initialize() {
             var myLatLng = new google.maps.LatLng({{ latitude }}, {{ longitude }});
@@ -60,10 +61,10 @@
                 return marker;
             }
 
-            function userMarker() {
+            function userMarker(user_marker) {
                 var marker = new google.maps.Marker({
                     position: myLatLng,
-                    icon: im,
+                    icon: user_marker,
                     map: map
                 });
                 google.maps.event.addListener(marker, 'click', function () {
@@ -75,12 +76,15 @@
                 return marker;
             }
 
-            //var address_input = {{ address_input }};
-           // console.log(address_input);
+            var address_input = {{ address_input }};
+            // console.log(address_input);
 
-           // if (address_input != true) {
-            userMarker();
-          //  }
+            if (address_input != true) {
+                userMarker(im);
+            }
+            else{
+                userMarker(image);
+            }
 
             gmarkers = [];
             {% for place in place_list %}
@@ -91,7 +95,7 @@
 
                 gmarkers[form_add] = createMarker(new google.maps.LatLng(lat, lng),
                     "<a href='/happyhour/details/{{ place.location_id }}'>"
-                    + "<h4><strong>" + name + "</strong></h4>" + '</a>' + '<p>' + form_add +'</p>' + "<br>" + "<form action='https://maps.google.com/maps' method="
+                    + "<h4><strong>" + name + "</strong></h4>" + '</a>' + '<p>' + form_add + '</p>' + "<br>" + "<form action='https://maps.google.com/maps' method="
                     + 'get" target="_blank">'
                     + '<label for="saddr"></label>'
                     + '<input type="hidden" value="{{ latitude }}, {{ longitude }}" name="saddr" />'

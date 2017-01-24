@@ -58,6 +58,7 @@ body > div.row.div-row {
 
 .footer-v1 {
     bottom: 0;
+    top: auto;
 }
 
 .map-div {

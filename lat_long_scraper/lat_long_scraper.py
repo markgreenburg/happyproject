@@ -253,11 +253,11 @@ def scrape():
     # print "*****FINISHED*****"
 
     ####PICKUP WHERE LEFT OFF
-    current_lat = 29.752268
-    current_lng = -95.376881
+    current_lat = 30.092861
+    current_lng = -97.961783
     # end at top right location
-    lat = 29.809668
-    lng = -95.261078
+    lat = 30.503117
+    lng = -97.494864
     global querycount
     while current_lat < lat:
         while current_lng < lng:
@@ -270,7 +270,7 @@ def scrape():
             print loc.location
             Place.get_places(loc.location, '1610')
             current_lng += 0.016635
-        current_lng = -95.465698
+        current_lng = -97.961783
         current_lat += 0.014466
     print "*****FINISHED*****"
 

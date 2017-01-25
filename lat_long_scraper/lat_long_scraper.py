@@ -253,7 +253,7 @@ def scrape():
     # print "*****FINISHED*****"
 
     ####PICKUP WHERE LEFT OFF
-    current_lat = 30.092861
+    current_lat = 30.251987
     current_lng = -97.961783
     # end at top right location
     lat = 30.503117

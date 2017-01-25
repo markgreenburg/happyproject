@@ -38,7 +38,7 @@ if m[0] == 'everyday' or m[0] == 'every day':
 currenttime = datetime.datetime.now().time().strftime("%H:%M")
 print currenttime
 m = times[0][0]
-if "10:00" <= currenttime <= "13:00":
+    if "10:00" <= currenttime <= "13:00":
     if m >= "07:00" and m >= "12:00":
         m = ("""%s%s""" % (m, " AM"))
     else:

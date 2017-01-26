@@ -202,7 +202,7 @@ def submit_page_edit():
     pass
 
 if __name__ == "__main__":
-    app.run(threaded=True)
+    # app.run(threaded=True)
     app.secret_key = config.SECRET_KEY
     # app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
     app.config['DEBUG'] = config.DEBUG

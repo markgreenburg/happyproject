@@ -231,7 +231,7 @@ def scrape():
     #     current_lat += 0.028932
     # print "*****FINISHED*****"
 ###################################################################################
-    # innercity houston
+    # houston
     # 29.763632, -95.422854
     # start at bottom right location
     # current_lat = 29.763632
@@ -255,9 +255,7 @@ def scrape():
     #     current_lat += 0.014466
     # print "*****FINISHED*****"
 
-    # next lat lng
-    # 30.109494, -97.885695
-    ####PICKUP WHERE LEFT OFF
+    ####Austin Scrape
     current_lat = 30.109494
     current_lng = -97.885695
     # end at top right location

@@ -256,8 +256,11 @@ def scrape():
     # print "*****FINISHED*****"
 
     ####Austin Scrape
-    current_lat = 30.109494
-    current_lng = -97.885695
+    # start here!!
+    # 30.210756, -97.785885
+
+    current_lat = 30.210756
+    current_lng = -97.785885
     # end at top right location
     lat = 30.593001
     lng = -97.562842

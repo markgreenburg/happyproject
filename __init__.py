@@ -39,7 +39,11 @@ def home():
 
 # Flask-login user loader
 <<<<<<< HEAD
+<<<<<<< HEAD
 # @login_manager.user_loader
+=======
+# @login_manager.user_loader()
+>>>>>>> f6d7114e4eac70d92a361751ea4f88016eadad4f
 # def user_loader(id_to_load):
 #     """
 #     Callback for the flask_login user loader. Loads a user object only if

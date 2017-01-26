@@ -198,10 +198,10 @@ class Place(object):
                 if selection:
                     checker = str(selection[0].address)
                 if place_instance.address != checker:
-                    sql = "INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address, lat, lng) VALUES ($1, $2, $3, $4, $5)"
+                    sql = "INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address, latitude, longitude) VALUES ($1, $2, $3, $4, $5)"
                     print "!!!!!!!!!!!!!STORED!!!!!!!!!!!!!!!!"
                     DbConnect.doQuery(sql, place_instance.happy_string, place_instance.fs_venue_id, place_instance.address,
-                                      place_instance.lat, place_instance.lng)
+                                      float(place_instance.lat), float(place_instance.lng))
     #
     # def insert(self):
     #     # sql = 'INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address) VALUES ($1, $2, $3)'

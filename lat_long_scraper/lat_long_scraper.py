@@ -233,15 +233,15 @@ def scrape():
 ###################################################################################
     # innercity houston
     # start at bottom right location
-    current_lat = 29.66237
-    current_lng = -95.672329
+    current_lat = 29.676836
+    current_lng = -95.522664
     # end at top right location
     lat = 29.937085
     lng = -95.274124
     global querycount
     while current_lat < lat:
         while current_lng < lng:
-            if querycount >= 4200: #number of queries to 4square
+            if querycount >= 1000: #number of queries to 4square
                 print 'pausing'
                 querycount = 0
                 time.sleep(3650) #delay for one hour once 5000 queries has been hit

@@ -28,7 +28,17 @@ fs_client_id = config.FS_CLIENT_ID
 fs_secret = config.FS_CLIENT_SECRET
 
 
+@app.route('/')
+def home():
+    """
+    Retuns homepage template with Jumbotron and search fields to enable finding
+    happy hours.
+    """
+    return render_template('homepage.html')
+
+
 # Flask-login user loader
+<<<<<<< HEAD
 # @login_manager.user_loader
 # def user_loader(id_to_load):
 #     """
@@ -43,15 +53,20 @@ fs_secret = config.FS_CLIENT_SECRET
 #         return user
 #     else:
 #         return None
-
-@app.route('/')
-def home():
+@login_manager.user_loader
+def user_loader(id_to_load):
     """
-    Retuns homepage template with Jumbotron and search fields to enable finding
-    happy hours.
+    Callback for the flask_login user loader. Loads a user object only if
+    the user_id passed in corresponds to an existing user_id.
+    Args: user_id - internal id of a user
+    Returns: user instance, or None if user_id doesn't match anything in db
     """
-    return render_template('homepage.html')
-
+    id_to_load = ord(id_to_load)
+    user = User(user_id=id_to_load)
+    if user.user_id > 0:
+        return user
+    else:
+        return None
 
 @app.route('/convert_address', methods=['GET'])
 def convert_address():
@@ -159,7 +174,8 @@ def submit_login():
     password_test = request.form.get('password', '')
     user_to_login = User(username=username_test)
     if user_to_login.authenticate(username_test, password_test):
-        session['username'] = user_to_login.username
+        # session['username'] = user_to_login.username
+        login_user(user_to_login)
         return redirect(url_for('home'))
     flash("Incorrect username or password")
     return redirect(url_for('login'))
@@ -173,12 +189,14 @@ def logout():
     del session['username']
     return redirect(url_for('home'))
 
+
 @app.route('/add_venue')
 def add_venue():
     """
     Shows a page allowing the input of FS venue ID, lat, and lng for a location
     """
     return render_template('add_venue.html')
+
 
 @app.route('/save_new_venue', methods=["POST"])
 def save_new_venue():
@@ -194,6 +212,7 @@ def save_new_venue():
     flash("Venue saved successfully!")
     return render_template('edit_details', venue=new_venue)
 
+
 @app.route('/submit_page_edit/<int:location_id')
 def submit_page_edit():
     """
@@ -201,8 +220,8 @@ def submit_page_edit():
     """
     pass
 
+
 if __name__ == "__main__":
-    app.run(threaded=True)
     app.secret_key = config.SECRET_KEY
     # app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
     app.config['DEBUG'] = config.DEBUG

@@ -8,6 +8,7 @@ import os
 import sys
 import json
 from flask import Flask, render_template, request, redirect, url_for, session, Markup, flash
+from flask_login import LoginManager, UserMixin, login_required
 import bcrypt
 import requests
 from models import *
@@ -16,12 +17,34 @@ import config
 reload(sys)
 sys.setdefaultencoding('utf-8')
 app = Flask(__name__)
+
+# Manage logins
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# Initialize API settings and app configs
 g_api_key = config.G_API_KEY
 fs_client_id = config.FS_CLIENT_ID
 fs_secret = config.FS_CLIENT_SECRET
 app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
 app.config['DEBUG'] = config.DEBUG
+
+# Flask-login user loader
+@login_manager.user_loader
+def user_loader(id_to_load):
+    """
+    Callback for the flask_login user loader. Loads a user object only if
+    the user_id passed in corresponds to an existing user_id.
+    Args: user_id - internal id of a user
+    Returns: user instance, or None if user_id doesn't match anything in db
+    """
+    id_to_load = ord(id_to_load)
+    user = User(user_id=id_to_load)
+    if user.user_id > 0:
+        return user
+    else:
+        return None
 
 @app.route('/')
 def home():
@@ -137,7 +160,7 @@ def submit_login():
     password_test = request.form.get('password', '')
     user_to_login = User(username=username_test)
     if user_to_login.authenticate(username_test, password_test):
-        session['username'] = user_to_login.username
+        user_loader(user_to_login)
         return redirect(url_for('home'))
     flash("Incorrect username or password")
     return redirect(url_for('login'))
@@ -152,3 +175,26 @@ def logout():
 
 if __name__ == "__main__":
     app.run(threaded=True)
+
+@app.route('/add_venue')
+def add_venue():
+    """
+    Shows a page allowing the input of FS venue ID, lat, and lng for a location
+    """
+    return render_template('add_venue.html')
+
+@app.route('/save_new_venue', methods=["POST"])
+def save_new_venue():
+    """
+    Saves user input to create a new venue record in db
+    """
+    new_venue = Place()
+    new_venue.venue_id = request.form.get('venue_id')
+    new_venue.lat = request.form.get('latitude')
+    new_venue.lng = request.form.get('longitude')
+    new_venue.save()
+    flash("Venue saved successfully!")
+    return redirect(url_for('eidt_details', venue=new_venue.location_id))
+
+
+    

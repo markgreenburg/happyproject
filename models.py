@@ -37,12 +37,44 @@ class User(object):
             self.username = user_result.username
             self.email = user_result.email
             self.password_hash = user_result.password
+            self.authenticated = False
+            self.active = True
+            self.anonymous = False
         else:
             self.user_id = 0
             self.username = ''
             self.email = ''
             self.password_hash = ''
+            self.authenticated = False
+            self.active = True
+            self.anonymous = False
 
+    # Methods for Flask Login
+    def is_active(self):
+        """
+        User suspensions are not supported. Returns True.
+        """
+        return self.active
+
+    def get_id(self):
+        """
+        returns the id of a user in unicode. This is used for Flask Login.
+        """
+        return unichr(self.user_id)
+
+    def is_authenticated(self):
+        """
+        Returns current auth state of the User
+        """
+        return self.authenticated
+
+    def is_anonymous(self):
+        """
+        Anonymous users are not supported. Returns False.
+        """
+        return self.anonymous
+
+    # Non-flask_login related methods
     def update(self):
         """
         Updates existing user info in db
@@ -88,17 +120,19 @@ class User(object):
 
     def authenticate(self, test_username, test_password):
         """
-        Authenticates a user based on name & password_hash matching
+        Authenticates a user based on name & password_hash matching, sets
+        authenticated to True.
+        Args: test_username, test_password used to test against stored values
         Returns: Bool True if credentials match, False otherwise
         """
         try:
             test_pwd_hash = bcrypt.hashpw(test_password.encode('utf-8'), self.password_hash)
             if test_username == self.username and test_pwd_hash == \
             self.password_hash and self.user_id > 0:
-                return True
+                self.authenticated = True
         except ValueError:
             pass
-        return False
+        return self.authenticated
 
     @staticmethod
     def validate_userinfo(username, password):

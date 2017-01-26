@@ -251,9 +251,9 @@ def scrape():
     #     current_lng = -95.465698
     #     current_lat += 0.014466
     # print "*****FINISHED*****"
-
+    # 30.208589, -97.845338
     ####PICKUP WHERE LEFT OFF
-    current_lat = 30.251987
+    current_lat = 30.208589
     current_lng = -97.961783
     # end at top right location
     lat = 30.503117
@@ -261,7 +261,7 @@ def scrape():
     global querycount
     while current_lat < lat:
         while current_lng < lng:
-            if querycount >= 4200: #number of queries to 4square
+            if querycount >= 2000: #number of queries to 4square
                 print 'pausing'
                 querycount = 0
                 time.sleep(3650) #delay for one hour once 5000 queries has been hit

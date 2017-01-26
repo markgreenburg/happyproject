@@ -28,8 +28,17 @@ fs_client_id = config.FS_CLIENT_ID
 fs_secret = config.FS_CLIENT_SECRET
 
 
+@app.route('/')
+def home():
+    """
+    Retuns homepage template with Jumbotron and search fields to enable finding
+    happy hours.
+    """
+    return render_template('homepage.html')
+
+
 # Flask-login user loader
-@login_manager.user_loader
+@login_manager.user_loader()
 def user_loader(id_to_load):
     """
     Callback for the flask_login user loader. Loads a user object only if
@@ -43,14 +52,6 @@ def user_loader(id_to_load):
         return user
     else:
         return None
-
-@app.route('/')
-def home():
-    """
-    Retuns homepage template with Jumbotron and search fields to enable finding
-    happy hours.
-    """
-    return render_template('homepage.html')
 
 
 @app.route('/convert_address', methods=['GET'])
@@ -173,12 +174,14 @@ def logout():
     del session['username']
     return redirect(url_for('home'))
 
+
 @app.route('/add_venue')
 def add_venue():
     """
     Shows a page allowing the input of FS venue ID, lat, and lng for a location
     """
     return render_template('add_venue.html')
+
 
 @app.route('/save_new_venue', methods=["POST"])
 def save_new_venue():
@@ -194,12 +197,14 @@ def save_new_venue():
     flash("Venue saved successfully!")
     return render_template('edit_details', venue=new_venue)
 
+
 @app.route('/submit_page_edit/<int:location_id')
 def submit_page_edit():
     """
     Save new happy hour times to db
     """
     pass
+
 
 if __name__ == "__main__":
     app.secret_key = config.SECRET_KEY

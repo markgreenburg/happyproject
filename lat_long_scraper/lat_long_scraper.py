@@ -134,6 +134,7 @@ class Place(object):
         self.lng = str(g_place_deets.get('result').get('geometry').get('location').get('lng'))
         self.name = str(g_place_deets.get('result').get('name'))
 
+
         # Curl to get Foursquare venue ID
         url = ("https://api.foursquare.com/v2/venues/search?intent=match&ll=%s"
                "&query=%s&client_id=%s&client_secret=%s&v=20170109" %
@@ -197,9 +198,10 @@ class Place(object):
                 if selection:
                     checker = str(selection[0].address)
                 if place_instance.address != checker:
-                    sql = "INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address) VALUES ($1, $2, $3)"
+                    sql = "INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address, lat, lng) VALUES ($1, $2, $3, $4, $5)"
                     print "!!!!!!!!!!!!!STORED!!!!!!!!!!!!!!!!"
-                    DbConnect.doQuery(sql, place_instance.happy_string, place_instance.fs_venue_id, place_instance.address)
+                    DbConnect.doQuery(sql, place_instance.happy_string, place_instance.fs_venue_id, place_instance.address,
+                                      place_instance.lat, place_instance.lng)
     #
     # def insert(self):
     #     # sql = 'INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address) VALUES ($1, $2, $3)'
@@ -231,39 +233,15 @@ def scrape():
 ###################################################################################
     # innercity houston
     # start at bottom right location
-    # current_lat = 29.671349
-    # current_lng = -95.465698
-    # # end at top right location
-    # lat = 29.809668
-    # lng = -95.261078
-    # global querycount
-    # while current_lat < lat:
-    #     while current_lng < lng:
-    #         if querycount >= 4200: #number of queries to 4square
-    #             print 'pausing'
-    #             querycount = 0
-    #             time.sleep(3650) #delay for one hour once 5000 queries has been hit
-    #         loc = LatLong()
-    #         loc.location = str(current_lat) + ',' + str(current_lng)
-    #         print loc.location
-    #         Place.get_places(loc.location, '1610')
-    #         current_lng += 0.016635
-    #     current_lng = -95.465698
-    #     current_lat += 0.014466
-    # print "*****FINISHED*****"
-
-    # next lat lng
-    # 30.165191,-97.762163
-    ####PICKUP WHERE LEFT OFF
-    current_lat = 30.208589
-    current_lng = -97.961783
+    current_lat = 29.604506
+    current_lng = -95.672379
     # end at top right location
-    lat = 30.503117
-    lng = -97.494864
+    lat = 29.937085
+    lng = -95.274124
     global querycount
     while current_lat < lat:
         while current_lng < lng:
-            if querycount >= 2000: #number of queries to 4square
+            if querycount >= 4200: #number of queries to 4square
                 print 'pausing'
                 querycount = 0
                 time.sleep(3650) #delay for one hour once 5000 queries has been hit
@@ -272,9 +250,33 @@ def scrape():
             print loc.location
             Place.get_places(loc.location, '1610')
             current_lng += 0.016635
-        current_lng = -97.961783
+        current_lng = -95.672379
         current_lat += 0.014466
     print "*****FINISHED*****"
+
+    # next lat lng
+    # 30.165191,-97.762163
+    ####PICKUP WHERE LEFT OFF
+    # current_lat = 30.208589
+    # current_lng = -97.961783
+    # # end at top right location
+    # lat = 30.503117
+    # lng = -97.494864
+    # global querycount
+    # while current_lat < lat:
+    #     while current_lng < lng:
+    #         if querycount >= 2000: #number of queries to 4square
+    #             print 'pausing'
+    #             querycount = 0
+    #             time.sleep(3650) #delay for one hour once 5000 queries has been hit
+    #         loc = LatLong()
+    #         loc.location = str(current_lat) + ',' + str(current_lng)
+    #         print loc.location
+    #         Place.get_places(loc.location, '1610')
+    #         current_lng += 0.016635
+    #     current_lng = -97.961783
+    #     current_lat += 0.014466
+    # print "*****FINISHED*****"
 
 # calls scraper function
 scrape()

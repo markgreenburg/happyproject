@@ -194,8 +194,7 @@ def save_new_venue():
     new_venue.lng = request.form.get('longitude')
     new_venue.save()
     flash("Venue saved successfully!")
-    return render_template('edit_details', venue=new_venue)
-
+    return redirect(url_for('add_venue'))
 
 @app.route('/submit_page_edit/<int:location_id>')
 def submit_page_edit():

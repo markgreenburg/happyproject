@@ -38,25 +38,6 @@ def home():
 
 
 # Flask-login user loader
-<<<<<<< HEAD
-<<<<<<< HEAD
-# @login_manager.user_loader
-=======
-# @login_manager.user_loader()
->>>>>>> f6d7114e4eac70d92a361751ea4f88016eadad4f
-# def user_loader(id_to_load):
-#     """
-#     Callback for the flask_login user loader. Loads a user object only if
-#     the user_id passed in corresponds to an existing user_id.
-#     Args: user_id - internal id of a user
-#     Returns: user instance, or None if user_id doesn't match anything in db
-#     """
-#     id_to_load = ord(id_to_load)
-#     user = User(user_id=id_to_load)
-#     if user.user_id > 0:
-#         return user
-#     else:
-#         return None
 @login_manager.user_loader
 def user_loader(id_to_load):
     """
@@ -66,7 +47,7 @@ def user_loader(id_to_load):
     Returns: user instance, or None if user_id doesn't match anything in db
     """
     id_to_load = ord(id_to_load)
-    user = User(id_to_load)
+    user = User(user_id=id_to_load)
     if user.user_id > 0:
         return user
     else:

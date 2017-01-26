@@ -217,7 +217,7 @@ def save_new_venue():
     return render_template('edit_details', venue=new_venue)
 
 
-@app.route('/submit_page_edit/<int:location_id')
+@app.route('/submit_page_edit/<int:location_id>')
 def submit_page_edit():
     """
     Save new happy hour times to db

@@ -26,9 +26,7 @@ login_manager.init_app(app)
 g_api_key = config.G_API_KEY
 fs_client_id = config.FS_CLIENT_ID
 fs_secret = config.FS_CLIENT_SECRET
-app.config['SECRET_KEY'] = config.SECRET_KEY
-app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
-app.config['DEBUG'] = config.DEBUG
+
 
 # Flask-login user loader
 @login_manager.user_loader
@@ -54,6 +52,7 @@ def home():
     """
     return render_template('homepage.html')
 
+
 @app.route('/convert_address', methods=['GET'])
 def convert_address():
     """
@@ -67,53 +66,50 @@ def convert_address():
     else:
         session['active_only'] = False
     session['radius'] = request.args.get('radius', '20')
-    address_input = request.args.get('address', '')
+    address_input = request.args.get('address')
     if address_input:
         session['address_bool'] = 1
         coords_tuple = Place.address_to_coords(request.args.get('address', \
-                       ''))
+                                                                ''))
         session['lat'] = coords_tuple[0]
         session['lng'] = coords_tuple[1]
         return redirect(url_for('display'))
     else:
         return render_template('location.html', apikey=g_api_key)
 
-@app.route('/location', methods=['GET'])
-def location():
-    """
-    gets a list of places based on a 10 mile radius from user's location
-    """
-    session['lat'] = json.loads(request.args.get('lat'))
-    session['lng'] = json.loads(request.args.get('lng'))
-    print session.get('lat', 'no lat found')
-    print session.get('lng', 'no lng found')
-    #todo finish debugging location!!
-    return 'go to display'
 
-@app.route('/display')
+@app.route('/display', methods=["GET", "POST"])
 def display():
     """
     Gets a list of places based on a passed in mile radius from user's location
     Returns render of the map template / display homepage
     """
-    # todo finish debugging location!!
+    if not session.get('address_bool'):
+        session['lat'] = request.form.get('lat', '')
+        session['lng'] = request.form.get('lng', '')
     lat = session.get('lat', 29.7604)
     lng = session.get('lng', -95.3698)
-    print lat, lng
     is_active = session.get('active_only', False)
     radius = session.get('radius', '50')
     place_list = Place.get_places(lat, lng, radius, is_active)
+    # for place in place_list:
+    #     print"*********"
+    #     print place.is_happy_hour
     return render_template(
-        "display.html", place_list=place_list, apikey=g_api_key, latitude=\
-        lat, longitude=lng, address_input = session.get('address_bool'))
+        "display.html", place_list=place_list, apikey=g_api_key, latitude=
+        lat, longitude=lng, address_input=session.get('address_bool'))
+
 
 @app.route('/details/<int:location_id>')
 def show_location(location_id):
     """
     Shows the Foursquare and happyhour details for a given id from id_venue_id
     """
+    lat = session.get('lat', 29.7604)
+    lng = session.get('lng', -95.3698)
     location_object = Place(location_id)
-    return render_template("details.html", venue=location_object, apikey=g_api_key)
+    return render_template("details.html", latitude=lat, longitude=lng, venue=location_object, apikey=g_api_key)
+
 
 @app.route('/account/create', methods=["GET", "POST"])
 def create_account():
@@ -121,6 +117,7 @@ def create_account():
     Displays form to user that allows signups
     """
     return render_template('create_account.html')
+
 
 @app.route('/account/submit', methods=["POST"])
 def submit_new_account():
@@ -142,12 +139,14 @@ def submit_new_account():
     flash("Sorry, that username already exists.")
     return render_template('create_account.html')
 
+
 @app.route('/account/login')
 def login():
     """
     Shows user form to allow them to log in
     """
     return render_template('login.html')
+
 
 @app.route('/account/login_submit', methods=["POST"])
 def submit_login():
@@ -165,6 +164,7 @@ def submit_login():
     flash("Incorrect username or password")
     return redirect(url_for('login'))
 
+
 @app.route('/account/logout')
 def logout():
     """
@@ -172,9 +172,6 @@ def logout():
     """
     del session['username']
     return redirect(url_for('home'))
-
-if __name__ == "__main__":
-    app.run(threaded=True)
 
 @app.route('/add_venue')
 def add_venue():
@@ -194,7 +191,11 @@ def save_new_venue():
     new_venue.lng = request.form.get('longitude')
     new_venue.save()
     flash("Venue saved successfully!")
-    return redirect(url_for('eidt_details', venue=new_venue.location_id))
+    return redirect(url_for('edit_details', venue=new_venue.location_id))
 
-
-    
+if __name__ == "__main__":
+    app.run(threaded=True)
+    # app.secret_key = config.SECRET_KEY
+    # app.config['APPLICATION_ROOT'] = config.APPLICATION_ROOT
+    # app.config['DEBUG'] = config.DEBUG
+    # app.run()

@@ -1,74 +1,52 @@
 {% extends "layout.html" %}
+{% block apikey %}
+    <script src="https://maps.google.com/maps/api/js?key={{ apikey }}"></script>
+{% endblock %}
 {% block body %}
-    <body>
-    <div id="topBar">
-        <div class="carouselStyle">
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner" role="listbox">
-                    <div class="item carouselImage active ">
-                        <img src="{{ url_for('static', filename='images/carousel_one.jpg') }}" alt="carouselOne.jpg"
-                             class="resize">
-                    </div>
-
-
-                    <div class="item carouselImage">
-                        <img src="{{ url_for('static', filename='images/carouseltwo.jpg') }}" alt="carouselTwo.jpg"
-                             class="resize">
-                    </div>
-
-                    <div class="item carouselImage">
-                        <img src="{{ url_for('static', filename='images/carousel_three.jpg') }}" alt="carouselThree.jpg"
-                             class="resize">
-
-                    </div>
-                    <div class="item carouselImage">
-                        <img src="{{ url_for('static', filename='images/oldfashion.jpg') }}" alt="carouselFour.jpg"
-                             class="resize">
-                    </div>
-                    <div class="item carouselImage">
-                        <img src="{{ url_for('static', filename='images/foodandwine.jpg') }}" alt="carouselFour.jpg"
-                             class="resize">
-                    </div>
-                    <div class="form container-fluid">
-                        <div class="caption">
-                            <p>Welcome to <strong>HappyFinder!</strong></p>
-                            <p>I do all the work in finding happy hours going on <strong><em>right now</em></strong>
-                                near you!</p>
+    <!--=== Full Height Text Rotater ===-->
+    <div class="fullscreen-static-image1 fullheight bg-color-darker">
+        <div class="container valign__middle text-center">
+            <span class="promo-text-v1 color-light animated fadeInDown wow margin-bottom-10"
+                  data-wow-duration="1.5s" data-wow-delay=".5s">
+					Welcome to HappyFinder!
+				</span>
+            <h2 class="promo-text-v2 color-light cd-headline letters type margin-bottom-20">
+                I find happy hours going on <em>right now</em>, near you!
+            </h2>
+            <div class="animated fadeInUp wow" data-wow-duration="1.5s" data-wow-delay="1s">
+                <form id="addressFormTwo" class='home-form' action="{{ url_for('convert_address') }}" method="GET">
+                    <div class="input-group" style="margin: 0 auto;">
+                        <div class="dropdownmenu">
+                            Find happy hours happening
+                            <select name="is_active" class="homepageButton">
+                                <option value="now" selected>now</option>
+                                <option value="anytime">anytime</option>
+                            </select>
+                            within
+                            <select name="radius" class="homepageButton">
+                                <option value="5">5 miles</option>
+                                <option value="10">10 miles</option>
+                                <option value="25" selected>25 miles</option>
+                                <option value="50">50 miles</option>
+                            </select>
                         </div>
-                        <div>
-                            <form class='home-form' action="{{ url_for('convert_address') }}" method="GET">
-                                <div class="input-group">
-                                    <div class="dropdownmenu">
-                                        Find happy hours happening
-                                        <select name="is_active" class="homepageButton">
-                                            <option value="now" selected>now</option>
-                                            <option value="anytime">anytime</option>
-                                        </select>
-                                        within
-                                        <select name="radius" class="homepageButton">
-                                            <option value="5" selected>5 miles</option>
-                                            <option value="10">10 miles</option>
-                                            <option value="25">25 miles</option>
-                                            <option value="50">50 miles</option>
-                                        </select>
-                                    </div>
-                                    <div class="home_location_button">
-                                        <button type="submit" class="btn btn-primary btn-lg homepageLocation">Use My
-                                            Location
-                                        </button>
-                                    </div>
-                                    <input name="address" type="text" class="form-control input-group-btn"
-                                           placeholder="1234 Houston Ave. Houston, TX">
-                                    <button class="btn btn-default searchButton" type="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </div>
-                            </form>
+                        <div class="home_location_button">
+                            <button type="submit" class="btn-u btn-brd btn-brd-width-2 btn-brd-hover btn-u-light
+                                btn-u-block rounded-4x margin-right-10 homepageLocation">Use My Location
+                            </button>
+                        </div>
+                        <div class="input-group" style="width: 100%">
+                            <input name="address" type="text" class="form-control input-group-btn homepageButton"
+                                   placeholder="1234 Houston Ave. Houston, TX">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default searchButton homepageButton" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                            </span>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-    </body>
 {% endblock %}

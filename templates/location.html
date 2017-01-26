@@ -1,26 +1,28 @@
 {% extends "layout.html" %}
 {% block body %}
-    <body>
-    <form method="get">
-        <script>
-            // HTML5 geolocation.
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-
-                    $.getJSON('/location', {
-                        lat: JSON.stringify(pos.lat),
-                        lng: JSON.stringify(pos.lng)
+    <div class="fullscreen-static-image1 fullheight bg-color-darker">
+        <div class="container valign__middle text-center">
+            <h2 class="promo-text-v2 color-light cd-headline letters type margin-bottom-20">
+                Searching for happy hours...
+            </h2>
+            <form action="{{ url_for('display') }}" method="POST" id="locationForm">
+                <input type="hidden" id="latitude" name="lat">
+                <input type="hidden" id="longitude" name="lng">
+            </form>
+            <script>
+                // HTML5 geolocation.
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        document.getElementById("latitude").value = JSON.stringify(pos.lat);
+                        document.getElementById("longitude").value = JSON.stringify(pos.lng);
+                        document.getElementById("locationForm").submit();
                     });
-
-                    window.location = 'display';
-                });
-
-            }
-        </script>
-    </form>
-    </body>
+                }
+            </script>
+        </div>
+    </div>
 {% endblock %}

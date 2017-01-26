@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row flashes">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message | safe }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+</div>
+<div class="container-fluid new-venue-container">
+    <div class="row venue-form-header-row">
+      <div class="col-xs-12 venue-form-header">
+        <h3>Add a Venue</h3>
+      </div>
+    </div>
+    <div class="row venue-form-content-row">
+        <div class="col-xs-12 venue-form-content">
+          <form action="{{ url_for('save_new_venue') }}" method="POST">
+              <div class="form-group venueid">
+                <input type="text" name="venue_id" placeholder="FS Venue ID" minlength="2" required>
+              </div>
+              <div class="form-group lat">
+                  <input type="number" step="0.000001" name="latitude" id="latitude" minlength="4" required>
+              </div>
+              <div class="form-group lng">
+                  <input type="number" step="0.000001" name="longitude" id="long" minlength="4" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Log In</button>
+          </form>
+        </div>
+        <div class="col-xs-12 create-account-link">
+            <a href="url_for('create_account')">Create an account</a>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}

@@ -8,7 +8,7 @@ import os
 import sys
 import json
 from flask import Flask, render_template, request, redirect, url_for, session, Markup, flash
-from flask_login import LoginManager, UserMixin, login_required
+# from flask_login import LoginManager, UserMixin, login_required
 import bcrypt
 import requests
 from models import *
@@ -19,8 +19,8 @@ sys.setdefaultencoding('utf-8')
 app = Flask(__name__)
 
 # Manage logins
-login_manager = LoginManager()
-login_manager.init_app(app)
+# login_manager = LoginManager()
+# login_manager.init_app(app)
 
 # Initialize API settings and app configs
 g_api_key = config.G_API_KEY

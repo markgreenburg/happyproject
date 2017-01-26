@@ -233,8 +233,8 @@ def scrape():
 ###################################################################################
     # innercity houston
     # start at bottom right location
-    current_lat = 29.66237
-    current_lng = -95.672329
+    current_lat = 29.676836
+    current_lng = -95.522664
     # end at top right location
     lat = 29.937085
     lng = -95.274124

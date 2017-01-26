@@ -66,7 +66,7 @@ def user_loader(id_to_load):
     Returns: user instance, or None if user_id doesn't match anything in db
     """
     id_to_load = ord(id_to_load)
-    user = User(user_id=id_to_load)
+    user = User(id_to_load)
     if user.user_id > 0:
         return user
     else:

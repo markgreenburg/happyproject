@@ -183,7 +183,8 @@ def add_venue():
 @app.route('/save_new_venue', methods=["POST"])
 def save_new_venue():
     """
-    Saves user input to create a new venue record in db
+    Saves user input to create a new venue record in db, then displays
+    form to allow adding happy hour times, passing in the new object
     """
     new_venue = Place()
     new_venue.venue_id = request.form.get('venue_id')
@@ -191,7 +192,14 @@ def save_new_venue():
     new_venue.lng = request.form.get('longitude')
     new_venue.save()
     flash("Venue saved successfully!")
-    return redirect(url_for('edit_details', venue=new_venue.location_id))
+    return render_template('edit_details', venue=new_venue)
+
+@app.route('/submit_page_edit/<int:location_id')
+def submit_page_edit():
+    """
+    Save new happy hour times to db
+    """
+    pass
 
 if __name__ == "__main__":
     app.run(threaded=True)

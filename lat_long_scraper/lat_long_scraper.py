@@ -241,7 +241,7 @@ def scrape():
     global querycount
     while current_lat < lat:
         while current_lng < lng:
-            if querycount >= 4200: #number of queries to 4square
+            if querycount >= 1000: #number of queries to 4square
                 print 'pausing'
                 querycount = 0
                 time.sleep(3650) #delay for one hour once 5000 queries has been hit

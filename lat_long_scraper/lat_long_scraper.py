@@ -234,11 +234,35 @@ def scrape():
     # innercity houston
     # 29.763632, -95.422854
     # start at bottom right location
-    current_lat = 29.763632
-    current_lng = -95.422854
+    # current_lat = 29.763632
+    # current_lng = -95.422854
+    # # end at top right location
+    # lat = 29.937085
+    # lng = -95.274124
+    # global querycount
+    # while current_lat < lat:
+    #     while current_lng < lng:
+    #         if querycount >= 1000: #number of queries to 4square
+    #             print 'pausing'
+    #             querycount = 0
+    #             time.sleep(1825) #delay for one hour once 5000 queries has been hit
+    #         loc = LatLong()
+    #         loc.location = str(current_lat) + ',' + str(current_lng)
+    #         print loc.location
+    #         Place.get_places(loc.location, '1610')
+    #         current_lng += 0.016635
+    #     current_lng = -95.672379
+    #     current_lat += 0.014466
+    # print "*****FINISHED*****"
+
+    # next lat lng
+    # 30.109494, -97.885695
+    ####PICKUP WHERE LEFT OFF
+    current_lat = 30.109494
+    current_lng = -97.885695
     # end at top right location
-    lat = 29.937085
-    lng = -95.274124
+    lat = 30.593001
+    lng = -97.562842
     global querycount
     while current_lat < lat:
         while current_lng < lng:
@@ -251,33 +275,9 @@ def scrape():
             print loc.location
             Place.get_places(loc.location, '1610')
             current_lng += 0.016635
-        current_lng = -95.672379
+        current_lng = -97.885695
         current_lat += 0.014466
     print "*****FINISHED*****"
-
-    # next lat lng
-    # 30.165191,-97.762163
-    ####PICKUP WHERE LEFT OFF
-    # current_lat = 30.208589
-    # current_lng = -97.961783
-    # # end at top right location
-    # lat = 30.503117
-    # lng = -97.494864
-    # global querycount
-    # while current_lat < lat:
-    #     while current_lng < lng:
-    #         if querycount >= 2000: #number of queries to 4square
-    #             print 'pausing'
-    #             querycount = 0
-    #             time.sleep(3650) #delay for one hour once 5000 queries has been hit
-    #         loc = LatLong()
-    #         loc.location = str(current_lat) + ',' + str(current_lng)
-    #         print loc.location
-    #         Place.get_places(loc.location, '1610')
-    #         current_lng += 0.016635
-    #     current_lng = -97.961783
-    #     current_lat += 0.014466
-    # print "*****FINISHED*****"
 
 # calls scraper function
 scrape()

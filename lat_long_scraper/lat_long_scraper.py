@@ -232,9 +232,10 @@ def scrape():
     # print "*****FINISHED*****"
 ###################################################################################
     # innercity houston
+    # 29.763632, -95.422854
     # start at bottom right location
-    current_lat = 29.691302
-    current_lng = -95.506029
+    current_lat = 29.763632
+    current_lng = -95.422854
     # end at top right location
     lat = 29.937085
     lng = -95.274124

@@ -37,21 +37,21 @@ def home():
     return render_template('homepage.html')
 
 
-# Flask-login user loader
-@login_manager.user_loader
-def user_loader(id_to_load):
-    """
-    Callback for the flask_login user loader. Loads a user object only if
-    the user_id passed in corresponds to an existing user_id.
-    Args: user_id - internal id of a user
-    Returns: user instance, or None if user_id doesn't match anything in db
-    """
-    id_to_load = ord(id_to_load)
-    user = User(user_id=id_to_load)
-    if user.user_id > 0:
-        return user
-    else:
-        return None
+# # Flask-login user loader
+# @login_manager.user_loader
+# def user_loader(id_to_load):
+#     """
+#     Callback for the flask_login user loader. Loads a user object only if
+#     the user_id passed in corresponds to an existing user_id.
+#     Args: user_id - internal id of a user
+#     Returns: user instance, or None if user_id doesn't match anything in db
+#     """
+#     id_to_load = ord(id_to_load)
+#     user = User(user_id=id_to_load)
+#     if user.user_id > 0:
+#         return user
+#     else:
+#         return None
 
 @app.route('/convert_address', methods=['GET'])
 def convert_address():
@@ -159,8 +159,7 @@ def submit_login():
     password_test = request.form.get('password', '')
     user_to_login = User(username=username_test)
     if user_to_login.authenticate(username_test, password_test):
-        # session['username'] = user_to_login.username
-        login_user(user_to_login)
+        session['username'] = user_to_login.username
         return redirect(url_for('home'))
     flash("Incorrect username or password")
     return redirect(url_for('login'))

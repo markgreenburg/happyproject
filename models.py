@@ -31,7 +31,6 @@ class User(object):
             sql = ("SELECT id, username, email, password FROM"
                    " happyhour.public.users WHERE username = $1")
             user_result = DbConnect.get_named_results(sql, True, username)
-        # print user_result.id
         if user_result.id > 0:
             self.user_id = user_result.id
             self.username = user_result.username
@@ -266,7 +265,7 @@ class Place(object):
         today = datetime.datetime.today().weekday() + 1
         now = datetime.datetime.now().time()
         for day in self.happy_hour:
-            if not (not (day.end_time > now > day.start_time) or not (today == day.day_of_week)):
+            if day.start_time < now < day.end_time and today == day.day_of_week:
                 return True
         return False
 

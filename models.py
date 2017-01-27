@@ -346,7 +346,7 @@ class Place(object):
                " happyhour.public.coordinates WHERE (acos(sin(lat * 0.0175) *"
                " sin($4 * 0.0175) + cos(lat * 0.0175) * cos($5 * 0.0175) *"
                " cos(($6 * 0.0175) - (lng * 0.0175))) * 3959 <= $7) ORDER BY"
-               " milesfromuser ASC;"
+               " milesfromuser ASC LIMIT 10;"
               )
         venue_id_objects = DbConnect.get_named_results(sql, False, lat, lat, \
                            lng, lat, lat, lng, radius)

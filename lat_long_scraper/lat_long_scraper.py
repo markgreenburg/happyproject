@@ -257,10 +257,10 @@ def scrape():
 
     ####Austin Scrape
     # start here!!
-    # 30.210756, -97.785885
+    # 30.239688,-97.76925
 
-    current_lat = 30.210756
-    current_lng = -97.785885
+    current_lat = 30.239688
+    current_lng = -97.76925
     # end at top right location
     lat = 30.593001
     lng = -97.562842

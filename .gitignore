@@ -98,4 +98,5 @@ Temporary Items
 
 .idea/
 config.py
+*.pyc
 .vscode

@@ -12,10 +12,10 @@ import config
 import pg
 
 # API Keys: Google
-apikey = config.G_API_KEY
+G_API_KEY = config.G_API_KEY
 # API Keys: FS
-client_id = config.FS_CLIENT_ID
-secret = config.FS_CLIENT_SECRET
+FS_CLIENT_ID = config.FS_CLIENT_ID
+FS_CLIENT_SECRET = config.FS_CLIENT_SECRET
 
 class User(object):
     """
@@ -171,11 +171,11 @@ class Place(object):
             self.lng = venue_db_object.lng
             self.happy_hour = Day.get_days(self.location_id)
             # Curl to get Foursquare venue details
-            url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
-                   "client_secret=%s&v=20170109" % \
+            url = ("https://api.foursquare.com/v2/venues/%s?FS_CLIENT_ID=%s&"
+                   "client_FS_CLIENT_SECRET=%s&v=20170109" % \
                    (self.venue_id, \
-                    client_id, \
-                    secret)
+                    FS_CLIENT_ID, \
+                    FS_CLIENT_SECRET)
                   )
             self.is_happy_hour = self.get_happy_state()
             venue_details = ApiConnect.get_load(url).get('response', {}).get\
@@ -386,7 +386,7 @@ class Place(object):
         Returns: (lat, lng) - A tuple of the location's coordinates
         """
         url = ("https://maps.googleapis.com/maps/api/geocode/json?address=%s"
-               "&key=%s" % (urllib.quote_plus(address), apikey)
+               "&key=%s" % (urllib.quote_plus(address), G_API_KEY)
               )
         location_data = ApiConnect.get_load(url)
         lat = location_data.get('results', [{}])[0].get('geometry', {}).\

@@ -25,29 +25,29 @@
           href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
 
     <!-- CSS Global Compulsory -->
-    <link rel="stylesheet" href="/happyhour/static/assets/plugins/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/happyhour/static/assets/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
 
     <!-- CSS Header and Footer -->
-    <link rel="stylesheet" href="/happyhour/static/assets/css/headers/header-v6.css">
-    <link rel="stylesheet" href="/happyhour/static/assets/css/footers/footer-v1.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/headers/header-v6.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/footers/footer-v1.css') }}">
 
     <!-- CSS Implementing Plugins -->
-    <link rel="stylesheet" href="/happyhour/static/assets/plugins/animate.css">
-    <link rel="stylesheet" href="/happyhour/static/assets/plugins/line-icons/line-icons.css">
-    <link rel="stylesheet" href="/happyhour/static/assets/plugins/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/happyhour/static/assets/plugins/animated-headline/css/animated-headline.css">
-    <link rel="stylesheet" href="/happyhour/static/assets/plugins/parallax-slider/css/parallax-slider.css">
-    <link rel="stylesheet" href="/happyhour/static/assets/plugins/fancybox/source/jquery.fancybox.css">
-    <link rel="stylesheet" href="/happyhour/static/assets/plugins/owl-carousel/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/animate.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/line-icons/line-icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/animated-headline/css/animated-headline.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/parallax-slider/css/parallax-slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/fancybox/source/jquery.fancybox.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/owl-carousel/owl-carousel/owl.carousel.css') }}">
 
     <!-- CSS Theme -->
-    <link rel="stylesheet" href="/happyhour/static/assets/css/theme-colors/default.css" id="style_color">
-    <link rel="stylesheet" href="/happyhour/static/assets/css/theme-skins/dark.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/theme-colors/default.css') }}" id="style_color">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/theme-skins/dark.css') }}">
 
     <!-- CSS Customization -->
-    <link rel="stylesheet" href="/happyhour/static/assets/css/custom.css">
-    <link rel="stylesheet" href="/happyhour/static/assets/css/pages/blog_masonry_3col.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/pages/blog_masonry_3col.css') }}">
 </head>
 
 <body class="header-fixed">
@@ -169,10 +169,13 @@
 
                         <!-- Social Links -->
                         <div class="col-md-9">
-                            <p>Cody Taylor<a href="https://www.linkedin.com/in/cody-taylor-b7b963b2/"><i
-                                    class="fa fa-linkedin-square fa-fw fa-1x"></i></a> &amp; Mark Greenburg: Built with
-                                Python, Flask, JavaScript, PostgreSQL, Jinja,
-                                Bootstrap</p>
+                            <p>
+                                Cody Taylor<a href="https://www.linkedin.com/in/cody-taylor-b7b963b2/"><i
+                                    class="fa fa-linkedin-square fa-fw fa-1x"></i></a> 
+                                &amp; Mark Greenburg<a href="https://www.linkedin.com/in/markgreenburgjr/"><i
+                                    class="fa fa-linkedin-square fa-fw fa-1x"></i></a> Built with
+                                Python, Flask, JavaScript, PostgreSQL, Jinja, and Bootstrap
+                            </p>
                         </div>
                         <!-- End Social Links -->
                     </div>
@@ -184,28 +187,28 @@
 
 
 <!-- JS Global Compulsory -->
-<script src="/happyhour/static/assets/plugins/jquery/jquery.min.js"></script>
-<script src="/happyhour/static/assets/plugins/jquery/jquery-migrate.min.js"></script>
-<script src="/happyhour/static/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='assets/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/jquery/jquery-migrate.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- Load Ajax from Google -->
 {#<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>#}
 <!-- JS Implementing Plugins -->
-<script src="/happyhour/static/assets/plugins/back-to-top.js"></script>
-<script src="/happyhour/static/assets/plugins/smoothScroll.js"></script>
-<script src="/happyhour/static/assets/plugins/backstretch/backstretch-ini.js"></script>
-<script src="/happyhour/static/assets/plugins/wow-animations/js/wow.min.js"></script>
-<script src="/happyhour/static/assets/plugins/animated-headline/js/modernizr.js"></script>
-<script src="/happyhour/static/assets/plugins/animated-headline/js/animated-headline.js"></script>
-<script src="/happyhour/static/assets/plugins/jquery.parallax.js"></script>
-<script src="/happyhour/static/assets/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
-<script src="/happyhour/static/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js"></script>
+<script src="{{ url_for('static', filename='assets/plugins/back-to-top.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/smoothScroll.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/backstretch/backstretch-ini.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/wow-animations/js/wow.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/animated-headline/js/modernizr.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/animated-headline/js/animated-headline.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/jquery.parallax.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/fancybox/source/jquery.fancybox.pack.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/owl-carousel/owl-carousel/owl.carousel.js') }}"></script>
 <!-- JS Customization -->
-<script src="/happyhour/static/assets/js/custom.js"></script>
+<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
 <!-- JS Page Level -->
-<script src="/happyhour/static/assets/js/app.js"></script>
-<script src="/happyhour/static/assets/js/plugins/fancy-box.js"></script>
-<script src="/happyhour/static/assets/js/plugins/owl-carousel.js"></script>
-<script src="/happyhour/static/assets/js/plugins/style-switcher.js"></script>
+<script src="{{ url_for('static', filename='assets/js/app.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/fancy-box.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/owl-carousel.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/style-switcher.js') }}"></script>
 <script type="text/javascript">
     jQuery(document).ready(function () {
         App.init();
@@ -217,9 +220,9 @@
     });
 </script>
 <!--[if lt IE 9]>
-<script src="/happyhour/static/assets/plugins/respond.js"></script>
-<script src="/happyhour/static/assets/plugins/html5shiv.js"></script>
-<script src="/happyhour/static/assets/plugins/placeholder-IE-fixes.js"></script>
+<script src="{{ url_for('static', filename='assets/plugins/respond.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/html5shiv.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/plugins/placeholder-IE-fixes.js') }}"></script>
 <![endif]-->
 </body>
 </html>

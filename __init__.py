@@ -7,7 +7,7 @@ import os
 import sys
 import json
 from flask import Flask, render_template, request, redirect, url_for, session, Markup, flash
-import bcrypt
+# import bcrypt
 import requests
 from models import *
 import config

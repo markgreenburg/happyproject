@@ -555,7 +555,7 @@ class DbConnect(object):
             user=config.DBUSER,
             passwd=config.DBPASS,
             dbname=config.DBNAME
-            )
+        )
 
     @staticmethod
     def escape(value):

@@ -112,7 +112,7 @@ class ApiConnect(object):
 # gets restaurants from a given location
 class LatLong(object):
     """
-    User superclass. Stores basic lat / lon data for each user as a comma-separated string value
+    Stores location data
     """
 
     def __init__(self):
@@ -184,10 +184,10 @@ class Place(object):
         Returns: list of Place object instances
         """
         url = (
-            "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=%s&radius=%s&types=restaurant&key=%s" %
+            "https://maps.googleapis.com/maps/api/place/radarsearch/json?"
+            "location=%s&radius=%s&types=restaurant&key=%s" %
             (coords, urllib.quote_plus(radius), urllib.quote_plus(APIKEY)))
         places_list = ApiConnect.get_load(url).get('results')
-        place_objects_list = []
         for place in places_list:
             place_id = [place][0].get('place_id')
             place_instance = Place(place_id)
@@ -198,18 +198,25 @@ class Place(object):
                 if selection:
                     checker = str(selection[0].address)
                 if place_instance.address != checker:
-                    sql = "INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address, latitude, longitude) VALUES ($1, $2, $3, $4, $5)"
-                    print "!!!!!!!!!!!!!STORED!!!!!!!!!!!!!!!!"
-                    DbConnect.doQuery(sql, place_instance.happy_string, place_instance.fs_venue_id, place_instance.address,
-                                      float(place_instance.lat), float(place_instance.lng))
+                    sql = ("INSERT INTO happyhour.public.happy_strings "
+                           "(happy_text, venue_id, address, latitude, "
+                           "longitude) VALUES ($1, $2, $3, $4, $5)")
+                    print "************STORED************"
+                    DbConnect.doQuery(sql, place_instance.happy_string,
+                                      place_instance.fs_venue_id, place_instance.address,
+                                      float(place_instance.lat),
+                                      float(place_instance.lng)
+                                     )
     #
     # def insert(self):
-    #     # sql = 'INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address) VALUES ($1, $2, $3)'
+    #     # sql = "INSERT INTO happyhour.public.happy_strings(happy_text, "
+    #             "venue_id, address) VALUES ($1, $2, $3)"
     #     sel='SELECT address FROM happyhour.public.happy_strings WHERE address $1'
     #     selection = DbConnect.doQuery(sel, self.address)
     #     if selection != self.address:
-    #         sql = "INSERT INTO happyhour.public.happy_strings(happy_text, venue_id, address) VALUES ($1, $2, $3)"
-    #         print "!!!!!!!!!!!!!STORED!!!!!!!!!!!!!!!!"
+    #         sql = "INSERT INTO happyhour.public.happy_strings(happy_text, "
+    #               "venue_id, address) VALUES ($1, $2, $3)"
+    #         print "************STORED************"
     #         DbConnect.doQuery(sql, self.happy_string, self.fs_venue_id, self.address)
 
 

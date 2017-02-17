@@ -171,8 +171,8 @@ class Place(object):
             self.lng = venue_db_object.lng
             self.happy_hour = Day.get_days(self.location_id)
             # Curl to get Foursquare venue details
-            url = ("https://api.foursquare.com/v2/venues/%s?FS_CLIENT_ID=%s&"
-                   "client_FS_CLIENT_SECRET=%s&v=20170109" % \
+            url = ("https://api.foursquare.com/v2/venues/%s?client_id=%s&"
+                   "client_secret=%s&v=20170109" % \
                    (self.venue_id, \
                     FS_CLIENT_ID, \
                     FS_CLIENT_SECRET)

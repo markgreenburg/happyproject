@@ -9,7 +9,7 @@ import urllib
 import pycurl
 import bcrypt
 import config
-from pg import DB
+import pg
 
 # API Keys: Google
 G_API_KEY = config.G_API_KEY
@@ -550,7 +550,7 @@ class DbConnect(object):
         """
         Sets up the postgreSQL connection by loading in db settings from config
         """
-        return DB(
+        return pg.DB(
             host=config.DBHOST,
             user=config.DBUSER,
             passwd=config.DBPASS,

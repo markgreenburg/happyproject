@@ -347,6 +347,7 @@ class Place(object):
                " cos(($6 * 0.0175) - (lng * 0.0175))) * 3959 <= $7) ORDER BY"
                " milesfromuser ASC LIMIT 10;"
               )
+        print sql
         venue_id_objects = DbConnect.get_named_results(sql, False, lat, lat, \
                            lng, lat, lat, lng, radius)
         place_object_list = []

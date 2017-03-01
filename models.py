@@ -8,8 +8,8 @@ import StringIO
 import urllib
 import pycurl
 import bcrypt
+from pg import DB
 import config
-import pg
 
 # API Keys: Google
 G_API_KEY = config.G_API_KEY
@@ -550,7 +550,7 @@ class DbConnect(object):
         """
         Sets up the postgreSQL connection by loading in db settings from config
         """
-        return pg.DB(
+        return DB(
             host=config.DBHOST,
             user=config.DBUSER,
             passwd=config.DBPASS,
@@ -577,7 +577,7 @@ class DbConnect(object):
         if get_one is True and no results found.
         """
         conx = DbConnect.get_connection()
-        query = conx.query(sql, *args)
+        query = conx.query(sql, args)
         results = query.namedresult()
         if get_one:
             if len(results) == 0:

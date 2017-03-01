@@ -577,7 +577,7 @@ class DbConnect(object):
         if get_one is True and no results found.
         """
         conx = DbConnect.get_connection()
-        query = conx.query(sql, (args))
+        query = conx.query(sql, args)
         results = query.namedresult()
         if get_one:
             if len(results) == 0:
